@@ -54,3 +54,21 @@ Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\T
 - Ältere Ordner: `lager-app/` ist die erste Version (v0.1.0, abgelöst); `INCI-App-Projekt/netlify/` ist ein alter Build-Stand (nicht ausliefern).
 - **Abschlussregel:** Am Ende jedes Chats `INCI-App-Projekt/STAND.md` (fertig / offen / nächster Schritt, letzter Commit, Datum) und die Zeile in `INDEX.md` aktualisieren, `UEBERGABE.md` im Ordner mit der Repo-Fassung abgleichen.
 - Chatname = Projektname (z. B. „INCIheinz – Rezeptbuch“).
+
+## Arbeitsweise für Modul-Chats (verbindlich)
+**Start:**
+1. `INDEX.md` (Wurzelordner Toolsbyclaude) lesen, dann `INCI-App-Projekt/STAND.md`, dann `INCI-App-Projekt/ENTWICKLUNGSVERLAUF.md`.
+2. In `INCI-App-Projekt/repo/` zuerst `git pull`.
+3. Bauen mit `repo/src/build.sh`; testen (Playwright, Beispiele in `src/tests/`); am Ende selbst nach `main` pushen (Repo ggf. mit Schreibrecht per `add_repo` anhängen).
+
+**Während der Arbeit:**
+- Genau ein Chat baut zur selben Zeit (Absprache des Entwicklers).
+- Ein Modul ändert bestehende Seiten nur über deklarierte Stellen: neuer Tab, neuer Menüeintrag, neue Datenfelder. Alles andere ist ein Eingriff ins Grundgerüst und wird in `STAND.md` unter „Berührt Grundgerüst“ gemeldet.
+- Neue Daten eines Moduls müssen in Sicherung/Wiederherstellung, Import/Export (falls sinnvoll) und Statistik berücksichtigt werden; neue Texte in `i18n7.py` (EN/ES).
+- Designprinzipien aus `ENTWICKLUNGSVERLAUF.md` einhalten; keine Wirk-/Gesundheitsversprechen.
+
+**Ende:**
+1. `INCI-App-Projekt/STAND.md`: Modulstatus (fertig / offen / nächster Schritt), letzter Commit, Datum, Abschnitt „Berührt Grundgerüst“.
+2. Neue Entscheidungen in `ENTWICKLUNGSVERLAUF.md` (Ordner und Repo `src/`) ergänzen.
+3. Zeile in `INDEX.md` aktualisieren; `UEBERGABE.md` im Ordner und im Repo gleich halten.
+4. Der Entwickler meldet „Modul X fertig“ im Haupt-Chat „INCIheinz“ (Grundgerüst); dort erfolgt die Querprüfung (Navigation, i18n, Sicherung, Statistik).
