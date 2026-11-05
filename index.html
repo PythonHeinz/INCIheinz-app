@@ -129,9 +129,10 @@ details.ac{border-bottom:1px solid var(--line)}details.ac summary{padding:14px 2
 #app.artpg .fld input:focus,#app.artpg .fld textarea:focus{border-color:var(--pri)}
 
 .th{align-items:center}.th span{white-space:nowrap}
-.c2{flex:0 0 68px!important}.th .c2{display:flex!important;justify-content:flex-end;align-items:center;font-size:.62rem;letter-spacing:.03em}
-.lead{flex:0 0 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
-.lead .pic{width:40px;height:40px;margin:0;border-radius:9px}
+.c2{flex:0 0 62px!important}.th .c2{display:flex!important;justify-content:flex-end;align-items:center;font-size:.62rem;letter-spacing:.03em}
+.lead{flex:0 0 22px;display:flex;align-items:center;justify-content:center}
+.ph{flex:0 0 34px;height:34px}.ph .pic{width:34px;height:34px;margin:0;border-radius:9px;display:block;object-fit:cover}
+.tr{min-height:58px}.tr .nm{display:flex;align-items:center;gap:6px}.tr .nm .ri{flex:none;display:inline-flex;margin:0;gap:5px}.tr .nm .t{min-width:0}
 input::placeholder,textarea::placeholder{color:#C3CBC5;opacity:1}
 .camfr.ok{border-color:#3FD07A!important;box-shadow:0 0 0 3px rgba(63,208,122,.45)}
 </style><link rel="manifest" href="manifest.webmanifest">
@@ -586,8 +587,8 @@ const arr=k=>Q.sort===k?(Q.dir>0?' ▲':' ▼'):'';
 b.innerHTML=`<div class="tb"><button class="selbtn" onclick="pickCatFilter()">${Q.cat?cic(Q.cat,'var(--pri)',18):ic('list','var(--sub)',18)}<span style="flex:1">${Q.cat?esc(Q.cat):'Alle Kategorien'}</span></button><button class="selbtn" style="flex:0 0 42%" onclick="pickGap()">${ic('filter','var(--pri)',18)}<span style="flex:1">${Q.gap?esc(GAPS[Q.gap][0]):'Lücken finden'}</span></button></div>
 <div class="tb"><button class="selbtn" onclick="pickSort()"><span style="flex:1">${SORTS[Q.sort][0]}</span></button><button onclick="Q.dir*=-1;lbody()" aria-label="Richtung">${Q.dir>0?'↑':'↓'}</button><button onclick="sheetCols()" aria-label="Spalten">${ic('grid','var(--pri)',18)}</button></div>
 <div class="s" style="margin:10px 2px 6px">${l.length} / ${own.length}${Q.cat||Q.seg||q||Q.gap?` · <a href="#" class="lnk" onclick="Q.cat='';Q.seg=0;Q.q='';Q.gap='';lager();return false">Filter zurücksetzen</a>`:''}</div>
-${l.length?`<div class="card" style="overflow:hidden"><div class="th"><span class="lead"></span><span class="c1 ${Q.sort==='name'?'on':''}" onclick="setSort('name')">Name${arr('name')}</span>${cols.map(k=>`<span class="c2 ${Q.sort===k?'on':''}" onclick="${SORTS[k]?`setSort('${k}')`:''}">${COLS[k][0]}${arr(k)}</span>`).join('')}</div>${l.map(i=>{const r=info.get(i.id)||{};
-return `<div class="tr" onclick="go('artikel','${i.id}')"><div class="lead">${i.foto?`<img class="pic" src="${i.foto}" alt="">`:''}<span title="${esc(i.kat)}">${cic(i.kat,'var(--sub)',22)}</span></div><div class="c1"><div class="nm">${esc(i.name)}</div><div class="ri">${statusIcons(i)}</div>${r.hit?`<div class="s" style="color:var(--pri);margin-top:3px;overflow-wrap:anywhere">${esc(r.hit)}</div>`:''}</div>${cols.map(k=>`<div class="c2" style="font-size:.82rem">${COLS[k][1](i)}</div>`).join('')}</div>`}).join('')}</div><div class="hint" style="margin-top:8px;text-align:center">Spaltenköpfe antippen zum Sortieren · die Suche findet auch deine eigenen Texte</div>`:`<div class="card" style="padding:20px;text-align:center;color:var(--sub)"><span>Nichts gefunden.</span>${q?`<br><button class="btn" style="margin-top:12px" onclick="sheetNeu(Q.q)">„${esc(q)}“ neu anlegen</button>`:''}</div>`}`}
+${l.length?`<div class="card" style="overflow:hidden"><div class="th">${(window.AF=l.some(x=>x.foto),'')}<span class="lead"></span>${AF?'<span class="ph"></span>':''}<span class="c1 ${Q.sort==='name'?'on':''}" onclick="setSort('name')">Name${arr('name')}</span>${cols.map(k=>`<span class="c2 ${Q.sort===k?'on':''}" onclick="${SORTS[k]?`setSort('${k}')`:''}">${COLS[k][0]}${arr(k)}</span>`).join('')}</div>${l.map(i=>{const r=info.get(i.id)||{};
+return `<div class="tr" onclick="go('artikel','${i.id}')"><div class="lead" title="${esc(i.kat)}">${cic(i.kat,'var(--sub)',20)}</div>${AF?`<div class="ph">${i.foto?`<img class="pic" src="${i.foto}" alt="">`:''}</div>`:''}<div class="c1"><div class="nm"><span class="t">${esc(i.name)}</span><span class="ri">${statusIcons(i)}</span></div>${r.hit?`<div class="s" style="color:var(--pri);margin-top:3px;overflow-wrap:anywhere">${esc(r.hit)}</div>`:''}</div>${cols.map(k=>`<div class="c2" style="font-size:.82rem">${COLS[k][1](i)}</div>`).join('')}</div>`}).join('')}</div><div class="hint" style="margin-top:8px;text-align:center">Spaltenköpfe antippen zum Sortieren · die Suche findet auch deine eigenen Texte</div>`:`<div class="card" style="padding:20px;text-align:center;color:var(--sub)"><span>Nichts gefunden.</span>${q?`<br><button class="btn" style="margin-top:12px" onclick="sheetNeu(Q.q)">„${esc(q)}“ neu anlegen</button>`:''}</div>`}`}
 /* ---------- Regal-Check ---------- */
 let CK={q:''};
 function check(){const m=$('#main');const cat=R.id;
@@ -966,7 +967,7 @@ if(PH.item){setFoto(PH.item,PH.data);return}sheetFind('Zu welchem Rohstoff?',PH.
 function setFoto(id,data){const i=getI(id);if(!i)return;i.foto=data;save();closeSheet();stack=[];R={name:'artikel',id,edit:false};draw();toast('Foto gespeichert')}
 function sheetFotoMenu(id){openSheet(`<h2>Foto</h2>`+[['kamera','Foto aufnehmen',`photoPick('cam','${id}')`],['foto','Foto aus Galerie',`photoPick('gal','${id}')`]].concat(getI(id)&&getI(id).foto?[['loeschen','Foto entfernen',`delFoto('${id}')`]]:[]).map(x=>`<div class="row" style="padding:0 2px" onclick="closeSheet();${x[2]}"><div style="width:32px;display:flex;justify-content:center">${ic(x[0],'var(--pri)')}</div><div class="t"><b>${x[1]}</b></div></div>`).join(''))}
 function delFoto(id){const i=getI(id);i.foto='';save();draw()}
-function heroHtml(i){return i.foto?`<div class="hero" onclick="sheetFotoMenu('${i.id}')"><img src="${i.foto}" alt=""></div>`:`<div style="margin-top:10px"><button class="pill" style="display:inline-flex;align-items:center;gap:6px;height:32px;font-size:.82rem" onclick="sheetFotoMenu('${i.id}')">${ic('kamera','var(--pri)',16)}Foto hinzufügen</button></div>`}
+function heroHtml(i){return i.foto?`<div class="hero" onclick="sheetFotoMenu('${i.id}')"><img src="${i.foto}" alt=""></div>`:`<div style="margin-top:10px"><button class="pill" aria-label="Foto hinzufügen" title="Foto hinzufügen" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border-radius:50%" onclick="sheetFotoMenu('${i.id}')">${ic('kamera','var(--pri)',18)}</button></div>`}
 
 function labelFor(id){LB.sel={};LB.sel[id]=true;sheetLabels()}
 
