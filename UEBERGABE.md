@@ -84,3 +84,9 @@ Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\T
 2. Neue Entscheidungen in `ENTWICKLUNGSVERLAUF.md` (Ordner und Repo `src/`) ergänzen.
 3. Zeile in `INDEX.md` aktualisieren; `UEBERGABE.md` im Ordner und im Repo gleich halten.
 4. Der Entwickler meldet „Modul X fertig“ im Haupt-Chat „INCIheinz“ (Grundgerüst); dort erfolgt die Querprüfung (Navigation, i18n, Sicherung, Statistik).
+
+## Testdaten (Rezeptbuch) und Katalog 1.1.0 – 2026-11-05
+- Katalog 1.1.0: +14 Rohstoffe (K1032–K1045; z. B. Joghurtpulver, Reismehl, Inulin, Maltodextrin, Calciumchlorid, Erythrit, Lactobionsäure, Magnesiumascorbylphosphat, Hydrolysiertes Erbsenprotein, Phytosphingosin, Wiesenschaumblumenöl, Crambeöl, Buritiöl, Kokoswasser), alle „ungeprüft“, INCI aus Fachwissen, nicht belegt. Quelle: Abgleich der Rohstoffe aus Buch (Käser) und humblebee-Enzyklopädie mit dem Katalog; er deckte fast alles schon ab. Aus den Quellen wurden nur Rohstoffnamen genutzt, keine Rezepte und Texte.
+- Neuer Build-Schritt: build_netlify.py bettet die CAT-Liste jetzt aus src/katalog_master.json ein (vorher aus der alten index.html).
+- Testdaten: 27 eigene Beispielrezepte (src/testdaten/gen.py → src/proto/testdaten.js, js20.js). Mehr › Einstellungen (nur Expertenmodus) › „Testdaten laden“ / „Testdaten entfernen“. Lädt Rezepte (Version 1, Hinweis „nicht geprüft, nicht zum Nachmischen“) und die nötigen Rohstoffe in üblichen Packungsgrößen (Markierung demo:true bei Rohstoff, demo:Schlüssel beim Rezept); vorhandene Rohstoffe bleiben, nur fehlende Dichte wird ergänzt. Rückgängig-Leiste vorhanden. Test: src/tests/t60.js (alle Rezepte mischbar, INCI vollständig, Entfernen, Rückgängig).
+- Nie automatisch für normale Nutzer geladen.

@@ -2,6 +2,9 @@ import re,subprocess,os
 subprocess.check_call(['python3','patch6.py']);subprocess.check_call(['python3','patch4.py'],stdout=subprocess.DEVNULL)
 old=open('/mnt/user-data/outputs/proto/index.html',encoding='utf-8').read()
 cat=re.search(r'const CAT=(\[.*?\]);\n',old,re.S).group(1)
+import json as _jj
+_mp='/home/claude/work/katalog_master.json'
+if os.path.exists(_mp): cat=_jj.dumps(_jj.load(open(_mp,encoding='utf-8'))['items'],ensure_ascii=False,separators=(',',':'))
 t=open('tpl6.html',encoding='utf-8').read().replace('__CAT__',cat,1)
 open('/mnt/user-data/outputs/proto/index.html','w',encoding='utf-8').write(t)   # Artefakt-Vorschau
 open('built.html','w',encoding='utf-8').write(t)
