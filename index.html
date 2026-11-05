@@ -571,11 +571,11 @@ function pickGap(){pick('Lücken finden',[['','Kein Filter']].concat(Object.keys
 function sheetCols(){const ex=S.cols||['menge'];openSheet(`<h2>Spalten anzeigen</h2><div class="s" style="margin-bottom:6px">Bis zu drei Spalten neben dem Namen. Die Spalte, nach der du sortierst, wird automatisch ergänzt.</div>${COLORDER.map(k=>`<label class="chk" style="padding:8px 0;border-bottom:1px solid var(--line);margin:0"><input type="checkbox" class="cc" value="${k}" ${ex.includes(k)?'checked':''}><span>${COLS[k][0]==='€/100'?'Preis je 100 g/ml':COLS[k][0]}</span></label>`).join('')}<div class="btns"><button class="btn" onclick="saveCols()">Fertig</button></div>`)}
 function saveCols(){const v=[...document.querySelectorAll('.cc:checked')].map(e=>e.value).slice(0,3);S.cols=v;save();closeSheet();lbody()}
 function sortList(l,sc){if(sc&&Q.sort==='name'&&Q.dir===1)return l.slice().sort((a,b)=>(sc.get(b.id)-sc.get(a.id))||(a.name.length-b.name.length)||a.name.localeCompare(b.name,'de'));
-const k=Q.sort,d=Q.dir;const key=i=>{if(k==='inci')return i.ist==='geprüft'?2:i.inci?1:0;if(k==='verw')return i.verw?1:0;if(k==='name')return i.name.toLowerCase();if(k==='menge')return i.total;if(k==='kat')return i.kat+i.name;if(k==='preis'){const c=cheapest(i);return c?c.p:null}if(k==='ordered')return i.ordered||null;if(k==='neu')return i.neu||null;if(k==='chg')return i.chg||i.neu||null;if(k==='mhd')return i.mhd||null;return 0};
+const k=Q.sort,d=Q.dir;const key=i=>{if(k==='inci')return i.ist==='geprüft'?2:i.inci?1:0;if(k==='verw')return i.verw?1:0;if(k==='name')return i.name.toLowerCase();if(k==='menge')return i.total;if(k==='kat')return i.kat+i.name;if(k==='preis'){const c=cheapest(i);return c?c.p:null}if(k==='ordered')return i.ordered||null;if(k==='neu')return i.neu||null;if(k==='chg')return i.chg||i.neu||null;if(k==='mhd')return i.mhd||null;if(SKEY[k])return SKEY[k](i);return 0};
 return l.slice().sort((a,b)=>{const x=key(a),y=key(b);if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return (x<y?-1:x>y?1:0)*d||a.name.localeCompare(b.name,'de')})}
 function setSort(k){if(Q.sort===k)Q.dir*=-1;else{Q.sort=k;Q.dir=SORTS[k][1];xcOf(k)}lbody()}
 function pickCatFilter(){const own=S.items;const cats=[...new Set(own.map(i=>i.kat))].sort((a,b)=>a.localeCompare(b,'de'));pick('Kategorie',[['','Alle Kategorien',ic('list','var(--sub)',20)]].concat(cats.map(c=>[c,c+' ('+own.filter(i=>i.kat===c).length+')',cic(c,'var(--pri)',20)])),Q.cat,v=>{Q.cat=v;lbody()})}
-function pickSort(){pick('Sortieren nach',Object.keys(SORTS).map(k=>[k,SORTS[k][0]]),Q.sort,v=>{Q.sort=v;Q.dir=SORTS[v][1];xcOf(v);lbody()})}
+function pickSort(){pick('Sortieren nach',Object.keys(SORTS).filter(k=>S.expert||!SXP.includes(k)).map(k=>[k,SORTS[k][0]]),Q.sort,v=>{Q.sort=v;Q.dir=SORTS[v][1];xcOf(v);lbody()})}
 function statusIcons(i){let h='';if(i.total<=0&&!i.unk)h+=`<span title="leer">${ic('emptyc','var(--ambt)',15)}</span>`;else if(low(i)||i.unk&&onList(i))h+=onList(i)?`<span title="auf der Einkaufsliste">${ic('cart','var(--pri)',15)}</span>`:`<span title="knapp">${ic('pie','var(--ambt)',15)}</span>`;if(i.total<=0&&!i.unk&&onList(i))h+=`<span title="auf der Einkaufsliste">${ic('cart','var(--pri)',15)}</span>`;if(soon(i))h+=`<span title="läuft ab">${ic('alarm','var(--ambt)',15)}</span>`;return h}
 function syncQ(){const u={sort:Q.sort,dir:Q.dir};if(JSON.stringify(u)!==JSON.stringify(S.ui||{})){S.ui=u;save()}}
 function lbody(){syncQ();const b=$('#lb');const own=S.items;const q=Q.q.trim();
@@ -1278,6 +1278,10 @@ function colMv(n,d){const m=n+d;if(m<0||m>=CCL.length)return;const t=CCL[n];CCL[
 function saveColsX(){const v=CCL.filter(c=>c.on).map(c=>c.k).slice(0,8);S.cols=v.length?v:['menge'];CCL=[];save();closeSheet();lbody()}
 const sheetCols0=sheetCols;
 sheetCols=function(){if(S.expert){CCL=[];sheetColsX()}else sheetCols0()};
+
+const SXP=['form','lief','min','ean','dens'];
+Object.assign(SORTS,{form:['Form',1],lief:['Lieferant',1],min:['Mindestmenge',-1],ean:['EAN',1],dens:['Dichte',-1]});
+const SKEY={form:i=>(i.form||'').toLowerCase()||null,lief:i=>{const c=cheapest(i);return c?String(c.x.lief).toLowerCase():null},min:i=>i.min>0?i.min:null,ean:i=>i.ean||null,dens:i=>i.dens>0?i.dens:null};
 
 (async()=>{await load();if(!S.seeded){seed();save()}startI18n();document.documentElement.lang=LANG;draw();trWalk($('#app'))})();
 </script><script>if('serviceWorker' in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>{try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}})}</script>
