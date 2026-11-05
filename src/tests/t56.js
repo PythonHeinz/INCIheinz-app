@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900},deviceScaleFactor:2})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1500);
+const T=async f=>{const r=await p.evaluate(f);await p.waitForTimeout(300);return r};
+await T(()=>{S.expert=false;S.cols=['menge'];S.items.slice(0,3).forEach(i=>{i.unk=true;i.mhd='2020-01-01'});Q.view='liste';Q.gap='';Q.cat='';Q.seg=0;Q.q='';Q.xcol='';Q.sort='name';Q.dir=1;lager()});
+console.log('default ri',await T(()=>document.querySelectorAll('.tr .ri').length),'cols',await T(()=>viewCols().join()));await p.screenshot({path:'s56a.png'});
+await T(()=>{setSort('preis')});console.log('sorted ri',await T(()=>document.querySelectorAll('.tr .ri').length),await T(()=>viewCols().join()));
+await T(()=>{Q.gap='unk';lager()});await p.screenshot({path:'s56b.png'});
+console.log('cells',await T(()=>[...document.querySelectorAll('.tr')].slice(0,2).map(r=>r.innerText.replace(/\n/g,'|'))));
+await T(()=>{S.shop=[];S.shop.push({id:'q1',item:S.items[4].id,menge:50,lief:''});tab('einkauf')});
+console.log('einkauf',await T(()=>document.getElementById('main').innerText.replace(/\n/g,'|').slice(0,400)));await p.screenshot({path:'s56c.png'});
+console.log(errs);await b.close()})();

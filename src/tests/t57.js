@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1500);
+const T=async f=>{const r=await p.evaluate(f);await p.waitForTimeout(300);return r};
+await T(()=>{S.expert=false;S.items.slice(0,3).forEach(i=>{i.unk=true;i.mhd='2020-01-01'});Q.view='liste';Q.gap='';Q.cat='';Q.seg=0;Q.q='';Q.xcol='';Q.sort='name';Q.dir=1;S.cols=['menge'];lager()});
+const c=()=>document.querySelectorAll('.tr .ri').length;
+console.log('1col',await T(c),'dirty',await T(()=>lagerDirty('')));
+await T(()=>{S.cols=['menge','preis'];lager()});console.log('2cols',await T(c),'link',await T(()=>document.body.innerText.includes('Zurücksetzen')));
+await T(()=>{S.cols=['menge','preis','mhd'];lager()});console.log('3cols',await T(c),'nl',await T(()=>document.querySelectorAll('.card.nl').length),'colorder',await T(()=>COLORDER.join()));
+await T(()=>{lagerReset()});console.log('reset',await T(()=>JSON.stringify(S.cols)),await T(c),await T(()=>document.body.innerText.includes('Zurücksetzen')));
+console.log(errs);await b.close()})();
