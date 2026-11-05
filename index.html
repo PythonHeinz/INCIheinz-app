@@ -1130,7 +1130,7 @@ function lineM(items,mode,h){const all=items.map((i,k)=>({c:WC[k],p:wPts(i,mode)
 function wLegend(items,mode){return items.map((i,k)=>{const p=wPts(i,mode);const l=p[p.length-1];const t=!l?'kein Preis':mode==='rel'?pctT(l.v):eur(l.raw);return `<div style="display:flex;align-items:center;gap:6px;font-size:.78rem;margin-top:3px"><span style="width:10px;height:10px;border-radius:50%;background:${WC[k]};flex:none"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${esc(i.name)}</span><b style="font-weight:600">${t}</b></div>`}).join('')}
 const MON=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 function valOf(i){if(i.unk||!(i.total>0))return null;const c=cheapest(i);return c?i.total*c.x.preis/c.x.menge:null}
-function priceSeries(i){const m={};i.bezug.filter(b=>b.kind===i.kind&&b.datum).forEach(b=>{const v=per(b).v;if(m[b.datum]==null||v<m[b.datum])m[b.datum]=v});return Object.keys(m).sort().map(d=>({d,t:new Date(d).getTime(),v:m[d]}))}
+function priceSeries(i){const bs=i.bezug.filter(b=>b.kind===i.kind&&b.datum);const ds=[...new Set(bs.map(b=>b.datum))].sort();const out=[];ds.forEach(d=>{const cur={};bs.forEach((b,ix)=>{if(b.datum>d)return;const k=b.lief+'|'+(b.nr||'')+'|'+Math.round(b.menge*1000);if(!cur[k]||b.datum>=cur[k].datum)cur[k]=b});const v=Math.min(...Object.values(cur).map(b=>per(b).v));out.push({d,t:new Date(d).getTime(),v})});return out}
 function statData(){const items=S.items,D={};const now=new Date();const t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 D.vals=items.map(i=>({i,v:valOf(i)})).filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);D.total=D.vals.reduce((a,x)=>a+x.v,0);D.nItems=items.length;D.nPrice=D.vals.length;
 const kc={};items.forEach(i=>{const k=kc[i.kat]=kc[i.kat]||{n:0,v:0};k.n++;const x=D.vals.find(y=>y.i===i);if(x)k.v+=x.v});D.kat=Object.keys(kc).map(k=>({k,n:kc[k].n,v:kc[k].v})).sort((a,b)=>b.n-a.n);
@@ -1183,6 +1183,32 @@ function watchDel(id){const D=statData();watchSet((D.watch||[]).filter(i=>i.id!=
 function watchAdd(){sheetFind('Rohstoff wählen',null,id=>{const D=statData();const a=(D.watch||[]).slice();if(!a.some(i=>i.id===id)&&a.length<5)a.push(getI(id));watchSet(a);closeSheet();stat();sheetStat('preis')})}
 
 function curPrices(i){const a=tiers(i).filter(b=>b.kind===i.kind).sort((x,y)=>per(x).v-per(y).v);if(!a.length)return '';return `<div class="cap" style="margin:14px 0 2px">Aktuelle Preise ${per({preis:1,menge:1,kind:i.kind}).u}</div>`+a.map(b=>`<div class="kv"><span>${esc(b.lief)} · ${fmt(b.menge,b.kind)}</span><span>${eur(per(b).v)}</span></div>`).join('')}
+
+/* ---------- Import: Preise zu vorhandenen Rohstoffen + Datumsspalte ---------- */
+COLMAP.datum=['datum','preisdatum','stand','erfasstam','preisstand'];
+const NK=s=>FOLD(s).replace(/[^a-z0-9]/g,'');
+function pDate2(v){if(typeof v==='number'||/^\d{5}(\.\d+)?$/.test(String(v).trim())){const n=Math.floor(parseFloat(v));if(n>30000&&n<80000){const d=new Date(Date.UTC(1899,11,30)+n*864e5);return d.toISOString().slice(0,10)}}return pDate(v)}
+const csvPlan0=csvPlan;
+csvPlan=function(rows){const p=csvPlan0(rows);if(p.error)return p;
+const head=rows[0].map(h=>FOLD(h).replace(/[^a-z0-9]/g,''));const col={};Object.keys(COLMAP).forEach(k=>{for(let i=0;i<head.length;i++)if(COLMAP[k].includes(head[i])&&col[k]==null)col[k]=i});
+const byN={},byE={};S.items.forEach(i=>{byN[NK(i.name)]=i;if(i.ean)byE[i.ean]=i});
+p.upd=[];p.dup=0;
+for(let r=1;r<rows.length;r++){const row=rows[r];const g=k=>col[k]==null?'':String(row[col[k]]==null?'':row[col[k]]).trim();
+const name=g('name');if(!name)continue;const ean=g('ean').replace(/\s+/g,'');const it=byN[NK(name)]||(ean&&byE[ean])||null;if(!it)continue;
+const eh=g('einheit');const u=Object.keys(U).find(x=>FOLD(x)===FOLD(eh));const mg=pNum(g('menge'));const pr=pNum(g('preis').replace(/[€\s]/g,''));if(!u||!(mg>0)||pr==null)continue;
+const q=g('quelle');const lief=q&&!/^https?:/i.test(q)?q:'Import';const dt=pDate2(col.datum==null?'':row[col.datum])||today();const kind=U[u].k;
+if(kind!==it.kind){p.dup++;continue}
+const m=toB(mg,u);const same=it.bezug.concat(p.upd.filter(x=>x.it===it).map(x=>x.b)).some(b=>b.lief===lief&&Math.round(b.menge*1000)===Math.round(m*1000)&&Math.abs(b.preis-pr)<0.005&&b.datum===dt);
+if(same){p.dup++;continue}
+p.upd.push({it,b:{id:uid(),lief,nr:'',preis:pr,menge:m,kind,datum:dt}})}
+return p};
+sheetImpPrev=function(){const p=IMP.plan;const n=p.neu.length,u=(p.upd||[]).length;if(!n&&!u){sheetMsg('Nichts Neues','Alle '+p.schon+' Einträge sind schon im Lager.'+(p.dup?' Die Preise dazu sind ebenfalls schon vorhanden.':''));return}
+const names=[...new Set((p.upd||[]).map(x=>x.it.name))];
+openSheet(`<h2>Tabelle einlesen</h2><div style="font-size:1rem;font-weight:600">${n} neu, ${p.schon} schon vorhanden${u?', '+u+' Preise zum Ergänzen':''}</div><div class="s" style="margin-top:4px">Schon vorhandene Rohstoffe werden nicht verändert. Nur neue Preise (mit Datum) kommen zu den Bezugsquellen dazu.</div>
+${n?`<div class="card" style="margin-top:10px;padding:4px 14px">${p.neu.slice(0,6).map(i=>`<div class="kv"><span>${esc(i.name)}</span><span class="s">${i.unk?'Menge offen':fmt(i.total,i.kind)}</span></div>`).join('')}${n>6?`<div class="s" style="padding:8px 0">… und ${n-6} weitere</div>`:''}</div>`:''}
+${u?`<div class="cap" style="margin:12px 0 2px">Neue Preise für</div><div class="card" style="padding:4px 14px">${names.slice(0,6).map(nm=>`<div class="kv"><span>${esc(nm)}</span><span class="s">${p.upd.filter(x=>x.it.name===nm).length} Preise</span></div>`).join('')}${names.length>6?`<div class="s" style="padding:8px 0">… und ${names.length-6} weitere</div>`:''}</div>`:''}
+<div class="btns"><button class="btn" onclick="impGo()">Übernehmen</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)};
+impGo=function(){const p=IMP.plan;p.neu.forEach(i=>S.items.push(i));(p.upd||[]).forEach(x=>{x.it.bezug.push(x.b)});adoptLief();save();closeSheet();tab('lager');toast(p.neu.length+' neu, '+(p.upd||[]).length+' Preise ergänzt')};
 
 (async()=>{await load();if(!S.seeded){seed();save()}startI18n();document.documentElement.lang=LANG;draw();trWalk($('#app'))})();
 </script><script>if('serviceWorker' in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>{try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}})}</script>
