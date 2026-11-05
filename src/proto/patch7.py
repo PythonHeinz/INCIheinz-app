@@ -6,7 +6,7 @@ def R(a,b,cnt=1):
     assert n==cnt,(n,a[:80])
     t=t.replace(a,b)
 qr=open('/mnt/user-data/uploads/lager-app/qr.js',encoding='utf-8').read()
-js=open('js7.js',encoding='utf-8').read()+'\n'+open('js8.js',encoding='utf-8').read()+'\n'+open('js9.js',encoding='utf-8').read()+'\n'+open('js10.js',encoding='utf-8').read()+'\n'+open('js11.js',encoding='utf-8').read()+'\n'+open('js12.js',encoding='utf-8').read()+'\n'+open('js13.js',encoding='utf-8').read()+'\n'+open('js14.js',encoding='utf-8').read()+'\n'+open('js15.js',encoding='utf-8').read()+'\n'+open('js16.js',encoding='utf-8').read()+'\n'+open('js17.js',encoding='utf-8').read()
+js=open('js7.js',encoding='utf-8').read()+'\n'+open('js8.js',encoding='utf-8').read()+'\n'+open('js9.js',encoding='utf-8').read()+'\n'+open('js10.js',encoding='utf-8').read()+'\n'+open('js11.js',encoding='utf-8').read()+'\n'+open('js12.js',encoding='utf-8').read()+'\n'+open('js13.js',encoding='utf-8').read()+'\n'+open('js14.js',encoding='utf-8').read()+'\n'+open('js15.js',encoding='utf-8').read()+'\n'+open('js16.js',encoding='utf-8').read()+'\n'+open('js17.js',encoding='utf-8').read()+'\n'+open('js18.js',encoding='utf-8').read()+'\n'+open('js19.js',encoding='utf-8').read()
 
 R('<button class="lnk" onclick="sheetAddShop()">+ Rohstoff</button></div>','<span><button class="lnk" style="margin-right:16px" onclick="sheetExpShop()">Export</button><button class="lnk" onclick="sheetAddShop()">+ Rohstoff</button></span></div>')
 R("else if(L>=3&&wst(f.i,t))b=50;","else if(L>=2&&L<=5&&inits(f).includes(t))b=55;else if(ABBR[t]&&String(f.i||'').toLowerCase().includes(ABBR[t]))b=55;else if(L>=3&&wst(f.i,t))b=50;")
@@ -73,6 +73,7 @@ R("const uid=()=>",qr+"\nconst uid=()=>")
 R("(async()=>{await load();",js+"\n(async()=>{await load();")
 exec(open('p7b.py',encoding='utf-8').read().replace('css+=','CSSX+='))
 css+=CSSX
+css+=open('css18.css',encoding='utf-8').read()
 i=t.find('</style>')
 assert i>0
 t=t[:i]+css+t[i:]

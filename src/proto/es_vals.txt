@@ -1,0 +1,287 @@
+Todo
+Poco
+Caduca
+Resumen
+Lista
+Existencias
+Escanear
+Nuevo
+Compras
+Más
+Atrás
+Cerrar
+Cancelar
+Guardar
+Guardar *
+Editar
+Editar *
+Descartar
+Seguir editando
+Listo
+Añadir
+Quitar
+Aplicar
+Confirmar
+Copiar
+Copiado
+Mostrar
+Dirección
+Columnas
+Buscar materias primas …
+Buscar materias primas en existencias …
+Acción necesaria
+Categorías
+Categoría
+Todas las categorías
+Buscar vacíos
+Sin filtro
+Ordenar por
+Restablecer filtros
+No se encontró nada.
+Aún no hay nada en existencias.
+Añade tu primera materia prima
+caduca en 30 días
+poco, aún sin pedir
+poco
+vacío
+caduca
+en la lista de compras
+Consejo: arriba a la derecha cambias a la vista de lista con todas las materias primas en una tabla ordenable.
+Toca los encabezados para ordenar · la búsqueda también encuentra tus propios textos
+Nombre
+Cantidad
+Caducidad
+Pedido
+€/100
+INCI
+Efecto
+Precio por 100 g/ml
+Último pedido
+Próxima caducidad
+Estado INCI (primero los abiertos)
+Efecto (primero los vacíos)
+INCI sin verificar
+Sin INCI
+Sin efecto
+Sin descripción
+Sin nota
+Sin proveedor
+Sin lugar de almacenamiento
+Sin caducidad
+Mostrar columnas
+Hasta tres columnas junto al nombre. La columna por la que ordenas se añade automáticamente.
+Existencias totales
+en envases
+sin envase
+Cambiar existencias
+A la lista de compras
+Agotado
+Etiqueta
+La impresión de etiquetas llegará en una versión posterior
+Envases
+Añadir envase
++ Añadir envase
+Sin envases: solo hace falta si quieres gestionar cantidades parciales por separado.
+Quitar envase
+Al quitarlo, el contenido sigue en existencias.
+INCI y datos básicos
+Mis datos
+Caducidad, fuente y mínimo
+Proveedores y precios
++ Proveedor / nuevo precio
+Aún no hay proveedor registrado.
+Nombre de la materia prima (nombre exacto del producto)
+Nombre INCI
+Buscar en la web
+Tomar de un texto
+INCI verificado (p. ej. con ficha técnica o etiqueta)
+INCI verificado
+INCI sin verificar
+Falta INCI
+Forma
+Descripción
+Uso / efecto
+Nota
+Tu propia descripción …
+Estos textos los escribes tú. Se quedan en tu dispositivo y la búsqueda los encuentra.
+Aún no hay nada. Con
+arriba puedes añadir tus propios textos.
+Consumir preferentemente antes de
+Cantidad mínima
+Fuente
+Fuente (enlace de tienda o proveedor)
+Abrir enlace ›
+¿Descartar cambios?
+Tus cambios en esta materia prima aún no se han guardado.
+Quitar materia prima
+¿Quitar materia prima?
+El nombre no puede estar vacío
+Guardado
+Marcado como agotado
+Tomar INCI de un texto
+Copia el texto de la página del producto o solo la línea de ingredientes y pégalo aquí. Se busca „INCI:“, „Inhaltsstoffe:“ o „Ingredients:“. Revisa brevemente el resultado.
+Pegar el texto aquí
+No se encontró ninguna línea INCI. Introdúcela a mano.
+INCI aplicado – por favor, revísalo
+Cantidad total
+Unidad
+Unidades: sólido (mg, g, kg), líquido (ml, l), longitud (mm, cm), unidades o gotas.
+Sólido
+Líquido
+Longitud
+Contable
+uds.
+gotas
+Introduce una cantidad.
+El tipo de unidad no se puede cambiar mientras haya envases. Quita primero los envases.
+Revisa los precios
+Lata
+Botella
+Cuentagotas
+Bolsa
+Tarro
+Dispensador
+Cantidad
+Volumen nominal
+Nivel actual (por envase)
+Vacío = lleno. El control deslizante fija el nivel en porcentaje.
+Lugar de almacenamiento
+Lugares de almacenamiento
+– sin lugar –
+El contenido de los nuevos envases se suma a las existencias totales.
+Si cambias el nivel, las existencias totales se ajustan.
+Introduce el volumen nominal.
+El nivel es mayor que el volumen nominal.
+Introduce un nivel.
+abierto
+lleno
+Proveedor
+Número de fabricante / artículo (opcional)
+Precio en €
+por cantidad
+Indica un proveedor.
+Indica precio y cantidad.
+Añadir proveedor
+Nuevo precio / proveedor
+p. ej. Dragon Spice
+Cada precio se guarda con su fecha, así se crea un historial de precios. La unidad puede ser peso, volumen o unidades. La comparación de precios solo considera ofertas del mismo tipo de unidad que tus existencias.
+precios, el último
+Poner en la lista de compras
+Materia prima a la lista de compras
+Cantidad (opcional)
+– abierto –
+Añadido a la lista de compras
+Introduce una cantidad
+artículos en la lista
++ Materia prima
+Todas las materias primas
+Por proveedor
+La lista de compras está vacía.
+Añade materias primas con „+ Materia prima“ o desde la página de la materia prima.
+por debajo del mínimo, aún no en la lista
+Por debajo del mínimo
+Elige qué debe ir a la lista de compras.
+Mín.
+Sugerencia
+Poner en la lista
+Añadido a la lista
+Comprado
+Cantidad entregada
+Sumar a las existencias
+Además pone „Último pedido“ en hoy y quita la materia prima de la lista.
+Registrado
+Total estimado (sin envío)
+Total
+Envío ›
+Envío:
+Envío gratis desde (€)
+Gastos de envío por debajo (€)
+Sin condiciones de envío guardadas
+Envío gratis alcanzado
+para envío gratis
+
+Proveedor abierto
+Sin proveedor registrado
+Lista de pedido
+Exportar lista de pedido
+Exportar lista de pedido …
+ordenada por proveedor
+Solo
+artículos
+Archivo no legible
+Nueva materia prima
+Escribe un nombre, p. ej. Karité
+Coincidencias del catálogo
+Catálogo
+Catálogo ·
+ya en existencias
+entradas
+Sin coincidencias: puedes añadirla como materia prima propia.
+Añadir como materia prima propia
+Introduce al menos un nombre.
+Tomado del catálogo
+Materia prima propia creada
+crear nueva
+en existencias
+Etiquetas e impresión
+Exportar
+Importar
+Copia de seguridad
+Actualizar catálogo
+Borrar todos los datos
+Ajustes
+Guía
+Acerca de
+Trabajo
+Datos
+App
+Llegará en una versión posterior
+Copia de seguridad restaurada
+Copia el texto y guárdalo en un archivo (.json). Para restaurar, elige Más › Importar.
+¿Borrar todos los datos?
+Elimina los artículos de ejemplo y todo lo que has creado. El catálogo se conserva.
+Borrar todo
+Aún no hay lugares.
+Puedes elegir estos lugares en los envases.
+Nuevo lugar, p. ej. caja de zapatos
+Idioma
+INCIheinz – Prototipo
+Versión 0.3 (concepto de uso)
+Todos los datos de existencias y tus textos se quedan en este dispositivo, en el navegador. Los precios y números de artículo de los datos de ejemplo son provisionales. El catálogo solo contiene nombres, INCI y categorías; los INCI sin confirmar están marcados como „sin verificar“.
+El escaneo con cámara (código de barras, QR, etiqueta) aún no está activo en este prototipo.
+Crear una materia prima por nombre
+Escribe un nombre – el catálogo contiene
+ALMACÉN DE MATERIAS PRIMAS
+COMPRAS
+ESCANEAR
+Aceite esencial
+Principio activo
+Emulsionante
+Tensioactivo
+Aceite vegetal
+Extracto y tintura
+Fragancia (componente individual)
+Hierbas y flores
+Colorante y pigmento
+Manteca y cera
+Hidrolato y agua
+Conservante
+Arcilla y mineral
+Gelificante
+Aditivo
+Fragancia/aroma
+Materia prima para jabón
+Éster y emoliente
+Ácido/pH
+Otros
+Propias
+líquido
+aceite
+sólido
+cera/pellets
+polvo
+gránulos
+seco
+pasta/gel
+p. ej. uso 1–5 % en la fase oleosa, aceite de masaje
+p. ej. Simmondsia Chinensis Seed Oil

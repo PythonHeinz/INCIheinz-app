@@ -1,4 +1,4 @@
-# INCIheinz – Entwicklungsverlauf und Entscheidungen (Stand 05.11.2026)
+# INCIheinz – Entwicklungsverlauf und Entscheidungen (Stand 05.11.2026, ergänzt um Rezeptbuch)
 
 Zweck: Hintergrund für andere Chats, damit sie nicht nachfragen müssen, warum etwas so ist. Quelle: Chat „INCIheinz“ (Hauptentwicklung). Maßgeblich bleibt der Code im Repo.
 
@@ -36,3 +36,15 @@ Einzel-HTML-PWA, Vanilla-JS, IndexedDB. Build: tpl5_pre6.html → patch7.py (R-P
 
 ## Offene Punkte
 Design-Reviews je Seite (Lager, Eingabe, Neu, Einkauf, Mehr), Rezeptbuch (inkl. Zutaten-Querauswertung), Produktetiketten-Bereich, Fotos getrennt speichern, automatische Sicherung, Barrierefreiheit, EN/ES-Prüfung, Dichte in Statistik/Gefäßen, eigene Domain, Hinweis „vor Version 1.0“ entfernen, Migration der Netlify-Daten der Freundin, dunkles Design, Symbolsatz, INCI-Prüfung des Katalogs.
+
+## Rezeptbuch (Entscheidungen, 05.11.2026)
+- **Eigener Bereich, kein Menüeintrag:** Kopf mit Logo mittig und darunter Register „Lager | Rezeptbuch“, damit die Nutzerin immer sieht, wo sie ist. Rezeptbuch hat ein warmes Papier-Theme, bleibt aber dieselbe App (gleiche Bausteine, gleiche Bedienlogik). Kein Umschalter, der Verwechslung begünstigt; bei ungespeicherter Arbeit wird vor dem Wechsel gefragt.
+- **Aufbau wie eine Bedienungsanleitung:** Pflicht sind nur Name und Zutaten. Alles weitere sind Module aus einer Auswahl (Phase A–D oder eigene, Arbeitsschritt, Hinweis, Abfüllung, Haltbarkeit, Notiz), je mit Titel und zwei, drei Sätzen. Die App liefert Titel für einen Standard-Ablauf, aber keine inhaltlichen Empfehlungen (keine Temperaturen, keine Haltbarkeitsschätzungen).
+- **Versionen sind zwingend:** Jedes Speichern erzeugt eine neue Version mit Notiz „Was hast du geändert?“ und automatischer Differenz. Begründung: Wer gern mischt, dokumentiert nicht; mit minimalem Aufwand entsteht ein Verlauf, der später auch eine KI-Auswertung ermöglicht („warum zieht die Creme nicht ein“). Eine Version wird nie überschrieben.
+- **Charge statt nur Rezept:** Beim Mischen entsteht eine Charge (Ist-Einwaage, Bewertung, Notiz), verknüpft mit genau einer Version. So ist belegt, welche Version wirklich gemischt wurde.
+- **Rechner:** Jedes Mengenfeld ist ein Anker. Wer nur 27 g einer Zutat hat, trägt 27 dort ein; Gesamtmenge und alle anderen Zutaten rechnen sich neu. Zusätzlich: Gesamtmenge vorgeben, „reicht für bis zu X g“.
+- **Mischbarkeit:** Ampel je Zutat; Rezept „mischbar“ oder „es fehlt: …“; Seite „Mischbar“ (jetzt / fast). Fehlendes lässt sich auf die Einkaufsliste setzen.
+- **Lagerabzug nur nach Bestätigung:** Gemischt gilt als verbraucht, unabhängig vom Erfolg. Abzug mit Undo; Wahl „nur Charge speichern“ bleibt möglich.
+- **INCI-Deklaration:** Entwurf aus den Rohstoffen, nach Anteil sortiert, mit Warnung bei ungeprüfter INCI. Verkaufsargument der App; Etikettendruck aus dem Rezept folgt.
+- **Sicherheitshinweise der Rohstoffe:** nur im Druck (Rezeptkarte), nicht während des Mischens. Quelle sind eigene Formulierungen im Katalog (Feld `sh`), nie Fremdtexte.
+- **Geschäftsmodell (Absicht des Entwicklers):** kein Abo-Zwang; kleiner Einmalbetrag für lebenslange Nutzung oder niedriger Monatspreis. Nutzer können Inhalte (Verwendung, Wirkung) selbst per Kamera oder eingefügtem Text mit dem Lager abgleichen und selbstbestimmt festhalten, weil Quellen sich unterscheiden. Das ist die Nische der App.

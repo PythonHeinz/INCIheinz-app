@@ -6,8 +6,8 @@ Privates Rohstofflager für Naturkosmetik (PWA, eine HTML-Datei, Vanilla-JS). De
 - Live: https://pythonheinz.github.io/INCIheinz-app/ (Repo PythonHeinz/INCIheinz-app, Branch main)
 - Neue Versionen erreichen das Handy per Update-Hinweis bzw. beim zweiten App-Start.
 
-## Stand (Entwicklungsphase abgeschlossen für)
-Lager (Liste/Übersicht, Spalten, Sortierung, Zurücksetzen), Eingabe (Scan/Produktseite/manuell), Neu, Einkauf (Packungsgrößen), Mehr (Import, Export, Sicherung, Einstellungen, Anleitung, Info), Statistik-Kacheln, Undo, Ampel-Symbole (INCI geprüft, unter Minimum, nicht vorrätig, Haltbarkeit). Als Nächstes: Design-Reviews je Seite, dann neue Module.
+## Stand
+Lager, Eingabe, Neu, Einkauf, Mehr, Statistik-Kacheln, Undo und Ampel-Symbole sind entwickelt (Design-Reviews je Seite offen). **Rezeptbuch v1 ist gebaut** (siehe Abschnitt „Rezeptbuch“ unten): eigener Bereich mit Register „Lager | Rezeptbuch“ im Kopf, Rezepte mit Versionen, Rechner mit Anker, Mischbarkeit, Werkbank mit Lagerabzug, Chargenbuch, INCI-Entwurf, Rezeptkarte drucken.
 
 ## Quellen & Build
 Alles liegt im Repo unter `src/`. Neuer Chat:
@@ -16,9 +16,10 @@ Alles liegt im Repo unter `src/`. Neuer Chat:
 3. Test: Playwright gegen `file:///mnt/user-data/outputs/netlify/index.html` (Beispiele in `src/tests/`)
 4. Veröffentlichen: die drei Dateien ins Repo-Wurzelverzeichnis kopieren, committen, `git push origin HEAD:main`.
 
-Pipeline: `tpl5_pre6.html` → `patch7.py` (R(alt,neu,anzahl) = exakter Ersatz mit Zählprüfung; hängt js7…js17 an, führt `p7b.py` aus) → `patch6.py` (Symbole) → `patch4.py` (i18n über `i18n7.py`: N7-Wörterbuch, P7-Regex) → `build_netlify.py`. Prüfung `node --check chk.js`.
+Pipeline: `tpl5_pre6.html` → `patch7.py` (R(alt,neu,anzahl) = exakter Ersatz mit Zählprüfung; hängt js7…js19 an und `css18.css` an das Stylesheet, führt `p7b.py` aus) → `patch6.py` (Symbole) → `patch4.py` (i18n über `i18n7.py`: N7-Wörterbuch, P7-Regex) → `build_netlify.py`. Prüfung `node --check chk.js`.
 
 ## Fallstricke
+- Build aus sauberem Klon: `src/proto/es_vals.txt` (spanische Texte in Reihenfolge der EN-Schlüssel) ist Teil des Repos; `build.sh` legt die nötigen Ordner und Startdateien selbst an.
 - R()-Patches treffen auch Text in neuen js-Dateien: gepatchte Strings nicht in js16/js17 wiederholen; Zählfehler = AssertionError.
 - Strings mit `'` in p7b.py als `r'''…'''` schreiben (sonst verschwinden Anführungszeichen).
 - Literales `</body></html>` in JS-Strings bricht den Build → `'</bo'+'dy></ht'+'ml>'`.
@@ -41,8 +42,19 @@ Zustand `S` (IndexedDB), Ansichtszustand `Q`, `viewCols()`, `COLS/CWID/cellSt`, 
 Siehe `src/PORTIERUNG.md` (Store-Portierung, Google Play zuerst, kein reiner Web-Wrapper; Apple später), `src/STORE_VORBEREITUNG.md`, `IDEEN_SPAETER.md` (konfigurierbares Dashboard).
 Außerdem: INCI-Katalog überwiegend noch „ungeprüft“; Übersetzungen EN/ES nicht muttersprachlich geprüft; Barrierefreiheit nicht geprüft; Dichte nicht in Statistik/Gefäßen; Fotos im selben Zustandssatz, nur manuelle Sicherung; eigene Domain; „vor Version 1.0“-Hinweis entfernen; Migration der Netlify-Daten der Freundin; dunkles Design; Symbolsatz überprüfen.
 
-## Nächstes Modul: Rezeptbuch
-Rezepte aus Lagerrohstoffen (Menge je Rezept, Kosten aus Preisen, „was kann ich jetzt machen?“, Verwendung eines Rohstoffs über alle Rezepte, Reichweite). Querauswertung der Zutaten (z. B. wo ein Rohstoff am meisten vorkommt). Keine Gesundheits- oder Wirkversprechen. Kachelideen: `IDEEN_SPAETER.md`. Rezepte als eigener Bereich/Tab, Bezug zum Lager über Rohstoff-IDs.
+## Rezeptbuch (v1, Quellen `src/proto/js18.js`, `js19.js`, `css18.css`)
+- **Navigation:** Kopf aller Seiten: Logo mittig, darunter Register „Lager | Rezeptbuch“ (`rzWorld`). Rezeptbuch hat eigenes warmes Theme (`#app.rez` überschreibt die CSS-Variablen) und eigene Tab-Leiste (Rezepte, Mischbar, Neu, Chargen, Mehr). Wechsel mit ungespeicherter Arbeit (Editor, Werkbank) fragt nach (`rzDirty`, `rzAsk`).
+- **Seiten (`R.name`):** `rez` Liste, `rezv` Rezept mit Rechner, `reze` Editor, `verl` Versionen, `misch` Werkbank, `mbar` Mischbar, `chgs` Chargenbuch, `chg` Charge.
+- **Daten:** `S.rez[]` = `{id, created, vers:[{n, date, note, diff[], from, st:''|'fav'|'bad', d}]}`; `d` = `{name, zweck, ph, ergibt, zeit, grad, phasen:[{id, typ:'A'|'B'|'C'|'D'|'', name, z:[{id, item, cid, name, g}]}], mod:[{id, t:'schritt'|'hinweis'|'abfuell'|'halt'|'notiz', titel, text}]}`. Mengen sind Gramm; Anteile (%) werden berechnet. `S.chg[]` = Chargen `{id, rez, ver, date, total, note, stars, abz, lines:[{n,item,soll,ist}]}`. Beides ist automatisch in Sicherung/Wiederherstellung (ganzes `S`); `restoreMerge` ist erweitert.
+- **Lagerbezug:** `rzItem(z)` löst über Artikel-ID, Katalog-ID (`cid`) oder Namen auf. Ohne Lagerbezug (z. B. Wasser) zählt eine Zutat nicht als fehlend; Katalogzutat ohne Lagerartikel zählt als fehlend. ml-Artikel brauchen `dens` (Dichte), sonst „Menge unbekannt“.
+- **Rechner:** jedes Mengenfeld ist ein Anker (`rzAnch`), Gesamtmenge ebenso (`rzTot`). Rundung `S.rezStep` (Standard 0,1 g, noch ohne Einstellung in der Oberfläche).
+- **Versionen:** jedes Speichern erzeugt eine neue Version (`rzSave`/`rzDoSave`) mit Notiz und automatischer Differenz (`rzDiff`, in Gramm). Bearbeiten einer alten Version legt eine neue Version obenauf (`from`).
+- **Werkbank:** `rmFinish`/`rmDone`. Lagerabzug nur nach Bestätigung (Auswahl „abziehen“ / „nur Charge speichern“), mit Undo-Leiste (`undoOffer`). Abzug über `rzTake` (Gefäße werden mitgeführt); nicht abgezogen wird bei `unk` oder fehlender Dichte.
+- **INCI-Entwurf:** `rzInci` sortiert nach Anteil; Warnung bei ungeprüfter oder fehlender INCI.
+- **Druck:** `rzPrint` (Rezeptkarte). Rohstoff-Sicherheitshinweise werden gedruckt, sobald der Katalog das Feld `sh` (oder ein Artikel `sh`) enthält.
+- **Eingriffe ins Grundgerüst:** `header()`, `draw()`, `back()` überschrieben bzw. umhüllt; `artikel()` hängt „Verwendet in Rezepten“ an; `restoreMerge()` umhüllt.
+- **Noch nicht in v1:** Einheiten außer g, Alternativzutaten, Foto je Charge, Rezepte in Statistik und Export, INCI-Etikett aus dem Rezept, Phasenvorschlag aus Katalogfeldern, Einstellung der Rundung.
+- **Gewünschte Katalogfelder für Rezeptfunktionen:** `dens` (Dichte), Phase/Löslichkeit (wasser-, öllöslich, dispergierbar), Funktionsklasse (z. B. Emulgator, Konservierer), Aktivgehalt bei Lösungen (z. B. Milchsäure 80 %), pH der Lösung, Schmelzpunkt, Allergenkennzeichnung, `sh` (Sicherheitshinweis, eigene Formulierung), Ersatzstoffe. Hinweis: `regeln.md` Nr. 8 schließt Dosierungen im Katalog aus.
 
 ## Katalogpflege in eigenen Chats
 `katalog.json` (Repo-Wurzel) ist die Pflegequelle (identisch mit `src/katalog_master.json`); `src/katalog_naturkosmetik.csv` ist die Tabellenform. Regeln: `src/regeln.md`. Nach Änderungen `version`/`date` erhöhen, neu bauen (`src/build.sh`; `build_netlify.py` übernimmt `katalog_master.json`), pushen. Vorher beide Katalogdateien synchron halten. Eine anderswo geführte Tabelle (Rechner/Google Sheets) muss dem Chat angehängt oder verbunden werden.
