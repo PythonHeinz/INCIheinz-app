@@ -46,3 +46,11 @@ Rezepte aus Lagerrohstoffen (Menge je Rezept, Kosten aus Preisen, „was kann ic
 
 ## Katalogpflege in eigenen Chats
 `katalog.json` (Repo-Wurzel) ist die Pflegequelle (identisch mit `src/katalog_master.json`); `src/katalog_naturkosmetik.csv` ist die Tabellenform. Regeln: `src/regeln.md`. Nach Änderungen `version`/`date` erhöhen, neu bauen (`src/build.sh`; `build_netlify.py` übernimmt `katalog_master.json`), pushen. Vorher beide Katalogdateien synchron halten. Eine anderswo geführte Tabelle (Rechner/Google Sheets) muss dem Chat angehängt oder verbunden werden.
+
+## Ordner auf dem Rechner (filesbyclaude / Toolsbyclaude)
+Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\Toolsbyclaude`.
+- Zuerst `INDEX.md` im Wurzelordner lesen (eine Zeile pro Projekt, Zweck, Ort, Stand), danach `INCI-App-Projekt/STAND.md`.
+- Maßgebliche Version = GitHub-Repo (PythonHeinz/INCIheinz-app, main). `INCI-App-Projekt/repo/` ist die Offline-Kopie; vor der Arbeit `git pull`.
+- Ältere Ordner: `lager-app/` ist die erste Version (v0.1.0, abgelöst); `INCI-App-Projekt/netlify/` ist ein alter Build-Stand (nicht ausliefern).
+- **Abschlussregel:** Am Ende jedes Chats `INCI-App-Projekt/STAND.md` (fertig / offen / nächster Schritt, letzter Commit, Datum) und die Zeile in `INDEX.md` aktualisieren, `UEBERGABE.md` im Ordner mit der Repo-Fassung abgleichen.
+- Chatname = Projektname (z. B. „INCIheinz – Rezeptbuch“).
