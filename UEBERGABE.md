@@ -43,3 +43,6 @@ Außerdem: INCI-Katalog überwiegend noch „ungeprüft“; Übersetzungen EN/ES
 
 ## Nächstes Modul: Rezeptbuch
 Rezepte aus Lagerrohstoffen (Menge je Rezept, Kosten aus Preisen, „was kann ich jetzt machen?“, Verwendung eines Rohstoffs über alle Rezepte, Reichweite). Querauswertung der Zutaten (z. B. wo ein Rohstoff am meisten vorkommt). Keine Gesundheits- oder Wirkversprechen. Kachelideen: `IDEEN_SPAETER.md`. Rezepte als eigener Bereich/Tab, Bezug zum Lager über Rohstoff-IDs.
+
+## Katalogpflege in eigenen Chats
+`katalog.json` (Repo-Wurzel) ist die Pflegequelle (identisch mit `src/katalog_master.json`); `src/katalog_naturkosmetik.csv` ist die Tabellenform. Regeln: `src/regeln.md`. Nach Änderungen `version`/`date` erhöhen, neu bauen (`src/build.sh`; `build_netlify.py` übernimmt `katalog_master.json`), pushen. Vorher beide Katalogdateien synchron halten. Eine anderswo geführte Tabelle (Rechner/Google Sheets) muss dem Chat angehängt oder verbunden werden.
