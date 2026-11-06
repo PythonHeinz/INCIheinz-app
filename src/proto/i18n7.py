@@ -602,3 +602,18 @@ P7.extend([
 (r"^(\d+) g · aus (.*)$",r"\1 g · from \2",r"\1 g · de \2"),
 (r"^Chargen \((\d+)\)$",r"Batches (\1)",r"Lotes (\1)"),
 ])
+N7.update({
+"Arbeiten":("Work","Trabajo"),"Daten":("Data","Datos"),"Voreinstellungen Lager":("Stock presets","Preajustes del almacén"),"Voreinstellungen Rezeptbuch":("Recipe book presets","Preajustes del recetario"),
+"Rezeptbücher & Druck":("Recipe books & print","Recetarios e impresión"),"Rezeptkarte, Werkbank-Zettel, Rezeptbuch":("Recipe card, workbench sheet, recipe book","Ficha, hoja de trabajo, recetario"),
+"Statistik":("Statistics","Estadística"),"Rezepte, Chargen, häufige Rohstoffe":("Recipes, batches, common raw materials","Recetas, lotes, materias primas frecuentes"),
+"Rezepte aus Text, Foto oder Datei":("Recipes from text, photo or file","Recetas desde texto, foto o archivo"),"Text, Chargenprotokoll (Excel/CSV)":("Text, batch record (Excel/CSV)","Texto, registro de lotes (Excel/CSV)"),
+"Rezeptdaten sichern":("Back up recipe data","Copia de seguridad de recetas"),"Alle Rezepte mit Versionen, Chargen und Fotos":("All recipes with versions, batches and photos","Todas las recetas con versiones, lotes y fotos"),
+"Bausteine, Standard-Ablauf, Rundung":("Blocks, default procedure, rounding","Bloques, procedimiento estándar, redondeo"),
+"Sprache, Sicherung, Rückgängig, Anleitung, Info, Expertenmodus":("Language, backup, undo, guide, info, expert mode","Idioma, copia de seguridad, deshacer, guía, info, modo experto"),
+"Rezepte exportieren":("Export recipes","Exportar recetas"),"Statistik Rezeptbuch":("Recipe book statistics","Estadística del recetario"),
+"Häufigste Zutaten":("Most common ingredients","Ingredientes más frecuentes"),"Hilfe":("Help","Ayuda"),"Expertenmodus":("Expert mode","Modo experto"),
+"Nur deine eigenen Rezepte, Testdaten zählen nicht mit.":("Your own recipes only; test data is not counted.","Solo tus recetas; los datos de prueba no cuentan."),
+"Noch keine eigenen Rezepte.":("No recipes of your own yet.","Aún no tienes recetas propias."),
+"Daten zum Weitergeben, Auswerten oder Sichern. Eine Sicherung der ganzen App findest du unter Mehr › Einstellungen.":("Data for sharing, analysing or backing up. A backup of the whole app is under More › Settings.","Datos para compartir, analizar o guardar. La copia de seguridad de toda la app está en Más › Ajustes."),
+})
+P7.extend([(r"^(\d+) Rezepte$",r"\1 recipes",r"\1 recetas"),(r"^(\d+) Versionen insgesamt$",r"\1 versions in total",r"\1 versiones en total"),(r"^in (\d+) Rezepte?n?$",r"in \1 recipe(s)",r"en \1 receta(s)")])

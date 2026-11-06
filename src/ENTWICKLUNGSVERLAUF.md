@@ -89,3 +89,11 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Menüs: „Mehr“ je Bereich getrennt, unten „Für die ganze App“ (gleich in beiden). Lagerorte/Lieferanten nur im Lager, Module/Standard-Ablauf/Rundung nur im Rezeptbuch.
 - Rezept-Import (Text, Foto per OCR, .json) und Export als Publikationen (Karte, Rezeptbuch, Chargenprotokoll, Text, JSON) mit Auswahl und Kurzbeschreibung. Gestaltung der Publikationen folgt zuletzt.
 - Tests: `src/tests/t67.js` (43 Prüfungen), `t68.js` sammelt unübersetzte Texte.
+
+## Mehr-Menüs v2 und Import-Parser (06.11.2026)
+- Gleiche Gliederung in beiden Bereichen: Arbeiten, Daten, Voreinstellungen (je Bereich), „Für die ganze App“ = ein Eintrag „Einstellungen“ (Sprache, Sicherung der ganzen App, Rückgängig, Anleitung, Info, Expertenmodus mit Einheiten und Testdaten).
+- Lager: Etiketten & Druck, Bestellliste, Statistik | Import, Export, Katalog aktualisieren | Lagerorte & Lieferanten. Rezeptbuch: Rezeptbücher & Druck (Rezeptkarte, Rezeptbuch), Statistik (neu) | Import, Export (Text, Chargenprotokoll), Rezeptdaten sichern | Module & Rundung.
+- Sicherung der ganzen App liegt nur global. Rundung bleibt rezeptspezifisch (wirkt nur im Rechner und in der Werkbank).
+- Fehler behoben: `expertCard()` hatte ein überzähliges `</div>`; der Testdaten-Block landete außerhalb des Fensters und stand dauerhaft unten auf der Seite.
+- Import-Parser (`rzPre`): Trenner „|“, Phasen mitten im Satz, Zutaten per Komma (Dezimalkomma bleibt), Sätze als Schritte, „nach Bedarf“ als Zutat ohne Menge mit Hinweis.
+- Geplant, noch nicht gebaut: Werkbank-Zettel, Etikett pro Charge, Layouts des Rezeptbuchs, Einkaufszettel, Kostenblatt, Versionsvergleich (IDEEN_SPAETER.md).

@@ -241,3 +241,26 @@ if(RZX.kind==='txt'){const txt=L.map(r=>rzTextOf(r.id)).join('\n\n----------\n\n
 if(RZX.kind==='json'){const rez=L.map(r=>{const c=rzClone(r);if(!o.foto)delete c.photo;return c});const d={app:'INCIheinz-Rezepte',v:2,date:new Date().toISOString(),rez,chg:o.chg?rzChgAll().filter(c=>RZX.ids.has(c.rez)):[]};
 dl22('INCIheinz-Rezepte-'+today()+'.json',new Blob([JSON.stringify(d)],{type:'application/json'}));closeSheet();toast('Rezeptdaten gespeichert')}}
 function rzPrintBook(){RZX={kind:'book',ids:rzPubDefaultIds('book'),fmt:'pdf',o:{foto:1,eck:1,ablauf:1,inci:1,sh:1}};rzPubGo()}
+
+
+/* ---------- Mehr-Menüs v2: gleiche Gliederung in beiden Bereichen ---------- */
+const mAppBlock2=()=>mcap('Für die ganze App')+mrows([['gear','Einstellungen',"sheetAppSet()",'Sprache, Sicherung, Rückgängig, Anleitung, Info, Expertenmodus']]);
+sheetMehr=function(){const rz=document.getElementById('app')&&document.getElementById('app').classList.contains('rez');
+if(rz)openSheet(mcap('Arbeiten')+mrows([['book','Rezeptbücher &amp; Druck',"sheetRzExport('pub')",'Rezeptkarte, Werkbank-Zettel, Rezeptbuch'],['stat','Statistik',"rzStatSheet()",'Rezepte, Chargen, häufige Rohstoffe']])+mcap('Daten')+mrows([['import','Import',"sheetRzImport()",'Rezepte aus Text, Foto oder Datei'],['export','Export',"sheetRzExport('data')",'Text, Chargenprotokoll (Excel/CSV)'],['shield','Rezeptdaten sichern',"sheetRzPub('json')",'Alle Rezepte mit Versionen, Chargen und Fotos']])+mcap('Voreinstellungen Rezeptbuch')+mrows([['gear','Module &amp; Rundung',"sheetRzSet()",'Bausteine, Standard-Ablauf, Rundung']])+mAppBlock2());
+else openSheet(mcap('Arbeiten')+mrows([['tag','Etiketten &amp; Druck',"sheetLabels()"],['cart','Bestellliste',"tab('einkauf');closeSheet()"],['stat','Statistik',"closeSheet();go('stat')"]])+mcap('Daten')+mrows([['import','Import',"sheetImport()"],['export','Export',"sheetExpOpen()"],['refresh','Katalog aktualisieren',"sheetCatUpd()"]])+mcap('Voreinstellungen Lager')+mrows([['gear','Lagerorte &amp; Lieferanten',"sheetLagerSet()",'Orte für Gefäße, Versandkosten je Lieferant']])+mAppBlock2())};
+sheetRzExport=function(mode){const pub=mode==='pub';const keys=Object.keys(RZPUB).filter(k=>pub?(k==='card'||k==='book'):!(k==='card'||k==='book'||k==='json'));
+openSheet(`<h2>${pub?'Rezeptbücher &amp; Druck':'Rezepte exportieren'}</h2><div class="s" style="margin-bottom:6px">${pub?'Hier entstehen gestaltete Dokumente zum Drucken und Weitergeben. Jede Publikation nutzt die Module, die du im Rezept gepflegt hast. Je mehr du pflegst, desto vollständiger wird sie.':'Daten zum Weitergeben, Auswerten oder Sichern. Eine Sicherung der ganzen App findest du unter Mehr › Einstellungen.'}</div>`+keys.map(k=>{const p=RZPUB[k];return rowH([p.ic,p.t,p.s+'. Nutzt: '+p.need+'.',`sheetRzPub('${k}')`])}).join('')+(pub?`<div class="hint" style="margin:10px 0 0">Die Gestaltung der Dokumente folgt in einem späteren Schritt.</div>`:''))};
+function rzStatSheet(){const all=rzAll().filter(r=>!r.demo),chg=rzChgAll();const cnt={};let nv=0;
+all.forEach(r=>{nv+=r.vers.length;const v=r.vers[r.vers.length-1];(v&&v.d.phasen||[]).forEach(p=>p.z.forEach(z=>{const k=z.name;cnt[k]=(cnt[k]||0)+1}))});
+const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,8);const mine=new Set(all.map(r=>r.id));const nc=chg.filter(c=>mine.has(c.rez)).length;
+openSheet(`<h2>Statistik Rezeptbuch</h2><div class="s" style="margin-bottom:8px">Nur deine eigenen Rezepte, Testdaten zählen nicht mit.</div>
+${rowH(['book',all.length+' Rezepte',nv+' Versionen insgesamt',''])}${rowH(['list',nc+' Chargen','aus der Werkbank',''])}
+${top.length?`<div class="cap" style="margin:14px 0 4px">Häufigste Zutaten</div>${top.map(t=>`<div class="rz-dl"><span class="nm">${esc(t[0])}</span><span>in ${t[1]} Rezept${t[1]===1?'':'en'}</span></div>`).join('')}`:'<div class="s">Noch keine eigenen Rezepte.</div>'}`)}
+sheetAppSet=function(){SETCTX='app';openSheet(`<h2>Einstellungen</h2><div class="s" style="margin-bottom:12px">Diese Einstellungen gelten für die ganze App, im Lager und im Rezeptbuch.</div>
+${scap('Sprache')}<button class="selbtn" onclick="pickLang()"><span>${{de:'Deutsch',en:'English',es:'Español'}[LANG]||'Deutsch'}</span><span style="color:var(--sub)">▾</span></button>
+<div style="height:26px"></div>${scap('Sichern und zurücknehmen')}${rowH(['shield','Sicherung der ganzen App','Backup speichern und laden',"sheetBackup()"])}${UNDO?rowH(['refresh','Letzte Änderung rückgängig',esc(UNDO.label),"closeSheet();doUndo(true)"]):''}
+<div style="height:26px"></div>${scap('Hilfe')}${rowH(['book','Anleitung','',"sheetHilfe()"])}${rowH(['info','Info','',"sheetInfo()"])}
+<div style="height:26px"></div>${scap('Expertenmodus')}<label class="chk" style="margin:0 0 4px"><input type="checkbox" ${S.expert?'checked':''} onchange="S.expert=this.checked;save();sheetAppSet()"> Expertenmodus (Entwickleroptionen)</label>${S.expert?expertCard():'<div style="height:14px"></div>'}${demoBlockHtml()}`)};
+sheetSettings=function(){return SETCTX==='lager'?sheetLagerSet():SETCTX==='rez'?sheetRzSet():sheetAppSet()};
+
+{const _e=sheetExport;sheetExport=function(){_e();const s=shEl();if(s)s.innerHTML=s.innerHTML.replace('unter Mehr › Sicherung.','unter Mehr › Einstellungen › Sicherung der ganzen App.')}}

@@ -13,7 +13,7 @@ function expertCard(){return `<div class="card" style="padding:12px 14px;margin:
 <label class="chk" style="margin:6px 0"><input type="radio" name="us" ${S.imp?'checked':''} onchange="setImp(1)"> Imperial (oz, lb, fl oz, in, ft)</label>
 <div class="s">Die Einheiten oz, lb, fl oz, in und ft stehen im Expertenmodus bei jeder Eingabe zur Verfügung. Preise je 100 g/ml bleiben metrisch.</div>
 <div class="cap" style="margin:16px 0 2px">Dichte</div><div class="s">Trage beim Bearbeiten eines Rohstoffs die Dichte in g/ml ein. Dann kannst du Mengen und Preise wahlweise in g oder ml angeben, die App rechnet um.</div>
-<div class="cap" style="margin:16px 0 2px">Listenspalten</div><div class="s">In der Listenansicht wählst du über den Spalten-Knopf bis zu 8 Spalten, ordnest sie und blätterst seitlich. Zusätzlich gibt es Kategorie, Form, Lieferant, Mindestmenge, EAN und Dichte.</div></div></div>`}
+<div class="cap" style="margin:16px 0 2px">Listenspalten</div><div class="s">In der Listenansicht wählst du über den Spalten-Knopf bis zu 8 Spalten, ordnest sie und blätterst seitlich. Zusätzlich gibt es Kategorie, Form, Lieferant, Mindestmenge, EAN und Dichte.</div></div>`}
 
 /* Listenspalten (Expertenmodus) */
 Object.assign(COLS,{kat:['Kategorie',i=>esc(i.kat||'–')],form:['Form',i=>esc(i.form||'–')],lief:['Lieferant',i=>{const c=cheapest(i);return c?esc(c.x.lief):'–'}],min:['Mindest',i=>i.min>0?fmt(i.min,i.kind):'–'],ean:['EAN',i=>esc(i.ean||'–')],dens:['Dichte',i=>i.dens>0?nf(i.dens,3)+' g/ml':'–']});
