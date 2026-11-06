@@ -51,3 +51,13 @@ if(lv){const sp=lv.closest('label').querySelector('span');if(sp&&fcSame(i,'verw'
 if(af1&&fcSame(i,'form')){const sp=af1.querySelector('#pk_form')&&af1.querySelector('#pk_form').closest('.fld').querySelector('span');if(sp)sp.textContent='Form'+VTAG}}
 else{[...box.querySelectorAll('.txt .s')].forEach(e=>{const t=e.textContent.trim();if(t==='Beschreibung')e.textContent='Beschreibung / Funktion'+(fcSame(i,'beschr')?VTAG:'');else if(t==='Verwendung / Wirkweise'&&fcSame(i,'verw'))e.textContent+=VTAG});
 if(af1&&fcSame(i,'form')){const kv=[...af1.querySelectorAll('.kv')].find(k=>k.firstChild&&k.firstChild.textContent==='Form');if(kv&&kv.lastElementChild)kv.lastElementChild.insertAdjacentHTML('beforeend','<div class="s">Vorschlag aus dem Katalog, ungeprüft</div>')}}}}
+
+/* ---------- Katalog 1.3: Fettkennzahlen, Rechtshinweis, zusammengeführte Einträge ---------- */
+const CIDMAP={K0194:'K0222'};
+function cidRemap(){let n=0;(S.items||[]).forEach(i=>{if(CIDMAP[i.cid]){i.cid=CIDMAP[i.cid];n++}});(S.rez||[]).forEach(r=>(r.phasen||[]).forEach(p=>(p.z||[]).forEach(z=>{if(CIDMAP[z.cid]){z.cid=CIDMAP[z.cid];n++}})));return n}
+{const l1=loadCatX;loadCatX=function(){l1.apply(this,arguments);try{if(cidRemap())save()}catch(e){}}}
+const dz=s=>String(s).replace(/(\d)\.(\d)/g,'$1,$2');
+{const a2=artikel;artikel=function(i){a2.apply(this,arguments);if(R.edit)return;const c=i&&i.cid&&CM[i.cid];if(!c)return;const box=document.getElementById('af2');if(!box)return;
+if(c.w){const w=document.createElement('div');w.id='warnbox';w.setAttribute('role','alert');w.style.cssText='background:#FBE9E7;border:1.5px solid var(--err);color:#7A1F16;border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:14px;line-height:1.4';w.innerHTML='<b>Rechtlicher Hinweis</b><br>'+esc(c.w);box.insertAdjacentElement('beforebegin',w)}
+const rows=[['Verseifungszahl (mg KOH/g)',c.sap_koh],['NaOH-Bedarf (g je g Fett)',c.sap_naoh],['Jodzahl',c.jodzahl],['Schmelzpunkt',c.schmelzpunkt]].filter(r=>r[1]!=null&&r[1]!=='');
+if(rows.length){const h=`<div class="txt" id="fettbox"><div class="s">Fettkennzahlen</div>${rows.map(r=>`<div class="kv"><span>${r[0]}</span><span>${esc(dz(r[1]))}</span></div>`).join('')}<div class="s">Richtwerte aus dem Katalog, ungeprüft</div>${c.sap_quelle?'<div class="s">'+esc(c.sap_quelle)+'</div>':''}</div>`;box.insertAdjacentHTML('beforeend',h)}}}

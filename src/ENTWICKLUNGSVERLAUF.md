@@ -191,3 +191,11 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - 1.2.18: K0760 Azelainsäure: Wirkaussage („Aufhellend/Anti-Akne“) aus `b` entfernt, neutral formuliert. Sonst keine Heil- oder Wirkaussagen gefunden („Heilton“ = Produktname).
 - Test t83: Update von 1.1.x-Stand auf 1.2.x (14 neue Einträge, 506 ergänzte Angaben, Nutzertext bleibt).
 - Offen aus dem Katalog-Chat: Tensidklasse/WAS als App-Felder, Schüttdichte vs. Dichte, K0194 (Dublette), K0538 (Umbenennung), K0474 (INCI prüfen), Spaltenagent für Verseifungszahl/Jodzahl/Schmelzpunkt.
+
+## Katalog 1.3.0, Einstellungen, Fettkennzahlen, Rechtshinweis
+- Mehr › Einstellungen hat immer den Abschnitt „Katalog“ mit „Katalog aktualisieren“ (Version, Anzahl); aus dem Expertenmodus entfernt. Test t84.
+- Katalog 1.3.0 (1044 Einträge): K0194 Betain HT in K0222 Kokosbetain zusammengeführt (Alias „Betain HT“); die App leitet Lager- und Rezeptverweise `cid` K0194 → K0222 um (`CIDMAP`, `cidRemap` in js28, beim Laden); Testrezepte angepasst. K0538 heißt „Natriumbenzoat (auf der Haut verbleibend)“.
+- 11 neue Artikel K1060–K1070 (PEG-120-Methylglucosedioleat Sirup/Flocken, SLS Pulver/Lösung, SLES-Paste, SLSA, Cocoylglycinat Pulver/Lösung, Cocoyl-/Lauroylsarcosinat-Lösung, Seifennudeln), meist nur Name, Form, Lieferform; alle ungeprüft.
+- Neue Katalogspalten `sap_koh`, `sap_naoh`, `jodzahl`, `schmelzpunkt`, `sap_quelle` (87 Fette, Öle, Wachse, Stufe ≥ 2; Einzelquellen K0443, K0449, K0993 draußen) und `w` (Rechtlicher Hinweis, zunächst K0798 Cocamide DEA, Anhang III Nr. 60). Werte als Text (Spannen wie „185–200“). Das Update überträgt sie (Feldliste in js7).
+- Anzeige am Artikel: Block „Fettkennzahlen“ mit Hinweis „ungeprüft“, roter Kasten „Rechtlicher Hinweis“. Tests t85 (Anzeige, Update 1.2.18 → 1.3.0, Umleitung), t83 angepasst.
+- Offen: Tensidklasse/WAS und Schüttdichte als Felder, K0474 INCI, K0195 Dichte, Varianten Cocobetain/Kaliumcocoat, Fettwerte als Rechenfelder für Seifenrechner.

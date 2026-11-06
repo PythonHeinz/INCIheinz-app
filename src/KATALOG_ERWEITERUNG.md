@@ -19,6 +19,8 @@ Ziel: Zu möglichst vielen Rohstoffen die Angaben unten recherchieren, neutral u
 | `e0` / `e1` | **Einsatz von / bis** in % der Gesamtmenge im Rezept | Zahlen, `e0` ≤ `e1` ≤ 100 |
 | `eq` | Herkunftsvermerk für `d`, `e0`, `e1` | Text bis 200 Zeichen |
 | `bq` | Herkunftsvermerk für `f`, `b`, `v` und Validierungsstufe | Text bis 200 Zeichen |
+| `sap_koh`, `sap_naoh`, `jodzahl`, `schmelzpunkt`, `sap_quelle` | Fettkennzahlen (ab 1.3.0), nur Fette, Öle, Wachse, Stufe ≥ 2 | Text, Spanne mit „–“, Punkt als Dezimaltrenner |
+| `w` | Rechtlicher Hinweis (ab 1.3.0), erscheint in der App als roter Kasten | Text, Vorschrift nennen |
 
 ## Wie die App die Werte nutzt (wichtig für deine Bewertung)
 - Der Nutzer sieht deine Werte als „Vorschlag aus dem Katalog, ungeprüft“ in seinen Rohstoff-Feldern. Er kann alles ändern; **sein Wert hat immer Vorrang**, auch bei späteren Katalog-Updates. Unveränderte Vorschläge folgen dagegen späteren Katalogkorrekturen.

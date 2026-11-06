@@ -1,0 +1,35 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+const NEW=JSON.parse(fs.readFileSync('/mnt/user-data/outputs/netlify/katalog.json','utf8'));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};const W=()=>p.waitForTimeout(300);
+const r0=await p.evaluate(()=>({n:CAT.length,k194:!!CM['K0194'],a:CM['K0222'].a,nb:CM['K0538'].n,w:!!CM['K0798'].w,sap:CM['K0068'].sap_koh}));
+console.log(JSON.stringify(r0));
+chk('1044 Einträge',r0.n===1044);chk('K0194 weg',!r0.k194);chk('Alias Betain HT',r0.a==='Betain HT');chk('Umbenennung',r0.nb==='Natriumbenzoat (auf der Haut verbleibend)');chk('Warnfeld K0798',r0.w);
+// Warnbox und Fettkennzahlen
+const ids=await p.evaluate(()=>{S.items.push(mk(CM['K0798'],{}));S.items.push(mk(CM['K0068'],{}));return S.items.slice(-2).map(i=>i.id)});
+await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},ids[0]);await W();
+let t=await p.evaluate(()=>{const w=document.getElementById('warnbox');return w?{t:w.innerText,bg:getComputedStyle(w).backgroundColor}:null});console.log(JSON.stringify(t));
+chk('Warnbox sichtbar',t&&/Anhang III Nr\. 60/.test(t.t)&&/rgb\(251, 233, 231\)/.test(t.bg));
+await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},ids[1]);await W();
+t=await p.evaluate(()=>{const f=document.getElementById('fettbox');return {f:f&&f.innerText,w:!!document.getElementById('warnbox')}});console.log(JSON.stringify(t));
+chk('Fettkennzahlen',t.f&&/Verseifungszahl/.test(t.f)&&/185–200/.test(t.f)&&/0,132–0,143/.test(t.f)&&/Jodzahl/.test(t.f));chk('keine Warnbox bei Öl',!t.w);
+await p.evaluate(()=>{LANG='en';draw()});await W();
+t=await p.evaluate(()=>document.getElementById('fettbox').innerText);chk('EN',/Saponification value/.test(t));
+await p.evaluate(()=>{LANG='de'});
+// Update 1.2.18-Zustand: neue Spalten/Einträge raus, K0194 zurück, Nutzer-Verweis auf K0194
+const r1=await p.evaluate(()=>{const nid=CAT.filter(c=>+c.id.slice(1)>=1060).map(c=>c.id);CAT.splice(0,CAT.length,...CAT.filter(c=>!nid.includes(c.id)));nid.forEach(i=>delete CM[i]);
+ const o={id:'K0194',n:'Betain HT',i:'Cocamidopropyl Betaine',s:'ungeprüft',k:'Tensid',u:'g',a:'Cocamidopropyl Betaine',h:''};CAT.push(o);CM.K0194=o;
+ ['sap_koh','w'].forEach(k=>CAT.forEach(c=>delete c[k]));CM.K0538.n='Natriumbenzoat';
+ const it=mk(CM['K0194'],{});S.items.push(it);window.__it=it.id;S.catfix={};S.catadd=[];S.catmeta={version:'1.2.18'};return {n:CAT.length,nid:nid.length}});
+console.log(JSON.stringify(r1));chk('Altzustand 1034',r1.n===1034&&r1.nid===11);
+await p.evaluate(NEW=>{window.fetch=async()=>({ok:true,json:async()=>NEW})},NEW);
+await p.evaluate(()=>sheetCatUpd());await p.waitForTimeout(800);
+t=await p.evaluate(()=>document.getElementById('cu').innerText);console.log(t.replace(/\n/g,' | ').slice(0,300));
+chk('11 neue gemeldet',/11 neue Einträge/.test(t));
+await p.evaluate(()=>catApply());await W();
+const r2=await p.evaluate(()=>({n:CAT.length,sap:CM['K0068'].sap_koh,w:!!CM['K0798'].w,cid:getI(window.__it).cid,nm:CM['K0538'].n,v:S.catmeta.version}));console.log(JSON.stringify(r2));
+chk('Nach Update 1035 (K0194 bleibt im Altbestand, löscht nie)',r2.n===1045);chk('Fettwerte übernommen',r2.sap==='185–200');chk('Warnfeld übernommen',r2.w);
+await p.evaluate(()=>{loadCatX()});
+const c2=await p.evaluate(()=>getI(window.__it).cid);chk('Lagerartikel K0194 → K0222',c2==='K0222');
+console.log('ok',ok,'bad',bad,errs);await b.close()})();

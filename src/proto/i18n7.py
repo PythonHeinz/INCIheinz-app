@@ -816,3 +816,15 @@ N7.update({"Beschreibung / Funktion":("Description / function","Descripción / f
 P7.extend([(r"^Beschreibung / Funktion · Vorschlag aus dem Katalog, ungeprüft$","Description / function · suggestion from the catalogue, unchecked","Descripción / función · sugerencia del catálogo, sin comprobar"),
 (r"^Verwendung / Wirkweise · Vorschlag aus dem Katalog, ungeprüft$","Use / mode of action · suggestion from the catalogue, unchecked","Uso / modo de acción · sugerencia del catálogo, sin comprobar"),
 (r"^Form · Vorschlag aus dem Katalog, ungeprüft$","Form · suggestion from the catalogue, unchecked","Forma · sugerencia del catálogo, sin comprobar")])
+
+N7.update({
+"Rechtlicher Hinweis":("Legal notice","Aviso legal"),
+"Fettkennzahlen":("Fat values","Valores de la grasa"),
+"Verseifungszahl (mg KOH/g)":("Saponification value (mg KOH/g)","Índice de saponificación (mg KOH/g)"),
+"NaOH-Bedarf (g je g Fett)":("NaOH needed (g per g fat)","NaOH necesario (g por g de grasa)"),
+"Jodzahl":("Iodine value","Índice de yodo"),
+"Schmelzpunkt":("Melting point","Punto de fusión"),
+"EU-Kosmetikverordnung Anhang III Nr. 60: Kokosfettsäurediethanolamid nur mit höchstens 0,5 % sekundären Aminen im Rohstoff und höchstens 50 µg/kg Nitrosaminen; nicht zusammen mit nitrosierenden Stoffen verwenden.":("EU Cosmetics Regulation Annex III No. 60: cocamide DEA only with at most 0.5 % secondary amines in the raw material and at most 50 µg/kg nitrosamines; do not use together with nitrosating substances.","Reglamento cosmético de la UE, anexo III n.º 60: cocamida DEA solo con un máximo del 0,5 % de aminas secundarias en la materia prima y un máximo de 50 µg/kg de nitrosaminas; no usar junto con sustancias nitrosantes."),
+})
+N7["Richtwerte aus dem Katalog, ungeprüft"]=("Guide values from the catalog, unverified","Valores orientativos del catálogo, sin verificar")
+N7["Natriumbenzoat (auf der Haut verbleibend)"]=("Sodium benzoate (leave-on)","Benzoato de sodio (sin aclarado)")
