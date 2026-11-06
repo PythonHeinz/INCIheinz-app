@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,200));const r={};
+S.expert=true;['K0787','K0556','K1016','K0075','K0007'].forEach(c=>CM[c]&&S.items.push(mk(CM[c],{kind:'m',total:100})));
+r.n=S.items.length;r.noD=S.items.filter(GAPS.v_dens[1]).length;
+S.cols=['menge','dens','sapn','rzf'];Q.view='liste';Q.sort='sapn';Q.dir=1;lager();await W();
+r.head=[...document.querySelectorAll('.th .c2')].map(e=>e.textContent.trim());
+r.rows=[...document.querySelectorAll('.tr')].slice(0,5).map(e=>e.innerText.replace(/\n+/g,'|'));
+Q.gap='v_dens';lager();await W();r.gapN=document.querySelectorAll('.tr').length;r.gapHead=[...document.querySelectorAll('.th .c2')].map(e=>e.textContent.trim());
+pickGapW();await W();r.pk=(document.querySelector('.sheet')||document.body).innerText.slice(0,200);
+LANG='en';pickGapW();await W();r.en=(document.querySelector('.sheet')||document.body).innerText.slice(0,120);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();
