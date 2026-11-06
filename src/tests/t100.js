@@ -6,8 +6,8 @@ const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250
 const a=mk(CM['K0787'],{kind:'m',total:100,form:'Pulver'}),c=mk(CM['K0556'],{kind:'m',total:50});a.fc={form:'Pulver'};S.items.push(a,c);
 go('artikel',a.id);await W();r.formHint=document.getElementById('af1').innerText.includes('Vorschlag');
 R.edit=true;draw();await W();r.formLabelEdit=document.getElementById('pk_form').closest('.fld').querySelector('span').innerText;
-tgTog('Bio');r.sel=document.getElementById('tgsel').innerText;r.presetHasBio=[...document.querySelectorAll('#tgchips button')].some(x=>x.dataset.t==='Bio');
-document.getElementById('tgnew').value='Eigen1';tgAdd();r.sel2=document.getElementById('tgsel').innerText;
+
+document.getElementById('tgnew').value='Eigen1';tgAdd();r.sel2=window.__tg.slice();
 saveArt(a.id);await W();
 Q.view='liste';Q.sort='name';S.cols=['menge'];lager();await W();
 sheetCols();await W();r.groups=[...document.querySelectorAll('#sheet details summary')].map(s=>s.innerText);
