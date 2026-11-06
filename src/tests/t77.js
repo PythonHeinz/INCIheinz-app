@@ -12,5 +12,8 @@ await p.evaluate(()=>rchOpen('vd'));await W();await typ(0,'80');await typ(1,'10'
 await typ(1,'90');chk('Verdünnen: Fehlermeldung',/stärker/.test(await res()));
 await p.evaluate(()=>rchOpen('unit'));await W();await typ(0,'1');chk('Einheiten: 1 g in mg',/1\.000 mg/.test(await res()));
 await typ(1,'0,92');await p.evaluate(()=>{RCH.u='ml';rzBau()});await W();await typ(0,'100');await typ(1,'0,92');chk('Einheiten: 100 ml bei 0,92 = 92 g',/92 g/.test(await res()));
+await p.evaluate(()=>{RCH.tool=null;rzBau()});await W();
+chk('Hub: 14 Einträge',await p.evaluate(()=>document.querySelectorAll('#main .row').length)===14);
+await p.evaluate(()=>rchOpen('was'));await W();chk('Stub zeigt In Planung',/In Planung/i.test(await p.evaluate(()=>document.getElementById('main').innerText))&&/Rezeptbezug/i.test(await p.evaluate(()=>document.getElementById('main').innerText)));
 await p.screenshot({path:'/tmp/s_rch.png'});
 console.log('ok',ok,'bad',bad,errs);await b.close()})();

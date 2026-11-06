@@ -140,3 +140,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Rechner auf Platz 2 im Rezeptbuch (06.11.2026)
 - Platz 2 der Leiste heißt „Rechner“ (statt Baustelle): Hub mit Prozent und Gramm (zwei Werte rein, dritter rechnet sich), Dreisatz, Verdünnen (Ausgangs- und Zielstärke, nach Gewicht), Einheiten umrechnen (mg, g, kg, oz, lb, ml, l, fl oz, mit Dichte auch Gewicht/Volumen). Tensidrechner und Kaltverseifung stehen als „In Planung“. Datei js27.js, Test t77.js.
+
+## Rechner-Menü vollständig angelegt (06.11.2026)
+- Hub in vier Gruppen mit 14 Einträgen. Fertig: Prozent und Gramm, Dreisatz, Verdünnen, Einheiten umrechnen. In Planung (Seite mit Beschreibung und Rezeptbezug): Alkohol verdünnen, Tropfen und Gramm, Rezept umrechnen, Rezeptanalyse, Dosierung prüfen, Emulgatorrechner, Kalkulation, Tensidrechner (WAS), Kaltverseifung, Spreitwert-Check (später).
+- Rückweg bei Rezeptbezug: „In Rezept übernehmen“ erzeugt einen vorbefüllten Entwurf im Editor, kein stilles Ändern.
+- Reihenfolge zum Befüllen: Rezept umrechnen, Tensidrechner, Kaltverseifung, Emulgator, Dosierung, Analyse, Kalkulation, Alkohol, Tropfen.
+- Quellen für Tensid und Seife: olionatura.de Tensidplanungsrechner und naturseife.com Seifenrechner, als Vorlagen vom Nutzer genannt. Lizenz vor dem Bau klären, die Umsetzung erfolgt mit eigenem Code und eigenen Daten (Verseifungszahlen aus neutralen Quellen).
