@@ -126,7 +126,7 @@ if(/^(summe|gesamt|gesamtmenge|total|insgesamt)\b/i.test(line))continue;
 if(/^(zutaten|inhaltsstoffe|zutatenliste)\s*:?$/i.test(line)){mode='z';continue}
 if(/^(zubereitung|anleitung|herstellung|vorgehen|vorgehensweise|arbeitsschritte|ablauf|so geht['’]?s)\s*:?$/i.test(line)){mode='s';continue}
 if(m=line.match(/^(?:rezept|name|titel)\s*:\s*(.+)$/i)){d.name=m[1].trim();continue}
-if(m=line.match(/^(?:ergibt|menge|ausbeute)\s*:\s*(.+)$/i)&&!/^\d/.test(line)){d.ergibt=m[1].trim();continue}
+if((m=line.match(/^(?:ergibt|menge|ausbeute)\s*:\s*(.+)$/i))&&!/^\d/.test(line)){d.ergibt=m[1].trim();continue}
 if(m=line.match(/^(?:dauer|zeit|zeitaufwand)\s*:\s*(.+)$/i)){d.zeit=m[1].trim();continue}
 if(m=line.match(/^(?:ziel-?)?ph(?:-wert)?\s*:\s*(.+)$/i)){d.ph=m[1].trim();continue}
 if(m=line.match(/^(?:einsatz(?:zweck)?|zweck|verwendung)\s*:\s*(.+)$/i)){d.zweck=m[1].trim();continue}
@@ -149,6 +149,26 @@ if(!d.name&&!ing&&!cur){d.name=line.replace(/^#+\s*/,'');continue}
 d.mod.push({id:uid(),t:'notiz',titel:'',text:line})}
 d.phasen=d.phasen.filter(p=>p.z.length);
 return {d,warn,ing}}
+
+/* Vorverarbeitung: Fließtext in Zeilen zerlegen (Trenner |, Phasen mitten im Satz, Zutaten per Komma, Schritte als Sätze) */
+function rzPre(raw){let t=String(raw||'').replace(/\r/g,'').replace(/[ \t]+/g,' ').replace(/\s*[|¦]\s*/g,'\n');
+const AMT=/\d[\d.,]*\s*(?:g|kg|mg|ml|l|%)(?![a-zäöü])/i;
+t=t.replace(/(phase\s*[a-d1-4]\s*:)([^\n]*?)(?=phase\s*[a-d1-4]\s*:|\n|$)/gi,(m,h,r)=>AMT.test(r)?'\n'+h+'\n'+r.trim()+'\n':'\n'+h+r+'\n');
+const HD=/^(zutaten|inhaltsstoffe|zutatenliste|zubereitung|anleitung|herstellung|vorgehen|vorgehensweise|arbeitsschritte|ablauf)\s*:\s*(.+)$/i;
+let mode='z';const out=[];
+const qs=x=>!AMT.test(x.replace(/\d+\s*%/g,''))&&/\b(nach bedarf|nach wunsch|q\.?\s?s\.?|tropfenweise)\b/i.test(x)&&x.length<70?'0 g '+x:x;
+const splitC=l=>{const parts=[];let dp=0,cur='';for(let i=0;i<l.length;i++){const ch=l[i];if(ch==='(')dp++;if(ch===')')dp=Math.max(0,dp-1);if((ch===','||ch===';')&&!dp&&!(ch===','&&/\d$/.test(cur)&&/\d/.test(l[i+1]||''))){parts.push(cur);cur=''}else cur+=ch}parts.push(cur);return parts};
+for(let l of t.split('\n')){l=l.trim();if(!l)continue;let m;
+if(m=l.match(/^rezeptur\s*:\s*(.+)$/i)||l.match(/^rezept\s*:\s*(.+)$/i)){let n=m[1].trim();const q=n.match(/^(.*?)\s*\((\d[\d.,]*\s*(?:g|kg|ml))\)\s*$/i);if(q){n=q[1].trim();out.push('Rezept: '+n);out.push('Ergibt: '+q[2]);}else out.push('Rezept: '+n);continue}
+if(m=l.match(HD)){out.push(m[1]+':');l=m[2].trim();mode=/^zut|^inh/i.test(m[1])?'z':'s'}
+else if(/^(zubereitung|anleitung|herstellung|vorgehen|vorgehensweise|arbeitsschritte|ablauf|so geht['’]?s)\s*:?$/i.test(l)){mode='s';out.push(l);continue}
+else if(/^(zutaten|inhaltsstoffe|zutatenliste)\s*:?$/i.test(l)){mode='z';out.push(l);continue}
+if(mode==='s'&&l.length>40){l.split(/(?<!\b\d\.)(?<=[.!?])\s+(?=[A-ZÄÖÜ0-9])/).forEach(x=>{if(x.trim())out.push(x.trim())});continue}
+if(mode==='z'&&(l.match(new RegExp(AMT.source,'gi'))||[]).length>=2&&!/^(achtung|tipp|hinweis|haltbarkeit)/i.test(l)){splitC(l).forEach(x=>{x=x.trim().replace(/[.]+$/,'');if(x)out.push(qs(x))});continue}
+if(mode==='z'&&qs(l)!==l){out.push(qs(l.replace(/[.]+$/,'')));continue}
+out.push(mode==='z'?l.replace(/(\d)\.$/,'$1'):l)}
+return out.join('\n')}
+{const _p=rzParse;rzParse=function(raw){const r=_p(rzPre(raw));r.d.phasen.forEach(p=>p.z.forEach(z=>{if(!z.g){r.warn.push(z.name+': keine feste Menge, bitte ergänzen')}}));return r}}
 let RZIM=null;
 function sheetRzImport(txt){const hasOcr=!!window.OCRCB;
 openSheet(`<h2>Rezept importieren</h2><div class="s" style="margin-bottom:6px">Hol ein Rezept aus deinen Notizen. Du siehst vorher eine Vorschau und kannst alles im Editor noch ändern. Es wird nichts gespeichert, bevor du es selbst speicherst.</div>
