@@ -137,3 +137,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Editor: Die Liste „Zutaten“ bleibt vollständig. Zugeordnete Zutaten stehen weiter oben (in Reihenfolge der Phasen, mit Menge und Phasen-Marke, Tippen springt zur Phase), noch nicht zugeordnete sind darunter editierbar. Mengen bearbeitet man in der Phase bzw. in der Liste für Unzugeordnete.
 - Veröffentlichungen (Rezeptkarte/Buch, PDF Rezept teilen, Text): bei mehreren Phasen zuerst die gesamte Zutatenliste mit Summe, dann „Phasen“ mit den Zutaten je Phase. Bei einer Gruppe (Küchenrezept-Stil) nur eine Liste. Text-Import ignoriert den Block „Zutaten gesamt“ (Test: kein Doppeln).
 - Rezeptseite: Mengen der Zutaten nur noch Anzeige. Die Gesamtmenge bleibt als Umrechner editierbar (Änderung ist nicht gespeichert). Test: t76.js.
+
+## Rechner auf Platz 2 im Rezeptbuch (06.11.2026)
+- Platz 2 der Leiste heißt „Rechner“ (statt Baustelle): Hub mit Prozent und Gramm (zwei Werte rein, dritter rechnet sich), Dreisatz, Verdünnen (Ausgangs- und Zielstärke, nach Gewicht), Einheiten umrechnen (mg, g, kg, oz, lb, ml, l, fl oz, mit Dichte auch Gewicht/Volumen). Tensidrechner und Kaltverseifung stehen als „In Planung“. Datei js27.js, Test t77.js.

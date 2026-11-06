@@ -4,7 +4,7 @@ await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitFor
 let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};
 await p.evaluate(()=>{S.expert=true;demoLoad();tab('rez')});await p.waitForTimeout(300);
 const nav=await p.evaluate(()=>[...document.querySelectorAll('nav button')].map(x=>x.innerText.replace(/\s+/g,' ').trim()));console.log(nav);
-chk('Leiste 5 Einträge',nav.length===5&&nav[1]==='Bald'&&!nav.includes('Mischbar'));
+chk('Leiste 5 Einträge',nav.length===5&&nav[1]==='Rechner'&&!nav.includes('Mischbar'));
 const n0=await p.evaluate(()=>document.querySelectorAll('#rzl .row').length);
 await p.evaluate(()=>[...document.querySelectorAll('.seg button')].find(x=>/Mischbar/.test(x.innerText)).click());await p.waitForTimeout(300);
 const n1=await p.evaluate(()=>document.querySelectorAll('#rzl .row').length);const c=await p.evaluate(()=>+document.querySelector('.seg button:nth-child(2) i').textContent);
@@ -12,6 +12,6 @@ chk('Filter Mischbar zählt',n1===c&&n1<=n0);
 await p.evaluate(()=>[...document.querySelectorAll('.seg button')].find(x=>/Alle/.test(x.innerText)).click());await p.waitForTimeout(300);
 chk('Alle zurück',await p.evaluate(()=>document.querySelectorAll('#rzl .row').length)===n0);
 await p.evaluate(()=>document.querySelectorAll('nav button')[1].click());await p.waitForTimeout(300);
-chk('Baustelle',/Baustelle/.test(await p.evaluate(()=>document.getElementById('main').innerText)));
+chk('Rechner-Seite',/Dreisatz/.test(await p.evaluate(()=>document.getElementById('main').innerText)));
 await p.screenshot({path:'/tmp/s_bau.png'});
 console.log('ok',ok,'bad',bad,errs);await b.close()})();

@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};const W=()=>p.waitForTimeout(200);
+await p.evaluate(()=>{demoLoad();tab('rez');tab('bau')});await W();
+const res=()=>p.evaluate(()=>(document.getElementById('rchres')||{}).innerText||'');
+const typ=async(i,v)=>{await p.evaluate(([i,v])=>{const e=document.querySelectorAll('#main input')[i];e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}))},[i,v]);await W()};
+await p.evaluate(()=>rchOpen('proz'));await W();await typ(0,'200');await typ(1,'12,5');chk('Prozent: 12,5% von 200 = 25 g',/25 g/.test(await res()));
+await p.evaluate(()=>rchOpen('proz'));await W();await typ(0,'200');await typ(2,'30');chk('Prozent: Anteil aus Gramm (30/200 = 15 %)',/15 %/.test(await res()));
+await p.evaluate(()=>rchOpen('drei'));await W();await typ(0,'50');await typ(1,'10');await typ(2,'200');chk('Dreisatz 50→10, 200→40',/40 g/.test(await res()));
+await p.evaluate(()=>rchOpen('vd'));await W();await typ(0,'80');await typ(1,'10');await typ(2,'100');chk('Verdünnen: 12,5 g + 87,5 g Wasser',/12,5 g/.test(await res())&&/87,5 g/.test(await res()));
+await typ(1,'90');chk('Verdünnen: Fehlermeldung',/stärker/.test(await res()));
+await p.evaluate(()=>rchOpen('unit'));await W();await typ(0,'1');chk('Einheiten: 1 g in mg',/1\.000 mg/.test(await res()));
+await typ(1,'0,92');await p.evaluate(()=>{RCH.u='ml';rzBau()});await W();await typ(0,'100');await typ(1,'0,92');chk('Einheiten: 100 ml bei 0,92 = 92 g',/92 g/.test(await res()));
+await p.screenshot({path:'/tmp/s_rch.png'});
+console.log('ok',ok,'bad',bad,errs);await b.close()})();
