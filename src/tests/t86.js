@@ -5,14 +5,14 @@ let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}}
 const id=await p.evaluate(()=>{const it=mk(CM['K0068'],{});S.items.push(it);return it.id});
 await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id);await W();
 let r=await p.evaluate(()=>({k:document.getElementById('f_sapk')&&document.getElementById('f_sapk').placeholder,j:document.getElementById('f_iod')&&document.getElementById('f_iod').placeholder}));
-chk('Felder im Bearbeiten mit Katalog-Platzhalter',r.k==='185–200'&&r.j==='95–105');
+chk('Felder im Bearbeiten mit Katalog-Platzhalter',r.k==='185–200'&&r.j==='98');
 await p.evaluate(()=>{document.getElementById('f_sapk').value='190';document.getElementById('f_smp').value='-5 °C'});
 await p.evaluate(id=>saveArt(id),id);await W();
 r=await p.evaluate(id=>{const i=getI(id);const f=fettOf(i);return {k:i.sapk,sapk:f.sapk,sapn:f.sapn,iod:f.iod,mid:fettNum(f.sapk.v),m2:fettNum('185–200'),m3:fettNum('0,132–0,143')}},id);console.log(JSON.stringify(r));
-chk('eigener Wert gespeichert',r.k==='190'&&r.sapk.src==='own');chk('NaOH berechnet 0,135',r.sapn.src==='calc'&&r.sapn.v==='0.135');chk('Jodzahl vom Katalog',r.iod.src==='cat'&&r.iod.v==='95–105');chk('Mitte',r.m2===192.5&&Math.abs(r.m3-0.1375)<1e-9);
+chk('eigener Wert gespeichert',r.k==='190'&&r.sapk.src==='own');chk('NaOH berechnet 0,135',r.sapn.src==='calc'&&r.sapn.v==='0.135');chk('Jodzahl vom Katalog',r.iod.src==='cat'&&r.iod.v==='98');chk('Mitte',r.m2===192.5&&Math.abs(r.m3-0.1375)<1e-9);
 await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},id);await W();
 let t=await p.evaluate(()=>document.getElementById('fettbox').innerText);console.log(t.replace(/\n/g,' | '));
-chk('Anzeige eigener Wert',/190/.test(t)&&/eigener Wert/.test(t)&&/berechnet/.test(t)&&/95–105/.test(t));
+chk('Anzeige eigener Wert',/190/.test(t)&&/eigener Wert/.test(t)&&/berechnet/.test(t)&&/Jodzahl\s*\|?\s*98/.test(t.replace(/\n/g,' ')));
 // leeren -> Katalog
 await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id);await W();
 await p.evaluate(()=>{['sapk','smp'].forEach(k=>document.getElementById('f_'+k).value='')});await p.evaluate(id=>saveArt(id),id);await W();
