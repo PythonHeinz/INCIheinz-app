@@ -856,3 +856,21 @@ P7.extend([
 (r"^Fette in Prozent der Fettmenge: (.*)$",r"Fats as percent of fat weight: \1",r"Grasas en porcentaje del peso de grasa: \1"),
 (r"^NaOH-Bedarf ([\d,]+) g/g · (eigener Wert|Katalog)$",r"NaOH need \1 g/g · \2",r"Necesidad de NaOH \1 g/g · \2"),
 ])
+N7.update({
+"1 · Menge und Einstellungen":("1 · Amount and settings","1 · Cantidad y ajustes"),"2 · Öle und Fette":("2 · Oils and fats","2 · Aceites y grasas"),"3 · Abwiegen":("3 · Weigh out","3 · Pesar"),"4 · Lauge anrühren":("4 · Mix the lye","4 · Preparar la lejía"),"5 · Zusätze":("5 · Additives","5 · Aditivos"),
+"Laugentabelle (Laugenunterschuss 0 bis 15 %)":("Lye table (lye discount 0 to 15 %)","Tabla de lejía (descuento de lejía 0 a 15 %)"),"Inhaltsstoffe für das Etikett":("Ingredients for the label","Ingredientes para la etiqueta"),"Notizen":("Notes","Notas"),
+"Fettmenge vorgeben":("Set fat amount","Indicar cantidad de grasa"),"Seifenmasse vorgeben":("Set soap mass","Indicar masa de jabón"),"Fettmenge (g)":("Fat amount (g)","Cantidad de grasa (g)"),
+"Seifenmasse (g), Fett, Lauge, Flüssigkeit und Duft":("Soap mass (g), fat, lye, liquid and fragrance","Masa de jabón (g), grasa, lejía, líquido y fragancia"),
+"NaOH Reinheit (%)":("NaOH purity (%)","Pureza del NaOH (%)"),"KOH Reinheit (%)":("KOH purity (%)","Pureza del KOH (%)"),
+"Flüssige Öle":("Liquid oils","Aceites líquidos"),"Feste Fette (zum Schmelzen)":("Solid fats (to melt)","Grasas sólidas (para fundir)"),"Ohne Angabe der Form":("Form not specified","Forma sin especificar"),
+"Gib eine Menge und die Anteile der Öle ein, dann erscheinen Abwiegen, Lauge und Etikett.":("Enter an amount and the oil shares, then weighing, lye and label appear.","Introduce una cantidad y las proporciones de aceite; después aparecen el pesaje, la lejía y la etiqueta."),
+"+ Zusatz hinzufügen":("+ Add additive","+ Añadir aditivo"),"Zusatz, z. B. Milchpulver":("Additive, e.g. milk powder","Aditivo, p. ej. leche en polvo"),"Temperaturen, Gießform, Reifezeit …":("Temperatures, mold, curing time …","Temperaturas, molde, tiempo de curado …"),
+"Tippe eine Zeile an, um den Wert zu übernehmen. 0 bis 3 %: kaum Reserve, die Seife kann beim Waschen scharf wirken. 4 bis 10 %: üblicher Bereich. 11 bis 15 %: weichere Seife, die eher ranzig wird.":("Tap a row to use that value. 0 to 3 %: little reserve, the soap can feel harsh when washing. 4 to 10 %: usual range. 11 to 15 %: softer soap that turns rancid more easily.","Toca una fila para usar ese valor. 0 a 3 %: poca reserva, el jabón puede resultar fuerte al lavar. 4 a 10 %: rango habitual. 11 a 15 %: jabón más blando que se enrancia antes."),
+"Nach Menge sortiert, als Hilfe ohne Gewähr. Welche Namen für verseifte Öle üblich sind, prüfst du vor dem Druck.":("Sorted by amount, as a guide without guarantee. Check which names are customary for saponified oils before printing.","Ordenado por cantidad, como ayuda sin garantía. Comprueba antes de imprimir qué nombres son habituales para aceites saponificados."),
+})
+P7.extend([
+(r"^Summe der Anteile: ([\d,]+) %( · Die App rechnet auf 100 % um\.)?$",r"Sum of shares: \1 %\2",r"Suma de las proporciones: \1 %\2"),
+(r"^Laugenkonzentration (\d+) % · Laugenunterschuss (\d+) %\. Bei vollständiger Verseifung wären es ([\d,]+) g (NaOH|KOH)\. Erst das Wasser ins Gefäß, dann (NaOH|KOH) langsam einrühren\.$",r"Lye concentration \1 % · lye discount \2 %. With full saponification it would be \3 g \4. Put the water in the vessel first, then stir in the \5 slowly.",r"Concentración de lejía \1 % · descuento \2 %. Con saponificación completa serían \3 g de \4. Primero el agua en el recipiente, después añade el \5 poco a poco removiendo."),
+(r"^Seifenmasse gesamt ca\. ([\d,]+) g$",r"Total soap mass approx. \1 g",r"Masa total de jabón aprox. \1 g"),
+])
+N7["Als Rezept übernehmen"]=("Take over as recipe","Aplicar como receta")
