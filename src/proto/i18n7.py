@@ -559,3 +559,10 @@ N7.update({
 "Die Menge des Rohstoffs bleibt unverändert. Ist noch keine Menge eingetragen, setzt die App Anzahl × Nenninhalt.":("The quantity stays unchanged. If no quantity is entered yet, the app sets count × nominal volume.","La cantidad no cambia. Si aún no hay cantidad, la app usa cantidad × contenido nominal."),
 "Gefäß geändert":("Container changed","Recipiente cambiado")})
 P7.extend([(r"^(\d+) Gefäße? · Nenninhalt (.+?) · angebrochen$",r"\1 container(s) · nominal volume \2 · partly used",r"\1 recipiente(s) · contenido nominal \2 · empezado"),(r"^(\d+) Gefäße? · Nenninhalt (.+)$",r"\1 container(s) · nominal volume \2",r"\1 recipiente(s) · contenido nominal \2")])
+
+N7.update({"Alle übernehmen":("Add all","Añadir todos"),"Alles schon im Lager":("Everything is already in stock","Todo está ya en el almacén"),
+"Sie kommen ins Lager, die Mengen bleiben offen. Du kannst sie danach einzeln wieder abwählen.":("They go into your stock, quantities stay open. You can deselect them one by one afterwards.","Pasan al almacén, las cantidades quedan abiertas. Después puedes quitarlas una a una."),
+"INCI als geprüft bestätigen?":("Confirm INCI as verified?","¿Confirmar INCI como verificado?"),
+"Vergleiche den Text mit Etikett oder Datenblatt. Eingefügter Text allein ist noch keine Prüfung.":("Compare the text with the label or data sheet. Pasted text alone is not a verification.","Compara el texto con la etiqueta o la ficha técnica. El texto pegado por sí solo no es una verificación."),
+"Stimmt, geprüft":("Correct, verified","Correcto, verificado"),"Als geprüft bestätigen":("Confirm as verified","Confirmar como verificado"),"INCI als geprüft bestätigt":("INCI confirmed as verified","INCI confirmado como verificado")})
+P7.extend([(r"^(\d+) Rohstoffe übernehmen\?$",r"Add \1 raw materials?",r"¿Añadir \1 materias primas?"),(r"^(\d+) Rohstoffe übernommen$",r"\1 raw materials added",r"\1 materias primas añadidas")])

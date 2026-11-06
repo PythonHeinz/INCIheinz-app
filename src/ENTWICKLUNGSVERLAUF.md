@@ -67,3 +67,11 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Rezeptbuch: der Lagerabzug (`rzTake`) ändert nur `total`.
 - Code: `src/proto/js21.js` (neue Gefäß-Fenster, `rzTake`), R-Patches am Ende von `p7b.py`. Test: `src/tests/t63.js`.
 - Offene Folgen (noch nicht umgesetzt): Lagerort gehört heute an Gefäße; ein Lagerort am Artikel ohne Gefäß fehlt noch. Gesamtmengen-Anpassungen aus dem QA-Bericht (Basiseinheit, Schnellbuchung +1 Gebinde) stehen noch aus.
+
+## Umsetzung QA-Bericht, Teil 1 (06.11.2026, Hauptchat, js22.js)
+- Export über das Teilen-Fenster von Android (`navigator.share` mit Datei), Download als Rückfall; gilt nur für Exporte, nicht für die Sicherung.
+- Regal-Check: „Alle übernehmen“ (für die angezeigte Auswahl, mit Bestätigung), Suche bleibt oben stehen, Zeilen mindestens 56 px.
+- INCI: Eingefügter Text bleibt „ungeprüft“; Knopf „Als geprüft bestätigen“ zeigt den Text und setzt erst nach Bestätigung des Nutzers auf geprüft.
+- Lagerort am Artikel (`i.ort`, Auswahl im Bearbeiten); Anzeige, Lücken-Filter und Vollständigkeit nutzen `ortOf(i)` (Artikel-Lagerort, sonst der des ersten Gefäßes).
+- Speichern unten im Bearbeiten-Modus (feste Leiste, blendet die Tab-Leiste aus); Warnung beim Verlassen mit offenen Änderungen über `tab()` und `back()`.
+- Noch offen: Eingabe mit Basiseinheit-Umrechnung, +1 Gebinde auf der Karte (zurückgestellt), Lieferant aus Produkttext vorwählen, Kachel-Klick als Filter-Abkürzung prüfen, konfigurierbare Dashboard-Kacheln.

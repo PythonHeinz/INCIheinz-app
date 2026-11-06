@@ -135,3 +135,13 @@ R(_seg('<div style="display:flex;margin-top:12px;border-top:1px solid var(--line
 R("Keine Gefäße – nur nötig, wenn du Teilmengen getrennt verwalten willst.","Gefäße sind optional: Verpackung und Lagerort festhalten. Die Menge ändern sie nicht.")
 R(_seg("if(tb<vsum(i)-1e-9){","return}"),"")
 R("Gefäße sind optional und nur nötig, wenn du Teilmengen getrennt verwalten willst.","Gefäße sind optional und halten fest, in welcher Verpackung und wo etwas liegt. Die Menge ändern sie nicht.")
+
+# ---- Lager: Regal-Check, INCI-Bestätigung, Lagerort am Artikel ----
+R("""<div class="s" id="cc" style="margin:10px 2px 6px"></div>""","""<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 2px 6px"><span class="s" id="cc"></span><button class="lnk" onclick="ckAll()">Alle übernehmen</button></div>""")
+R("""onclick="sheetProduct('${i.id}')">Aus Produktseite übernehmen</button></div>`""","""onclick="sheetProduct('${i.id}')">Aus Produktseite übernehmen</button>${i.inci&&i.ist!=='geprüft'?`<button class="pill" type="button" onclick="inciConfirm('${i.id}')">Als geprüft bestätigen</button>`:''}</div>`""")
+R("ED={kat:i.kat,form:i.form};","ED={kat:i.kat,form:i.form,ort:i.ort||''};")
+R("""${sel('pk_form',formInner)}</div></div>`""","""${sel('pk_form',formInner)}</div></div><div class="fld"><span>Lagerort</span><button type="button" class="selbtn" id="pk_ort" onclick="pickArtOrt()"><span>${esc(ED.ort||'–')}</span><span style="color:var(--sub)">▾</span></button></div>`""")
+R("""<div class="kv"><span>Form</span><span>${esc(i.form||'–')}</span></div>""","""<div class="kv"><span>Form</span><span>${esc(i.form||'–')}</span></div>${ortOf(i)?`<div class="kv"><span>Lagerort</span><span>${esc(ortOf(i))}</span></div>`:''}""")
+R("i.min=num(val('f_min'))||0;","i.min=num(val('f_min'))||0;i.ort=ED.ort||'';")
+R("ort:['Ohne Lagerort',i=>!i.vessels.some(v=>v.ort)]","ort:['Ohne Lagerort',i=>!ortOf(i)]")
+R("['ort','Lagerort',i=>i.vessels.some(v=>v.ort),'ort']","['ort','Lagerort',i=>!!ortOf(i),'ort']")
