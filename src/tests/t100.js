@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250));const r={};S.expert=true;
+const a=mk(CM['K0787'],{kind:'m',total:100,form:'Pulver'}),c=mk(CM['K0556'],{kind:'m',total:50});a.fc={form:'Pulver'};S.items.push(a,c);
+go('artikel',a.id);await W();r.formHint=document.getElementById('af1').innerText.includes('Vorschlag');
+R.edit=true;draw();await W();r.formLabelEdit=document.getElementById('pk_form').closest('.fld').querySelector('span').innerText;
+tgTog('Bio');r.sel=document.getElementById('tgsel').innerText;r.presetHasBio=[...document.querySelectorAll('#tgchips button')].some(x=>x.dataset.t==='Bio');
+document.getElementById('tgnew').value='Eigen1';tgAdd();r.sel2=document.getElementById('tgsel').innerText;
+saveArt(a.id);await W();
+Q.view='liste';Q.sort='name';S.cols=['menge'];lager();await W();
+sheetCols();await W();r.groups=[...document.querySelectorAll('#sheet details summary')].map(s=>s.innerText);
+ccTog('tag:Bio');ccTog('dens');ccTog('sapn');r.chosen=CCO.slice();ccSave();await W();
+r.head=[...document.querySelectorAll('.th .c2')].map(e=>e.textContent.trim());r.cells=[...document.querySelectorAll('.tr')].map(t=>t.innerText.replace(/\n+/g,'|'));
+setSort('tag:Bio');await W();r.sorted=Q.sort;
+LANG='en';sheetCols();await W();r.en=document.getElementById('sheet').innerText.slice(0,160);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();
