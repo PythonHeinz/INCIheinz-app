@@ -181,3 +181,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Mechanismus (`js28.js`): `catFillOne/catFill` kopieren den Katalogwert in das leere Rohstofffeld (`beschr`, `verw`, `form`, `dens`) und merken ihn in `it.fc`. Solange das Feld unverändert dem kopierten Wert entspricht, folgt es Katalogänderungen; jede Änderung durch den Nutzer koppelt es ab (Vorrang). Läuft beim Start, bei neuen Rohstoffen (`mk`) und im Katalog-Update. Form nur aus der festen Liste.
 - Anzeige: Label „Beschreibung / Funktion“ (Artikel, Export-Spalte), Hinweis „Vorschlag aus dem Katalog, ungeprüft“, solange unverändert. Einsatzbereich bleibt Live-Fallback (`einsatzOf`), Export übernimmt den wirksamen Wert.
 - `regeln.md` Regeln 8 und 11 angepasst, `KATALOG_ERWEITERUNG.md` neu (Felder, Regeln, Ablauf mit Validierungsstufen). Test t82.
+
+## Katalog 1.2.0 eingespielt (Pilot, 20 Einträge)
+- Der Katalog-Chat hatte 175c8e4 lokal auf dem PC committet; sein Push war nicht möglich (keine GitHub-Anmeldung auf dem PC-Shell). Übernahme über ein git-Bundle, Hash erhalten, geprüft: nur die Felder f/b/v/d/e0/e1/eq/bq, nur leere Felder, 1020 IDs, Längen und Bereiche ok, beide Katalogdateien identisch.
+- App neu gebaut (eingebetteter Katalog 1.2.0), Tests grün; t82 nutzt jetzt Katalogeinträge ohne echte Vorschlagswerte. Hinweis für spätere Katalog-Chats: Push von der Geräteshell geht nicht, Weg ist Bundle → App-Chat pusht.

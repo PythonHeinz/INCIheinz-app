@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
 let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};const W=()=>p.waitForTimeout(250);
 await p.evaluate(()=>{S.expert=true;demoLoad();tab('lager')});await W();
-const ids=await p.evaluate(()=>{const its=S.items.filter(i=>i.cid&&CM[i.cid]);const [a,b,c]=its;a.beschr='';a.verw='';a.form='';b.beschr='Mein eigener Text';b.form='Pulver';c.beschr='';
+const ids=await p.evaluate(()=>{const its=S.items.filter(i=>i.cid&&CM[i.cid]&&!CM[i.cid].f&&!CM[i.cid].b&&!CM[i.cid].v&&!(CM[i.cid].d>0));const [a,b,c]=its;a.beschr='';a.verw='';a.form='';b.beschr='Mein eigener Text';b.form='Pulver';c.beschr='';c.form='';
  const upd=(x,o)=>Object.assign(CM[x.cid],o);
  upd(a,{b:'Emulgator für Öl-in-Wasser-Cremes',v:'2 bis 3 % mit Gelbildner; schaumverstärkend',f:'Pulver',d:0.9});upd(b,{b:'Katalogtext B',f:'Öl'});upd(c,{f:'Quatsch'});
  const n=catFill();return {a:a.id,b:b.id,c:c.id,n,ra:{be:a.beschr,v:a.verw,f:a.form},rb:{be:b.beschr,f:b.form},rc:c.form}});
