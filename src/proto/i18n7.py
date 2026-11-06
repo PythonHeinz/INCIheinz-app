@@ -653,3 +653,9 @@ N7.update({
 "ganze g / ml":("whole g / ml","g / ml enteros"),
 "Mit einer Küchenwaage wählst du 1 g oder 0,5 g, mit einer Feinwaage 0,01 g.":("With kitchen scales choose 1 g or 0.5 g, with precision scales 0.01 g.","Con una báscula de cocina elige 1 g o 0,5 g, con una de precisión 0,01 g."),
 })
+N7.update({
+"Etiketten":("Labels","Etiquetas"),"Größen":("Sizes","Tamaños"),
+"Du kannst mehrere wählen, zum Beispiel klein für die Flasche und groß für den Karton.":("You can choose several, for example small for the bottle and large for the box.","Puedes elegir varios, por ejemplo pequeño para la botella y grande para la caja."),
+"Der Druckdialog deines Geräts öffnet sich. Wähle dort „Tatsächliche Größe“ bzw. 100 %, damit die Etiketten maßgetreu bleiben. Jede Größe beginnt auf einem neuen Bogen, damit du das passende Etikettenpapier einlegen kannst.":("Your device's print dialog opens. Choose “Actual size” or 100 % there so the labels keep their exact size. Each size starts on a new sheet so you can load the matching label paper.","Se abre el diálogo de impresión. Elige «Tamaño real» o 100 % para que las etiquetas conserven su tamaño. Cada tamaño empieza en una hoja nueva para que cargues el papel adecuado."),
+})
+P7.extend([(r"^(Klein 38×21|Mittel 48×25|Groß 63×38) mm · Stück je Rohstoff$",r"\1 mm · pieces per raw material",r"\1 mm · unidades por materia prima"),(r"^(\d+) Etiketten? drucken$",r"Print \1 label(s)",r"Imprimir \1 etiqueta(s)")])
