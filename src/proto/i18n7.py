@@ -641,3 +641,15 @@ N7.update({
 "Alle Rezepte im aktuellen Stand.":("All recipes in their current version.","Todas las recetas en su versión actual."),
 })
 P7.extend([(r"^(\d+) Versionen insgesamt$",r"\1 versions in total",r"\1 versiones en total"),(r"^(\d+) von (\d+) mit deinem Lager$",r"\1 of \2 with your stock",r"\1 de \2 con tu almacén"),(r"^(\d+) Einsatzzwecke$",r"\1 purposes",r"\1 usos"),(r"^Ø ([\d,]+) Sterne$",r"Ø \1 stars",r"Ø \1 estrellas")])
+N7.update({
+"Rezepte teilen":("Share recipes","Compartir recetas"),"Ausgewählte Rezepte als Datei weitergeben oder zurückspielen":("Pass selected recipes on as a file or restore them","Pasa recetas seleccionadas como archivo o restáuralas"),
+"Module & Ablauf":("Modules & procedure","Módulos y procedimiento"),"Bausteine und Standard-Ablauf":("Blocks and default procedure","Bloques y procedimiento estándar"),
+"Sie sind fest vorgegeben, weil die Dokumente zum Drucken sie verwenden.":("They are fixed because the printed documents use them.","Son fijos porque los documentos impresos los usan."),
+"Diese Bausteine bietest du beim Schreiben eines Rezepts an. Sie sind fest vorgegeben, weil die Dokumente zum Drucken sie verwenden. Bereits angelegte Module bleiben erhalten.":("These blocks are offered when writing a recipe. They are fixed because the printed documents use them. Modules already created are kept.","Estos bloques se ofrecen al escribir una receta. Son fijos porque los documentos impresos los usan. Los módulos ya creados se conservan."),
+"Diese Titel setzt „Standard-Ablauf einfügen“ als leere Arbeitsschritte in ein Rezept ein. Zum Umsortieren ziehst du am Griff.":("“Insert default procedure” adds these titles as empty work steps to a recipe. Drag the handle to reorder.","«Insertar procedimiento estándar» añade estos títulos como pasos vacíos. Arrastra el asa para reordenar."),
+"Genauigkeit der Mengen":("Accuracy of amounts","Precisión de las cantidades"),
+"Getrennt einstellbar: im Lager reichen meist ganze Gramm oder Milliliter, im Rezeptbuch wiegst du genauer.":("Set separately: whole grams or millilitres are usually enough in stock; in the recipe book you weigh more precisely.","Se ajusta por separado: en el almacén suelen bastar gramos o mililitros enteros; en el recetario pesas con más precisión."),
+"Lager (Mengen anzeigen)":("Stock (display amounts)","Almacén (mostrar cantidades)"),"Rezeptbuch (Rechner und Werkbank)":("Recipe book (calculator and workbench)","Recetario (calculadora y banco de trabajo)"),
+"ganze g / ml":("whole g / ml","g / ml enteros"),
+"Mit einer Küchenwaage wählst du 1 g oder 0,5 g, mit einer Feinwaage 0,01 g.":("With kitchen scales choose 1 g or 0.5 g, with precision scales 0.01 g.","Con una báscula de cocina elige 1 g o 0,5 g, con una de precisión 0,01 g."),
+})
