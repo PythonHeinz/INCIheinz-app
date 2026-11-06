@@ -165,3 +165,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Katalog-Vorbefüllung vorbereitet: `einsatzOf(i)` fällt auf `CM[cid].e0/e1` zurück, sobald der Katalog diese Felder bekommt (noch keine Daten, keine eigenen Grenzwerte in der App).
 - Dosierung prüfen (`js28.js`): Rezept wählen → Anteil je Zutat an der Rezeptsumme gegen den Bereich: Prüfen (zu niedrig/zu hoch) · Im Bereich · Ohne Einsatzbereich. Tippen öffnet Dialog mit zwei Wegen: Rohstoff im Bearbeiten-Modus öffnen oder Rezept ansehen. Test t80.
 - Offen: CSV-Export/-Import und Spalten der Lagerliste kennen das Feld noch nicht.
+
+## Dosierung final, Katalogfelder Dichte/Einsatz vorbereitet
+- Dosierung prüfen: Reihenfolge Prüfen (rot, mit Abstand in %-Punkten) → Im Bereich (grün) → Ohne Einsatzbereich. Katalogwerte werden als „Katalog-Richtwert“ gekennzeichnet.
+- Katalog-Schema: optionale Felder `d` (Dichte g/ml), `e0`/`e1` (Einsatz %), `eq` (Herkunft). `catApply`/`sheetCatUpd` vergleichen und übernehmen sie jetzt (vorher nur n,i,k,h,a,u,s,q,p, neue Felder wären stumm ignoriert worden). Leere Nutzerdichte wird aus `d` gefüllt (beim Update, beim Start und bei neuen Rohstoffen via `mk`); eigene Werte bleiben. Einsatz: eigene `dmin/dmax` vor Katalog `e0/e1`.
+- `regeln.md` Regel 8 angepasst (Ausnahme Richtwerte). Anleitung für den Katalog-Chat: `src/KATALOG_ERWEITERUNG.md` (Kopie auf dem PC in INCI-App-Projekt/). Tests t80, t81.
