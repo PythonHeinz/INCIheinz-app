@@ -43,10 +43,13 @@ if(o.eck){const cells=[[TT('Einsatzzweck'),d.zweck],[TT('Ergibt'),d.ergibt],[TT(
 for(let i=0;i<cells.length;i+=3){const row=cells.slice(i,i+3);const cw=CW/3;const ls=row.map(a=>pdfWrap(a[1],cw-12,11,true));const h=14+Math.max(...ls.map(l=>l.length))*14+8;need(h);y+=8;
 row.forEach((a,k)=>{const x=M+k*cw;T(x,y+8,a[0].toUpperCase(),7.5,false,PDFX.G);ls[k].forEach((l,j)=>T(x,y+23+j*14,l,11,true,PDFX.K))});y+=h-8}}
 // Zutaten
-head(TT('Zutaten'));
-d.phasen.forEach(p=>{const showName=p.typ||d.phasen.length>1;if(showName){need(40);y+=6;T(M,y+11,TT(p.name),11,true,PDFX.K);y+=18}
-p.z.forEach(z=>{need(18);T(M+2,y+12,rzName(z),10.5,false,PDFX.K);T(M+CW-62,y+12,nf(z.g,2)+' g',10.5,false,PDFX.K,'r');T(M+CW,y+12,nf(z.g/sum*100,1)+' %',9,false,PDFX.G,'r');y+=18;LN(M,y,M+CW)})});
-need(24);y+=6;T(M+2,y+12,TT('Summe'),10.5,true,PDFX.K);T(M+CW-62,y+12,nf(sum,2)+' g',10.5,true,PDFX.K,'r');y+=20;
+const hl=rzHeadList(d);head(TT('Zutaten'));
+const rowZ=(n,g,pc)=>{need(18);T(M+2,y+12,n,10.5,false,PDFX.K);T(M+CW-62,y+12,nf(g,2)+' g',10.5,false,PDFX.K,'r');if(pc)T(M+CW,y+12,nf(g/sum*100,1)+' %',9,false,PDFX.G,'r');y+=18;LN(M,y,M+CW)};
+const sumRow=()=>{need(24);y+=6;T(M+2,y+12,TT('Summe'),10.5,true,PDFX.K);T(M+CW-62,y+12,nf(sum,2)+' g',10.5,true,PDFX.K,'r');y+=20};
+if(hl.multi){hl.rows.forEach(r=>rowZ(r.n,r.g,1));sumRow();head(TT('Phasen'))}
+d.phasen.forEach(p=>{if(!p.z.length)return;const showName=p.typ||d.phasen.length>1;if(showName){need(40);y+=6;T(M,y+11,TT(p.name),11,true,PDFX.K);y+=18}
+p.z.forEach(z=>rowZ(rzName(z),z.g,!hl.multi))});
+if(!hl.multi)sumRow();
 // Ablauf und Hinweise
 if(o.ablauf&&d.mod.length){const steps=d.mod.filter(m=>m.t==='schritt'),notes=d.mod.filter(m=>m.t!=='schritt');
 if(steps.length){head(TT('Zubereitung'));steps.forEach((m,n)=>{const ls=pdfWrap([m.titel,m.text].filter(Boolean).join('\n'),CW-26,10.5,false);need(Math.min(ls.length,3)*15+10);y+=3;T(M+2,y+13,(n+1)+'.',10.5,true,PDFX.A);

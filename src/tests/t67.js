@@ -21,7 +21,7 @@ await T(()=>{const c=document.querySelectorAll('#sheet input[type=checkbox]')[0]
 chk('Wasser in Phase A, Liste hat noch 2',await T(()=>RE.d.phasen[1].z.length===1&&RE.d.phasen[0].z.length===2));
 await T(()=>rzNewPhase('B'));await T(()=>{[...document.querySelectorAll('#sheet input[type=checkbox]')].slice(0,2).forEach(c=>{c.checked=true;c.dispatchEvent(new Event('change'))})});await T(()=>rzAssignDo());
 chk('Rest in Phase B, Liste leer',await T(()=>RE.d.phasen[2].z.length===2&&RE.d.phasen[0].z.length===0));
-chk('Leere Liste wird nicht gezeigt, Phasen sichtbar',await T(()=>!document.querySelector('.rz-pool')&&document.querySelectorAll('.rz-ph').length===2));
+chk('Leere Liste wird nicht gezeigt, Phasen sichtbar',await T(()=>!document.querySelector('.rz-pool .rz-zr')&&!!document.querySelector('.rz-pool .rz-ref')&&document.querySelectorAll('.rz-ph:not(.rz-pool)').length===2));
 // Phasenmenü nicht leer
 await T(()=>rzPhMenu(1));chk('Phasenmenü hat Inhalt',await T(()=>/phase entfernen/i.test(document.getElementById('sheet').innerText)&&/art der phase/i.test(document.getElementById('sheet').innerText)));
 await T(()=>rzPhType(2,'C'));chk('Typ wechselt Namen',await T(()=>RE.d.phasen[2].typ==='C'&&/Wärmeempfindliche/.test(RE.d.phasen[2].name)));

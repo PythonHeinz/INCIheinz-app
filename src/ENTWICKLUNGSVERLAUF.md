@@ -132,3 +132,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Neue Dialoge in der Bildschirmmitte (js26.js, openDlg): Versionsvergleich grafisch gruppiert (Zutaten, Ablauf und Hinweise, Eckdaten; + neu, ↔ geändert, − entfernt, Mengenänderung mit Delta, gleiche Einträge zusammengefasst) und Markieren mit genau zwei Kacheln (Favorit, nicht verwendbar; erneutes Tippen entfernt).
 - Rezept teilen von der Rezeptseite fragt nicht mehr nach dem Rezept. Teilen ohne Titel-Parameter (Test gegen den Gmail-Anhangfehler). Tests: t75.js.
 - „Werkbank“ ist nur ein interner Name im Code; in der App heißt es „Mischen“.
+
+## Gesamte Zutatenliste, Mengen schreibgeschützt (06.11.2026)
+- Editor: Die Liste „Zutaten“ bleibt vollständig. Zugeordnete Zutaten stehen weiter oben (in Reihenfolge der Phasen, mit Menge und Phasen-Marke, Tippen springt zur Phase), noch nicht zugeordnete sind darunter editierbar. Mengen bearbeitet man in der Phase bzw. in der Liste für Unzugeordnete.
+- Veröffentlichungen (Rezeptkarte/Buch, PDF Rezept teilen, Text): bei mehreren Phasen zuerst die gesamte Zutatenliste mit Summe, dann „Phasen“ mit den Zutaten je Phase. Bei einer Gruppe (Küchenrezept-Stil) nur eine Liste. Text-Import ignoriert den Block „Zutaten gesamt“ (Test: kein Doppeln).
+- Rezeptseite: Mengen der Zutaten nur noch Anzeige. Die Gesamtmenge bleibt als Umrechner editierbar (Änderung ist nicht gespeichert). Test: t76.js.

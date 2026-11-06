@@ -150,7 +150,7 @@ d.phasen=d.phasen.filter(p=>p.z.length);
 return {d,warn,ing}}
 
 /* Vorverarbeitung: Fließtext in Zeilen zerlegen (Trenner |, Phasen mitten im Satz, Zutaten per Komma, Schritte als Sätze) */
-function rzPre(raw){let t=String(raw||'').replace(/\r/g,'').replace(/[ \t]+/g,' ').replace(/\s*[|¦]\s*/g,'\n');
+function rzPre(raw){let t=String(raw||'').replace(/\r/g,'').replace(/^Zutaten gesamt[^\n]*\n(?:[^\n]+\n)*\n?/im,'').replace(/^Phasen[ \t]*\n/im,'').replace(/[ \t]+/g,' ').replace(/\s*[|¦]\s*/g,'\n');
 const AMT=/\d[\d.,]*\s*(?:g|kg|mg|ml|l|%)(?![a-zäöü])/i;
 t=t.replace(/(phase\s*[a-d1-4]\s*:)([^\n]*?)(?=phase\s*[a-d1-4]\s*:|\n|$)/gi,(m,h,r)=>AMT.test(r)?'\n'+h+'\n'+r.trim()+'\n':'\n'+h+r+'\n');
 const HD=/^(zutaten|inhaltsstoffe|zutatenliste|zubereitung|anleitung|herstellung|vorgehen|vorgehensweise|arbeitsschritte|ablauf)\s*:\s*(.+)$/i;
@@ -223,7 +223,7 @@ if(RZX.kind==='chg')t+=' · '+rzChgAll().filter(c=>RZX.ids.has(c.rez)).length+' 
 e.textContent=t}
 function rzTextOf(id,vn){const r=rzGet(id);const v=rzVer(r,vn||rzCurV(r).n);const d=v.d;const sum=rzSum(d);const L=[d.name,'Version '+v.n+' · '+dde(v.date.slice(0,10))];
 if(d.zweck)L.push('Einsatzzweck: '+d.zweck);if(d.ph)L.push('Ziel-pH: '+d.ph);if(d.ergibt)L.push('Ergibt: '+d.ergibt);if(d.zeit)L.push('Zeitaufwand: '+rzZeit(d.zeit));if(d.grad)L.push('Schwierigkeit: '+d.grad);
-L.push('','Zutaten');d.phasen.forEach(p=>{if(p.typ||d.phasen.length>1)L.push('',p.name+':');p.z.forEach(z=>L.push(rzIv(z.g)+' g '+rzName(z)))});L.push('Summe: '+rzIv(sum)+' g');
+const hl=rzHeadList(d);if(hl.multi){L.push('','Zutaten gesamt');hl.rows.forEach(x=>L.push(rzIv(x.g)+' g '+x.n));L.push('Summe: '+rzIv(sum)+' g','','Phasen')}else L.push('','Zutaten');d.phasen.forEach(p=>{if(!p.z.length)return;if(p.typ||d.phasen.length>1)L.push('',p.name+':');p.z.forEach(z=>L.push(rzIv(z.g)+' g '+rzName(z)))});if(!hl.multi)L.push('Summe: '+rzIv(sum)+' g');
 const st=d.mod.filter(m=>m.t==='schritt');if(st.length){L.push('','Zubereitung');let n=0;d.mod.forEach(m=>{if(m.t==='schritt'){n++;L.push(n+'. '+[m.titel,m.text].filter(Boolean).join(': '))}})}
 d.mod.filter(m=>m.t!=='schritt').forEach(m=>{const k={hinweis:m.titel||'Hinweis',halt:'Haltbarkeit',abfuell:'Abfüllung',notiz:m.titel||'Notiz'}[m.t];L.push('',k+': '+(m.text||''))});
 const inci=rzInci(d).text;if(inci)L.push('','INCI (Entwurf): '+inci);return L.join('\n')}
