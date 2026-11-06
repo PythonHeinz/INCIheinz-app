@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250));const r={};
+const it=mk(CM['K0787'],{kind:'m',total:100});it.notiz='Mein Lieblingsemulgator';S.items.push(it);catFillOne&&catFillOne(it);go('artikel',it.id);await W();
+r.view=[...document.querySelectorAll('#af2 .txt')].map(b=>b.innerText.replace(/\n+/g,' | '));
+r.styled=document.querySelectorAll('#af2 .txt [data-fh]').length;
+R.edit=true;draw();await W();r.edit=[...document.querySelectorAll('label.fld span[data-fh]')].map(s=>s.innerText.replace(/\n+/g,' | '));
+LANG='en';R.edit=false;draw();await W();r.en=[...document.querySelectorAll('#af2 .txt')].map(b=>b.innerText.replace(/\n+/g,' | ').slice(0,90));
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

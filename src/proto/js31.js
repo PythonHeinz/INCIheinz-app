@@ -48,3 +48,11 @@ try{DEMO.rez.forEach(r=>{r.mod=splitMods(r.mod,r.phasen)})}catch(e){}
 function rzMigSteps(){if(!S||S.migSteps||!Array.isArray(S.rez))return;let n=0;S.rez.filter(r=>r.demo).forEach(r=>(r.vers||[]).forEach(v=>{if(v.d&&Array.isArray(v.d.mod)){const a=v.d.mod.length;v.d.mod=splitMods(v.d.mod,v.d.phasen);n+=v.d.mod.length-a}}));S.migSteps=1;if(n)save()}
 {const l=load;load=async function(){const r=await l.apply(this,arguments);try{rzMigSteps()}catch(e){}return r}}
 {const p=rzParse;rzParse=function(){const r=p.apply(this,arguments);try{if(r&&r.d)r.d.mod=splitMods(r.d.mod,r.d.phasen)}catch(e){}return r}}
+
+/* ---------- Artikelseite: Überschriften der Freitextfelder hierarchisch klar, Hilfetext immer in zweiter Zeile ---------- */
+function fldHead(el,bold){if(!el||el.dataset.fh)return;const t=el.textContent.trim();const k=t.indexOf(' · ');const ti=k<0?t:t.slice(0,k),hi=k<0?'':t.slice(k+3);
+el.dataset.fh=1;el.innerHTML=`<span style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink,inherit)">${esc(ti)}</span>${hi?`<span style="display:block;font-size:.78rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--sub);margin-top:2px">${esc(hi)}</span>`:''}`}
+{const a2=artikel;artikel=function(i){a2.apply(this,arguments);try{
+if(R.edit){['f_beschr','f_verw','f_notiz'].forEach(id=>{const e=document.getElementById(id);const l=e&&e.closest('label');const sp=l&&l.querySelector('span');if(sp)fldHead(sp)})}
+else{document.querySelectorAll('#af2 .txt').forEach(b=>{const s=b.querySelector(':scope > .s');if(!s)return;const t=s.textContent.trim();if(!/^(Beschreibung|Verwendung|Notiz)/.test(t))return;fldHead(s);s.style.marginBottom='4px';if(/^Notiz/.test(t))b.style.fontWeight='600'})}
+if(LANG!=='de')trWalk(document.getElementById('main')||document.body)}catch(e){}}}
