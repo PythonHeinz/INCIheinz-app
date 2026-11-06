@@ -121,3 +121,17 @@ R("inciOpen:['INCI nicht geprüft',","inciOpen:['INCI ungeprüft',")
 R('<meta name="viewport" content="width=device-width,initial-scale=1">','<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">')
 
 R("const COLORDER=['menge','mhd','ordered','neu','chg','preis','inci','verw'];","const COLORDER=['menge','mhd','ordered','neu','chg','preis','verw'];")
+
+# ---- Mengenmodell (Gesamtmenge ist Wahrheit; Gefäße beschreiben nur) ----
+def _seg(a,b):
+    i=t.index(a);j=t.index(b,i)+len(b);return t[i:j]
+R(_seg("const vs=vsum(i),rest=Math.max(0,i.total-vs),pct=",":0;"),"const cs=i.vessels.reduce((a,v)=>a+v.cap,0),pct=cs?Math.min(100,i.total/cs*100):0;")
+R("const st=v.amount<=0?'leer':v.amount>=v.cap-1e-9?'voll':'angebrochen';return `","return `")
+R("${fmt(v.amount,i.kind)} / ${fmt(v.cap,i.kind)}${v.ort?","${fmt(v.cap,i.kind)}${v.ort?")
+R("""</div></div><span class="badge ${st==='voll'?'':'u'}">${st}</span></div>`}).join('')""","""</div></div></div>`}).join('')""")
+R("""<div class="bar"><div style="width:${pct}%"></div></div>""","""${i.vessels.length?`<div class="bar"><div style="width:${pct}%"></div></div>`:''}""")
+R(_seg('<div style="display:flex;margin-top:12px;border-top:1px solid var(--line);padding-top:10px"><div style="flex:1"><b style="font-weight:600">${fmt(vs,i.kind)}','ohne Gefäß</div></div></div>'),
+  """${i.vessels.length?`<div class="s" style="margin-top:10px">${i.vessels.length} ${i.vessels.length>1?'Gefäße':'Gefäß'} · Nenninhalt ${fmt(cs,i.kind)}${i.total>0&&i.total<cs-1e-9?' · angebrochen':''}</div>`:''}""")
+R("Keine Gefäße – nur nötig, wenn du Teilmengen getrennt verwalten willst.","Gefäße sind optional: Verpackung und Lagerort festhalten. Die Menge ändern sie nicht.")
+R(_seg("if(tb<vsum(i)-1e-9){","return}"),"")
+R("Gefäße sind optional und nur nötig, wenn du Teilmengen getrennt verwalten willst.","Gefäße sind optional und halten fest, in welcher Verpackung und wo etwas liegt. Die Menge ändern sie nicht.")

@@ -58,3 +58,12 @@ Design-Reviews je Seite (Lager, Eingabe, Neu, Einkauf, Mehr), Rezeptbuch (inkl. 
 ## QA-Auswertung Rezeptbuch (06.11.2026)
 Aus einem externen Bericht (Video-Auswertung) übernommen: Mischbar-Logik (Menge eingetragen = verfügbar, solange sie reicht; fehlende Dichte zählt nicht als „nicht vorhanden“, Hinweis mit Eintrag per Tipp in Rezeptansicht, Werkbank und Abschluss; Zustand „Menge offen“ nur wenn gar keine Menge eingetragen ist; Wasser frei), Filter-Chip „Mischbar“ entfernt (Tab bleibt), Ziffern mit tabular-nums, Hinweis-Modul startet mit „Achtung“ (Chips Achtung/Tipp/Sicherheit), Modulkarte mit Icon-Leiste ▲ ▼ 🗑 (44 px) und „+“ zum Einfügen an Ort und Stelle, Auto-Häkchen und Enter-Weiterschalten in der Werkbank, Lagerabzug standardmäßig aus wenn nichts abziehbar, Mehr-Menü im Rezeptbereich (Rezeptbuch drucken, Rezepte sichern), kompakte Versionsliste mit Aufklappen, Speichern-Dialog mit einklappbarer Notiz.
 Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionierung: jedes Speichern = neue Version), Bottom-Bar auf 3 Tabs, Anker-Schloss (Anker-Rechner existiert, Mengenfelder nur sichtbarer gemacht). Die Charge-Notiz war entgegen dem Bericht schon editierbar; eingewogene Mengen bleiben bewusst gesperrt. Test: src/tests/t62.js.
+
+## Mengenmodell (06.11.2026, Hauptchat)
+- **Gesamtmenge (`total`) ist die einzige Wahrheit.** Gefäße beschreiben nur Verpackungsart, Nenninhalt und Lagerort; sie ändern die Menge nie. Anders als vorher gibt es keinen Füllstand je Gefäß und keine Doppelzählung (200 g beim Anlegen + später eine Dose = weiter 200 g).
+- Beim Hinzufügen des ersten Gefäßes ist der Nenninhalt mit der vorhandenen Menge vorbelegt. Ist noch keine Menge eingetragen, setzt die App Anzahl × Nenninhalt.
+- „Angebrochen“ wird abgeleitet: Menge kleiner als Summe der Nenninhalte. Die App bildet den physischen Zustand nicht ab (zwei Gefäße à 100 g, 160 g übrig: eines ist angebrochen, mehr nicht).
+- Migration: keine nötig. `total` enthielt schon alles; das alte Feld `amount` je Gefäß bleibt in alten Daten, wird aber ignoriert. Bestehende Backups laden unverändert.
+- Rezeptbuch: der Lagerabzug (`rzTake`) ändert nur `total`.
+- Code: `src/proto/js21.js` (neue Gefäß-Fenster, `rzTake`), R-Patches am Ende von `p7b.py`. Test: `src/tests/t63.js`.
+- Offene Folgen (noch nicht umgesetzt): Lagerort gehört heute an Gefäße; ein Lagerort am Artikel ohne Gefäß fehlt noch. Gesamtmengen-Anpassungen aus dem QA-Bericht (Basiseinheit, Schnellbuchung +1 Gebinde) stehen noch aus.

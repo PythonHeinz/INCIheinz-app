@@ -545,3 +545,17 @@ P7.extend([
 (r'^([\d\.]+ \d\d:\d\d) · (\d+)× gemischt · aufbauend auf v(\d+)$',r'\1 · mixed \2× · based on v\3',r'\1 · mezclada \2× · basada en v\3'),
 (r'^([\d\.]+ \d\d:\d\d) · (\d+)× gemischt$',r'\1 · mixed \2×',r'\1 · mezclada \2×'),
 (r'^([\d\.]+ \d\d:\d\d) · aufbauend auf v(\d+)$',r'\1 · based on v\2',r'\1 · basada en v\2')])
+
+# ---- Mengenmodell ----
+_o=[k for k in N7 if 'Gefäße sind optional und nur nötig' in k]
+for _k in _o:
+    _e,_s=N7[_k]
+    N7[_k.replace('Gefäße sind optional und nur nötig, wenn du Teilmengen getrennt verwalten willst.','Gefäße sind optional und halten fest, in welcher Verpackung und wo etwas liegt. Die Menge ändern sie nicht.')]=(
+      _e.replace('Containers are optional and only needed if you want to track partial quantities separately.','Containers are optional and record the packaging and where something is stored. They do not change the quantity.'),
+      _s.replace('Los recipientes son opcionales y solo hacen falta si quieres gestionar cantidades parciales por separado.','Los recipientes son opcionales y registran el envase y dónde se guarda. No cambian la cantidad.'))
+N7.update({
+"Gefäße sind optional: Verpackung und Lagerort festhalten. Die Menge ändern sie nicht.":("Containers are optional: record packaging and storage location. They do not change the quantity.","Los recipientes son opcionales: registran el envase y el lugar. No cambian la cantidad."),
+"Die Menge des Rohstoffs bleibt unverändert.":("The quantity of the raw material stays unchanged.","La cantidad de la materia prima no cambia."),
+"Die Menge des Rohstoffs bleibt unverändert. Ist noch keine Menge eingetragen, setzt die App Anzahl × Nenninhalt.":("The quantity stays unchanged. If no quantity is entered yet, the app sets count × nominal volume.","La cantidad no cambia. Si aún no hay cantidad, la app usa cantidad × contenido nominal."),
+"Gefäß geändert":("Container changed","Recipiente cambiado")})
+P7.extend([(r"^(\d+) Gefäße? · Nenninhalt (.+?) · angebrochen$",r"\1 container(s) · nominal volume \2 · partly used",r"\1 recipiente(s) · contenido nominal \2 · empezado"),(r"^(\d+) Gefäße? · Nenninhalt (.+)$",r"\1 container(s) · nominal volume \2",r"\1 recipiente(s) · contenido nominal \2")])
