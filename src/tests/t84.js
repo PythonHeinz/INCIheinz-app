@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};
+await p.evaluate(()=>{S.expert=false;sheetAppSet()});await p.waitForTimeout(300);
+let t=await p.evaluate(()=>document.body.innerText);
+chk('Katalog-Abschnitt ohne Expertenmodus',/Katalog aktualisieren/.test(t)&&/Einträge/.test(t));
+await p.evaluate(()=>{const r=[...document.querySelectorAll('.row')].find(x=>/Katalog aktualisieren/.test(x.innerText));r.click()});await p.waitForTimeout(600);
+t=await p.evaluate(()=>document.body.innerText);chk('Dialog öffnet',/Installiert:/.test(t));
+await p.evaluate(()=>{LANG='en';sheetAppSet()});await p.waitForTimeout(300);
+t=await p.evaluate(()=>document.body.innerText);console.log(/entries/.test(t));
+console.log('ok',ok,'bad',bad,errs);await b.close()})();

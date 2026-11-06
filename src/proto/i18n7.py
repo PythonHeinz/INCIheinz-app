@@ -230,6 +230,7 @@ P7=[
 (r"^frei ab (.+)$",r"free from \1",r"gratis desde \1"),
 (r"^· gedruckt (.+)$",r"· printed \1",r"· impresa \1"),
 (r"^Katalog (.*) · (\d+) Einträge$",r"Catalog \1 · \2 entries",r"Catálogo \1 · \2 entradas"),
+(r"^Grundkatalog der App · (\d+) Einträge$",r"Built-in catalog of the app · \1 entries",r"Catálogo base de la app · \1 entradas"),
 (r"^Deine: (.+)$",r"Yours: \1",r"Tuyo: \1"),
 (r"^Katalog: (.+)$",r"Catalog: \1",r"Catálogo: \1"),
 ]
