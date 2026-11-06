@@ -114,3 +114,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - „Rezept teilen“ (Daten): ein Rezept wählen, Foto/Eckdaten/Ablauf/INCI-Entwurf an- oder abwählen, echte PDF-Datei (A4, eigener kleiner PDF-Schreiber in js24.js, Foto als Banner, Zutaten mit Anteilen, Zubereitung, Hinweise, Fußzeile mit Seitenzahl), Weitergabe über das Teilen-Menü des Geräts, sonst Download. Auch als Button auf der Rezeptseite. PDF-Beschriftungen folgen der App-Sprache.
 - Rezeptdaten (.json) liegen jetzt im Export (Daten), Import liest sie weiterhin.
 - Idee Redaktionssystem/Live-Vorschau in IDEEN_SPAETER.md notiert. Test: t72.js.
+
+## Rückwege in allen Fenstern, Drucken/Export entflochten, PDF gehärtet (06.11.2026)
+- js25.js: Alle Fenster, die aus einem anderen Fenster geöffnet werden, zeigen oben links einen Pfeil zurück (Mehr → Untermenü → Unterfenster). Der Pfeil führt in das vorherige Fenster, das X schließt alles. Einstellungen ändern (Sprache, Genauigkeit) lässt Fenster und Pfeil stehen. Die unteren „Zurück“-Buttons in Rezept teilen und im Export nutzen denselben Weg. Test: t73.js (läuft alle Menüeinträge zwei Ebenen tief durch).
+- Drucken und Export getrennt: Chargenprotokoll (Drucken, nur PDF) und Chargentabelle (Export: Excel, CSV, Text). Rezeptkarte nur PDF, Text liegt im Export.
+- Rezept teilen: Dateiname nur ASCII, Binär-Kommentar im PDF-Kopf, zusätzlich „Als Datei speichern“. PDF besteht qpdf, PyMuPDF und pypdf (strict).
+- Offen: zweiter Platz der unteren Leiste im Rezeptbuch (Mischbar entfällt als Eintrag, wird Filter in der Rezeptliste).

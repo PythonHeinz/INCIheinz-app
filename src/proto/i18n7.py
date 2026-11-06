@@ -715,3 +715,14 @@ N7.update({
 "Seite":("Page","Página"),"privates Rezeptbuch":("private recipe book","recetario privado"),"Gesamtmenge":("Total amount","Cantidad total"),"Summe":("Total","Total"),
 "Zubereitung":("Preparation","Preparación"),"Hinweise":("Notes","Notas"),"Version":("Version","Versión"),"Eckdaten":("Key data","Datos clave"),"Ablauf und Hinweise":("Steps and notes","Pasos y notas"),
 })
+_new={
+"Ein Rezept pro Seite, zum Drucken oder als PDF speichern":("One recipe per page, to print or save as PDF","Una receta por página, para imprimir o guardar como PDF"),
+"Deine Chargen mit Soll- und Ist-Mengen als Dokument zum Drucken":("Your batches with target and actual amounts as a document to print","Tus lotes con cantidades previstas y reales como documento para imprimir"),
+"Tabelle deiner Chargen mit Soll- und Ist-Mengen, als Excel, CSV oder Text":("Table of your batches with target and actual amounts, as Excel, CSV or text","Tabla de tus lotes con cantidades previstas y reales, como Excel, CSV o texto"),
+"Gut lesbar, zum Kopieren oder Ablegen. Die App kann ihn über Import wieder einlesen":("Easy to read, to copy or file away. The app can read it back in via Import","Fácil de leer, para copiar o archivar. La app puede volver a leerlo con Importar"),
+"Chargentabelle":("Batch table","Tabla de lotes"),
+"Als Datei speichern":("Save as file","Guardar como archivo"),
+"PDF gespeichert":("PDF saved","PDF guardado"),
+}
+for _k,_v in list(_new.items()):
+    N7[_k]=_v;N7[_k+'.']=(_v[0]+'.',_v[1]+'.')

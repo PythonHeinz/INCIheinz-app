@@ -11,7 +11,7 @@ let i=2;while(i<u.length){if(u[i]!==0xFF){i++;continue}const mk=u[i+1];if(mk>=0x
 function pdfBuild(pages,imgs){const enc=new TextEncoder();const parts=[];let off=0;const offs=[];const add=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);off+=b.length};
 const nI=imgs.length;const firstImg=5;const firstPage=firstImg+nI;const N=pages.length;
 const obj=(n,body)=>{offs[n]=off;add(n+' 0 obj\n'+body+'\nendobj\n')};
-add('%PDF-1.4\n');offs.length=0;
+add('%PDF-1.4\n%âãÏÓ\n');offs.length=0;
 obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
 obj(2,'<< /Type /Pages /Kids ['+pages.map((_,k)=>(firstPage+k*2)+' 0 R').join(' ')+'] /Count '+N+' >>');
 obj(3,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
@@ -59,14 +59,14 @@ if(c)pages.push(c);
 const N=pages.length;const ft=pages.map((p,k)=>{c='';LN(M,806,M+CW);T(M,822,'INCIheinz  ·  '+TT('privates Rezeptbuch'),8,false,PDFX.G);T(M+CW,822,TT('Seite')+' '+(k+1)+' / '+N,8,false,PDFX.G,'r');return p+c});
 return pdfBuild(ft,imgs)}
 let RZS=null;
-function rzShareName(n){return (String(n||'Rezept').replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()||'Rezept')+'.pdf'}
+function rzShareName(n){const a=String(n||'Rezept').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/Ä/g,'Ae').replace(/Ö/g,'Oe').replace(/Ü/g,'Ue').replace(/ß/g,'ss').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9._-]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');return (a||'Rezept')+'.pdf'}
 function sheetRzShare(id){const all=rzAll();if(!all.length){sheetMsg('Noch keine Rezepte','Lege zuerst ein Rezept an, dann kannst du es hier teilen.');return}
 if(id)RZS={id,o:{foto:1,eck:1,ablauf:1,inci:0}};else if(!RZS||!rzGet(RZS.id))RZS={id:(all.filter(r=>!r.demo)[0]||all[0]).id,o:{foto:1,eck:1,ablauf:1,inci:0}};
 const L=all.slice().sort((a,b)=>FOLD(rzCurV(a).d.name)<FOLD(rzCurV(b).d.name)?-1:1);const opts=[['foto','Foto'],['eck','Eckdaten'],['ablauf','Ablauf und Hinweise'],['inci','INCI-Entwurf']];
 openSheet(`<h2>Rezept teilen</h2><div class="s">Dein Rezept als gestaltetes PDF, zum Zeigen oder Verschicken, zum Beispiel per Messenger oder E-Mail.</div>
 <div class="cap" style="margin:14px 0 2px">Welches Rezept?</div><div style="max-height:30vh;overflow:auto">${L.map(r=>{const v=rzCurV(r);return `<label class="chk" style="padding:8px 0;border-bottom:1px solid var(--line);margin:0;align-items:flex-start"><input type="radio" name="rzsr" ${RZS.id===r.id?'checked':''} onchange="RZS.id='${r.id}'"> <span><span class="nm">${esc(v.d.name)}</span>${r.demo?' <span class="s">Testrezept</span>':''}<br><span class="s">Version ${v.n}${r.photo?' · Foto':''}</span></span></label>`}).join('')}</div>
 <div class="cap" style="margin:14px 0 6px">Das soll enthalten sein</div><div class="tb" style="gap:8px;flex-wrap:wrap">${opts.map(x=>`<button type="button" class="pill ${RZS.o[x[0]]?'on':''}" style="width:auto;height:auto" onclick="RZS.o['${x[0]}']=RZS.o['${x[0]}']?0:1;this.classList.toggle('on')">${x[1]}</button>`).join('')}</div>
-<div class="btns"><button class="btn" onclick="rzShareGo()">Als PDF teilen</button><button class="btn sec" onclick="sheetMehr()">Zurück</button></div>`)}
-function rzShareGo(){const r=RZS&&rzGet(RZS.id);if(!r){toast('Bitte ein Rezept wählen');return}
+<div class="btns"><button class="btn" onclick="rzShareGo()">Als PDF teilen</button><button class="btn sec" onclick="rzShareGo(1)">Als Datei speichern</button><button class="btn sec" onclick="sheetBack()">Zurück</button></div>`)}
+function rzShareGo(dl){const r=RZS&&rzGet(RZS.id);if(!r){toast('Bitte ein Rezept wählen');return}
 let blob;try{blob=rzPdf(r.id,rzCurV(r).n,RZS.o)}catch(e){console.error(e);toast('PDF konnte nicht erstellt werden');return}
-const nm=rzShareName(rzCurV(r).d.name);SHARE22=1;try{dlBlob(nm,blob)}finally{SHARE22=0}closeSheet();toast('PDF erstellt')}
+const nm=rzShareName(rzCurV(r).d.name);SHARE22=dl?0:1;try{dlBlob(nm,blob)}finally{SHARE22=0}closeSheet();toast(dl?'PDF gespeichert':'PDF erstellt')}

@@ -5,11 +5,11 @@ let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}}
 const T=async(f,a)=>{const r=await p.evaluate(f,a);await p.waitForTimeout(250);return r};
 await T(()=>{S.expert=true;demoLoad();tab('rez')});
 // Zurück-Bug: Daten-Export -> Chargenprotokoll -> Zurück
-await T(()=>sheetRzExport('data'));await T(()=>sheetRzPub('chg'));await T(()=>{[...document.querySelectorAll('.btn.sec')].find(x=>x.textContent==='Zurück').click()});
+await T(()=>{tab('rez');sheetMehr()});await T(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/^Export/.test(r.innerText)).click()});await T(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/Chargentabelle/.test(r.innerText)).click()});await T(()=>{[...document.querySelectorAll('.btn.sec')].find(x=>x.textContent==='Zurück').click()});
 let h=await p.evaluate(()=>document.querySelector('.sheet,#sheet,.modal')?document.body.innerText:'');
 chk('Zurück -> Rezepte exportieren',/Rezepte exportieren/.test(h)&&!/drucken/i.test(h.split('Rezepte exportieren')[0].slice(-40)));
 chk('JSON im Export',/Rezeptdaten \(\.json\)/.test(h));
-await T(()=>sheetRzExport('pub'));await T(()=>sheetRzPub('chg'));await T(()=>{[...document.querySelectorAll('.btn.sec')].find(x=>x.textContent==='Zurück').click()});
+await T(()=>{sheetMehr()});await T(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/Rezepte & Chargen/.test(r.innerText)).click()});await T(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/Chargenprotokoll/.test(r.innerText)).click()});await T(()=>{[...document.querySelectorAll('.btn.sec')].find(x=>x.textContent==='Zurück').click()});
 h=await p.evaluate(()=>document.body.innerText);chk('Zurück -> drucken',/Rezepte & Chargen drucken/i.test(h)||/Rezepte &amp; Chargen drucken/.test(h));
 // Menü
 await T(()=>sheetMehr());h=await p.evaluate(()=>document.body.innerText);chk('Menü Rezept teilen',/Rezept teilen/.test(h)&&!/Rezepte teilen/.test(h));
