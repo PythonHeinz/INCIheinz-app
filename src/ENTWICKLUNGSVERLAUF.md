@@ -156,3 +156,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Rechner „Rezeptanalyse"
 - Rezept aus Liste wählen (Suche), dann nur Anzeige: Kacheln (Wasser/Hydrolate, Öle/Butter/Wachs, Emulgator, Konservierung in %), Anteile je Phase, je Rohstoffart (Katalogkategorie aus Lager `kat` bzw. `CM[cid].k`, Freitext „Wasser/Aqua" erkannt, sonst „Ohne Zuordnung"), Zutaten nach Anteil.
 - Keine Bewertung, keine Grenzwerte (Dosierung kommt als eigener Rechner). Test t79.
+
+## Abstand am Listenende
+- `main#main` unten 128 px (plus Safe-Area), mit Speicherleiste 136 px, in Lager und Rezeptbuch: der letzte Eintrag scrollt frei über den Neu-Knopf (vorher 100 px).
