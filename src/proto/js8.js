@@ -40,7 +40,7 @@ const head=['Lieferant','Rohstoff','Menge','Einheit','Preis (€, geschätzt)','
 let txt='';if(XG==='lief'){let cur=null;rows.forEach(r=>{if(r.l!==cur){cur=r.l;txt+=(txt?'\n':'')+(r.l||'Ohne Lieferant')+'\n'}txt+=`- ${nf(r.m,3)} ${r.u} ${r.n}${r.p!==''?' ('+eur(r.p)+')':''}\n`})}else txt=rows.map(r=>`- ${nf(r.m,3)} ${r.u} ${r.n}${r.l?' ('+r.l+')':''}`).join('\n');
 outFile('inciheinz-einkaufsliste-'+today(),head,rows.map(r=>[r.l,r.n,r.m,r.u,r.p,r.nr,r.st]),XF,txt,'Einkaufsliste')}
 /* Bestandstabelle */
-const XCOLS={name:'Name',inci:'INCI',kat:'Kategorie',menge:'Menge',einheit:'Einheit',ean:'EAN',mhd:'MHD',min:'Mindestmenge',lief:'Lieferant',preis:'Preis (€)',pmenge:'Preis für Menge',verw:'Verwendung',notiz:'Notiz',neu:'Aufgenommen am',chg:'Zuletzt geändert',dens:'Dichte (g/ml)',dmin:'Einsatz von (%)',dmax:'Einsatz bis (%)'};
+const XCOLS={name:'Name',inci:'INCI',kat:'Kategorie',menge:'Menge',einheit:'Einheit',ean:'EAN',mhd:'MHD',min:'Mindestmenge',lief:'Lieferant',preis:'Preis (€)',pmenge:'Preis für Menge',verw:'Verwendung',notiz:'Notiz',neu:'Aufgenommen am',chg:'Zuletzt geändert',beschr:'Beschreibung / Funktion',dens:'Dichte (g/ml)',dmin:'Einsatz von (%)',dmax:'Einsatz bis (%)'};
 let XS={scope:'alle',kat:'',pmin:'',pmax:'',cols:{name:1,inci:1,kat:1,menge:1,einheit:1,mhd:1,lief:1,preis:1}};
 const lastB=i=>i.bezug.slice().reverse().sort((x,y)=>x.datum<y.datum?1:x.datum>y.datum?-1:0)[0]||null;
 function xsFilter(){const pmin=num(XS.pmin),pmax=num(XS.pmax),now=new Date();return S.items.filter(i=>{const sc=XS.scope;
@@ -59,7 +59,7 @@ function xsSet(){XS.scope=val('xs1');XS.kat=val('xs2');XS.pmin=val('xs3');XS.pma
 function xsCnt(){const n=xsFilter().length;$('#xcnt').textContent=n+(n===1?' Rohstoff wird exportiert':' Rohstoffe werden exportiert')}
 function xsRender(){$('#xcols').innerHTML=Object.keys(XCOLS).map(k=>`<button class="pill" style="${XS.cols[k]?'background:var(--pri);color:#fff;border-color:var(--pri)':''}" onclick="XS.cols['${k}']=XS.cols['${k}']?0:1;xsRender()">${XCOLS[k]}</button>`).join('');xsCnt()}
 function xsGo(){const l=xsFilter();const ks=Object.keys(XCOLS).filter(k=>XS.cols[k]);if(!l.length){toast('Kein Rohstoff passt zum Filter');return}if(!ks.length){toast('Bitte mindestens eine Spalte wählen');return}
-const row=i=>{const b=lastB(i);const u=pickU(i.total,i.kind);const m={name:i.name,inci:i.inci,kat:i.kat,menge:i.unk?'':Math.round(i.total/U[u].f*1000)/1000,einheit:i.unk?'':u,ean:i.ean||'',mhd:i.mhd||'',min:i.min?fmt(i.min,i.kind):'',lief:b?b.lief:'',preis:b?b.preis:'',pmenge:b?fmt(b.menge,b.kind):'',verw:i.verw,notiz:i.notiz,neu:i.neu||'',chg:i.chg||i.neu||'',dens:i.dens>0?i.dens:'',dmin:i.dmin>0?i.dmin:'',dmax:i.dmax>0?i.dmax:''};return ks.map(k=>m[k])};
+const row=i=>{const b=lastB(i);const u=pickU(i.total,i.kind);const m={name:i.name,inci:i.inci,kat:i.kat,menge:i.unk?'':Math.round(i.total/U[u].f*1000)/1000,einheit:i.unk?'':u,ean:i.ean||'',mhd:i.mhd||'',min:i.min?fmt(i.min,i.kind):'',lief:b?b.lief:'',preis:b?b.preis:'',pmenge:b?fmt(b.menge,b.kind):'',verw:i.verw,notiz:i.notiz,neu:i.neu||'',chg:i.chg||i.neu||'',dens:i.dens>0?i.dens:'',beschr:i.beschr||'',dmin:einsatzOf(i).lo||'',dmax:einsatzOf(i).hi||''};return ks.map(k=>m[k])};
 const rows=l.map(row);const txt=[ks.map(k=>XCOLS[k]).join('\t')].concat(rows.map(r=>r.map(v=>String(v==null?'':csvNum(v)).replace(/[\t\r\n]+/g,' ')).join('\t'))).join('\n');
 outFile('inciheinz-bestand-'+today(),ks.map(k=>XCOLS[k]),rows,XF,txt,'Bestand')}
 /* Sicherung */

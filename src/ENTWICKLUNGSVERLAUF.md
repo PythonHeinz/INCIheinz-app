@@ -175,3 +175,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - `katalog.json` und `src/katalog_master.json` (identisch): jeder der 1020 Einträge hat jetzt `d`, `e0`, `e1`, `eq` = `null`. Version 1.1.1. Die App ignoriert `null` (kein falsches „ergänzte Angaben“).
 - Export: wählbare Spalten „Dichte (g/ml)“, „Einsatz von/bis (%)“; Import erkennt diese Überschriften und setzt Dichte/Einsatz am Rohstoff.
 - CSV `src/katalog_naturkosmetik.csv` offiziell veraltet (UEBERGABE.md angepasst).
+
+## Katalog 1.1.2: Vorschlagsfelder Form, Beschreibung/Funktion, Verwendung
+- Neue Katalogfelder `f`, `b`, `v`, `bq` (alle `null`), zusammen mit `d`, `e0`, `e1`, `eq`. Version 1.1.2.
+- Mechanismus (`js28.js`): `catFillOne/catFill` kopieren den Katalogwert in das leere Rohstofffeld (`beschr`, `verw`, `form`, `dens`) und merken ihn in `it.fc`. Solange das Feld unverändert dem kopierten Wert entspricht, folgt es Katalogänderungen; jede Änderung durch den Nutzer koppelt es ab (Vorrang). Läuft beim Start, bei neuen Rohstoffen (`mk`) und im Katalog-Update. Form nur aus der festen Liste.
+- Anzeige: Label „Beschreibung / Funktion“ (Artikel, Export-Spalte), Hinweis „Vorschlag aus dem Katalog, ungeprüft“, solange unverändert. Einsatzbereich bleibt Live-Fallback (`einsatzOf`), Export übernimmt den wirksamen Wert.
+- `regeln.md` Regeln 8 und 11 angepasst, `KATALOG_ERWEITERUNG.md` neu (Felder, Regeln, Ablauf mit Validierungsstufen). Test t82.

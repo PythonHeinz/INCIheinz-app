@@ -4,7 +4,7 @@
 function einsatzOf(i){if(!i)return {lo:0,hi:0,src:''};const lo=i.dmin>0?i.dmin:0,hi=i.dmax>0?i.dmax:0;if(lo||hi)return {lo,hi,src:'own'};const c=i.cid&&CM[i.cid];if(c&&(c.e0>0||c.e1>0))return {lo:c.e0>0?c.e0:0,hi:c.e1>0?c.e1:0,src:'cat'};return {lo:0,hi:0,src:''}}
 const einsatzTxt=e=>e.lo&&e.hi?(e.lo===e.hi?nf(e.lo,2)+' %':nf(e.lo,2)+' bis '+nf(e.hi,2)+' %'):e.lo?'ab '+nf(e.lo,2)+' %':e.hi?'bis '+nf(e.hi,2)+' %':'';
 {const a0=artikel;artikel=function(i){a0.apply(this,arguments);const box=document.querySelector('#af2');if(!box)return;const e=einsatzOf(i);
-if(R.edit){const lab=document.getElementById('f_verw');const host=lab&&lab.closest('label');const h=`<div class="cap" style="margin:12px 0 2px">Einsatzkonzentration</div><div class="two"><label class="fld"><span>von (%)</span><input id="f_e0" inputmode="decimal" value="${i.dmin>0?nf(i.dmin,2):''}" placeholder="${e.src==='cat'&&e.lo?nf(e.lo,2):'z. B. 2'}"></label><label class="fld"><span>bis (%)</span><input id="f_e1" inputmode="decimal" value="${i.dmax>0?nf(i.dmax,2):''}" placeholder="${e.src==='cat'&&e.hi?nf(e.hi,2):'z. B. 4'}"></label></div><div class="hint">Anteil an der Gesamtmenge im Rezept, den du für diesen Rohstoff als passend ansiehst, zum Beispiel aus dem Datenblatt. Die App gibt keine eigenen Grenzen vor. Wenn nur ein Wert eingetragen ist, wird nur diese Seite geprüft.</div>`;if(host)host.insertAdjacentHTML('afterend',h);else box.insertAdjacentHTML('beforeend',h)}
+if(R.edit){const lab=document.getElementById('f_verw');const host=lab&&lab.closest('label');const h=`<div class="hint">Felder mit „Vorschlag aus dem Katalog“ gelten, bis du etwas änderst. Dein Text hat immer Vorrang.</div><div class="cap" style="margin:12px 0 2px">Einsatzkonzentration</div><div class="two"><label class="fld"><span>von (%)</span><input id="f_e0" inputmode="decimal" value="${i.dmin>0?nf(i.dmin,2):''}" placeholder="${e.src==='cat'&&e.lo?nf(e.lo,2):'z. B. 2'}"></label><label class="fld"><span>bis (%)</span><input id="f_e1" inputmode="decimal" value="${i.dmax>0?nf(i.dmax,2):''}" placeholder="${e.src==='cat'&&e.hi?nf(e.hi,2):'z. B. 4'}"></label></div><div class="hint">Anteil an der Gesamtmenge im Rezept, den du für diesen Rohstoff als passend ansiehst, zum Beispiel aus dem Datenblatt. Die App gibt keine eigenen Grenzen vor. Wenn nur ein Wert eingetragen ist, wird nur diese Seite geprüft.</div>`;if(host)host.insertAdjacentHTML('afterend',h);else box.insertAdjacentHTML('beforeend',h)}
 else if(einsatzTxt(e)){const h=`<div class="txt"><div class="s">Einsatzkonzentration</div>${einsatzTxt(e)}${e.src==='cat'?' <span class="s">· Richtwert aus dem Katalog, ungeprüft</span>':''}</div>`;const t=[...box.querySelectorAll('.txt')].find(x=>/Verwendung/.test(x.innerText));const ph=[...box.children].find(x=>/Noch nichts eingetragen/.test(x.innerText)&&!x.classList.contains('txt'));if(ph)ph.remove();if(t)t.insertAdjacentHTML('afterend',h);else box.insertAdjacentHTML('beforeend',h)}}}
 {const s0=saveArt;saveArt=function(id){const i=getI(id);const a=document.getElementById('f_e0'),b=document.getElementById('f_e1');if(i&&a&&b&&val('f_name').trim()){const lo=num(a.value)||0,hi=num(b.value)||0;if(lo&&hi&&lo>hi){toast('„von“ darf nicht größer sein als „bis“');return}i.dmin=lo;i.dmax=hi}return s0.apply(this,arguments)}}
 /* Dosierung prüfen */
@@ -33,7 +33,21 @@ openDlg(`<h2 class="nm">${esc(x.n)}</h2><div class="s" style="margin:4px 0 12px"
 ${r?`<button class="dtile" onclick="closeDlg();rzOpen('${r.id}')"><span class="ci">${ic('book','currentColor',22)}</span><span><b>Rezept ansehen</b><span class="s">Menge im Rezept prüfen oder ändern.</span></span></button>`:''}`);try{if(LANG!=='de')trWalk(document.getElementById('dlg'))}catch(e){}}
 function dosGo(id,edit){closeDlg();stack.push(R);R={name:'artikel',id,edit:!!edit};draw()}
 
-/* Katalogfelder d (Dichte g/ml), e0/e1 (Einsatz in %): neue Rohstoffe aus dem Katalog übernehmen die Dichte, nur wenn leer */
-{const m0=mk;mk=function(c,o){const it=m0.apply(this,arguments);if(c&&c.d>0&&!(it.dens>0))it.dens=c.d;return it}}
-function catFillDens(){let n=0;S.items.forEach(it=>{const c=it.cid&&CM[it.cid];if(c&&c.d>0&&!(it.dens>0)){it.dens=c.d;n++}});return n}
-{const l0=loadCatX;loadCatX=function(){l0.apply(this,arguments);try{if(catFillDens())save()}catch(e){}}}
+/* Katalogvorschläge: b = Beschreibung/Funktion, v = Verwendung, f = Form, d = Dichte (g/ml).
+   Sie werden in den Rohstoff kopiert, wenn dessen Feld leer ist. it.fc merkt sich den kopierten Katalogwert.
+   Solange das Feld noch genau diesem Wert entspricht, folgt es späteren Katalogänderungen; sobald der Nutzer etwas ändert, gilt sein Wert. */
+const CATP=[['beschr','b'],['verw','v'],['form','f'],['dens','d']];
+function catFillOne(it){const c=it&&it.cid&&CM[it.cid];if(!c)return 0;let n=0;CATP.forEach(([x,y])=>{const cv=c[y];if(cv==null||cv===''||cv===0)return;if(y==='f'&&!FORMS.includes(cv))return;const cur=it[x];const empty=x==='dens'?!(cur>0):!cur;it.fc=it.fc||{};const same=it.fc[x]!==undefined&&it.fc[x]===cur;if(empty||same){if(cur!==cv){it[x]=cv;n++}it.fc[x]=cv}});return n}
+function catFill(){let n=0;S.items.forEach(it=>{n+=catFillOne(it)});return n}
+function catFillDens(){return catFill()}
+{const m0=mk;mk=function(c,o){const it=m0.apply(this,arguments);catFillOne(it);return it}}
+{const l0=loadCatX;loadCatX=function(){l0.apply(this,arguments);try{if(catFill())save()}catch(e){}}}
+const fcSame=(i,x)=>!!(i.fc&&i.fc[x]!==undefined&&i.fc[x]===i[x]);
+const VTAG=' · Vorschlag aus dem Katalog, ungeprüft';
+{const a1=artikel;artikel=function(i){a1.apply(this,arguments);const box=document.getElementById('af2'),af1=document.getElementById('af1');if(!box)return;
+if(R.edit){const lb=document.getElementById('f_beschr'),lv=document.getElementById('f_verw');
+if(lb){lb.placeholder='z. B. Emulgator für Öl-in-Wasser-Cremes';const sp=lb.closest('label').querySelector('span');if(sp)sp.textContent='Beschreibung / Funktion'+(fcSame(i,'beschr')?VTAG:'')}
+if(lv){const sp=lv.closest('label').querySelector('span');if(sp&&fcSame(i,'verw'))sp.textContent+=VTAG}
+if(af1&&fcSame(i,'form')){const sp=af1.querySelector('#pk_form')&&af1.querySelector('#pk_form').closest('.fld').querySelector('span');if(sp)sp.textContent='Form'+VTAG}}
+else{[...box.querySelectorAll('.txt .s')].forEach(e=>{const t=e.textContent.trim();if(t==='Beschreibung')e.textContent='Beschreibung / Funktion'+(fcSame(i,'beschr')?VTAG:'');else if(t==='Verwendung / Wirkweise'&&fcSame(i,'verw'))e.textContent+=VTAG});
+if(af1&&fcSame(i,'form')){const kv=[...af1.querySelectorAll('.kv')].find(k=>k.firstChild&&k.firstChild.textContent==='Form');if(kv&&kv.lastElementChild)kv.lastElementChild.insertAdjacentHTML('beforeend','<div class="s">Vorschlag aus dem Katalog, ungeprüft</div>')}}}}
