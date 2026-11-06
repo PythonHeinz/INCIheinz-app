@@ -32,7 +32,7 @@ const ids=await p.evaluate(()=>{const c=CAT.filter(x=>x.k==='Tensid').slice(0,2)
 await p.evaluate(ids=>{rchOpen('was');RCH.was=[{id:ids[0],p:'60'},{id:ids[1],p:'40'}];rzBau()},ids);await W();
 await p.evaluate(ids=>{xOwn(ids[0],'was','30');xOwn(ids[1],'was','50')},ids);await set({tot:'200',t:'12'});t=await txt();console.log(t.slice(0,500));
 chk('was: 12 % von 200 = 24 g WAS: 0,6*24/0,3=48 und 0,4*24/0,5=19,2',/48 g/.test(t)&&/19,2 g/.test(t)&&/Wasserphase/.test(t));
-chk('was am Artikel',await p.evaluate(ids=>getI(ids[0]).was===30,ids));
+chk('was am Artikel',await p.evaluate(ids=>getI(ids[0]).was==='30',ids));
 // Spreitwert
 const oi=await p.evaluate(()=>{const c=CAT.filter(x=>x.k==='Pflanzenöl').slice(0,2);return c.map(x=>{const it=mk(x,{kind:'m',total:1000});S.items.push(it);return it.id})});
 await p.evaluate(o=>{rchOpen('spr');RCH.spr=[{id:o[0],p:'50'},{id:o[1],p:'50'}];rzBau()},oi);await W();

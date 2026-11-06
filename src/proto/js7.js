@@ -73,7 +73,7 @@ let CU=null;
 async function sheetCatUpd(){openSheet(`<h2>Katalog aktualisieren</h2><div class="s" style="margin-bottom:8px">Installiert: ${S.catmeta&&S.catmeta.version?'Katalog '+esc(S.catmeta.version)+(S.catmeta.date?' vom '+dde(S.catmeta.date):''):'Grundkatalog der App'} · ${CAT.length} Einträge</div><div id="cu" class="s">Suche nach einer neuen Katalogversion …</div>`);
 try{const r=await fetch('katalog.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();if(!Array.isArray(d.items))throw 0;
 const neu=d.items.filter(c=>!CM[c.id]);const fix=[],conf=[];
-d.items.forEach(c=>{const o=CM[c.id];if(!o)return;const ch=['n','i','k','h','a','u','s','q','p','d','e0','e1','eq','b','v','f','bq','sap_koh','sap_naoh','jodzahl','schmelzpunkt','sap_quelle','w','rzf','haerte','seifenfarbe','schaum','seifeneinsatz','sq'].some(k=>c[k]!=null&&c[k]!==o[k]);if(!ch)return;
+d.items.forEach(c=>{const o=CM[c.id];if(!o)return;const ch=['n','i','k','h','a','u','s','q','p','d','e0','e1','eq','b','v','f','bq','sap_koh','sap_naoh','jodzahl','schmelzpunkt','sap_quelle','w','rzf','haerte','seifenfarbe','schaum','seifeneinsatz','sq','was','tensidklasse'].some(k=>c[k]!=null&&c[k]!==o[k]);if(!ch)return;
 fix.push(c);if(c.i!=null&&c.i!==o.i)S.items.forEach(it=>{if(it.cid===c.id&&it.inci&&it.inci!==o.i&&it.inci!==c.i)conf.push({it,c})})});
 const inciN=fix.filter(c=>c.i!=null&&c.i!==CM[c.id].i).length;CU={neu,fix,conf,meta:{version:d.version||'',date:d.date||''}};
 if(!neu.length&&!fix.length){$('#cu').innerHTML=`<div style="font-size:1rem;font-weight:600">Dein Katalog ist aktuell.</div><div class="s" style="margin-top:4px">Katalog ${esc(d.version||'')}${d.date?' vom '+dde(d.date):''} · ${CAT.length} Einträge</div><div class="btns"><button class="btn" onclick="closeSheet()">OK</button></div>`;return}
@@ -84,7 +84,7 @@ catch(e){$('#cu').innerHTML=`<div style="font-size:.9rem">Es ist gerade kein Kat
 function catApply(){const {neu,fix,conf}=CU;const ok=new Set();conf.forEach((x,n)=>{if($('#cf'+n)&&$('#cf'+n).checked)ok.add(x.it.id)});
 const confIds=new Set(conf.map(x=>x.it.id));
 fix.forEach(c=>{const o=CM[c.id];S.items.forEach(it=>{if(it.cid!==c.id||c.i==null||c.i===o.i)return;if(it.inci===o.i||!it.inci||ok.has(it.id)){it.inci=c.i}});
-const f={};['n','i','k','h','a','u','s','q','p','d','e0','e1','eq','b','v','f','bq','sap_koh','sap_naoh','jodzahl','schmelzpunkt','sap_quelle','w','rzf','haerte','seifenfarbe','schaum','seifeneinsatz','sq'].forEach(k=>{if(c[k]!=null)f[k]=c[k]});S.catfix[c.id]=Object.assign(S.catfix[c.id]||{},f);Object.assign(o,f)});
+const f={};['n','i','k','h','a','u','s','q','p','d','e0','e1','eq','b','v','f','bq','sap_koh','sap_naoh','jodzahl','schmelzpunkt','sap_quelle','w','rzf','haerte','seifenfarbe','schaum','seifeneinsatz','sq','was','tensidklasse'].forEach(k=>{if(c[k]!=null)f[k]=c[k]});S.catfix[c.id]=Object.assign(S.catfix[c.id]||{},f);Object.assign(o,f)});
 neu.forEach(c=>{S.catadd.push(c);CAT.push(c);CM[c.id]=c});S.catmeta=CU.meta;try{catFillDens()}catch(e){}save();closeSheet();draw();toast('Katalog aktualisiert')}
 /* ---------- Etiketten ---------- */
 let LB={size:'M',sel:{},mark:true,only:false};

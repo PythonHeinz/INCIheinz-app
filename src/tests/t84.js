@@ -4,9 +4,9 @@ await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitFor
 let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};
 await p.evaluate(()=>{S.expert=false;sheetAppSet()});await p.waitForTimeout(300);
 let t=await p.evaluate(()=>document.body.innerText);
-chk('Katalog-Abschnitt ohne Expertenmodus',/Katalog aktualisieren/.test(t)&&/Einträge/.test(t));
-await p.evaluate(()=>{const r=[...document.querySelectorAll('.row')].find(x=>/Katalog aktualisieren/.test(x.innerText));r.click()});await p.waitForTimeout(600);
+chk('Katalog-Abschnitt ohne Expertenmodus',/Katalog/.test(t)&&/Einträge/.test(t));
+await p.evaluate(()=>{const r=[...document.querySelectorAll('.row')].find(x=>/^Katalog/.test(x.innerText.trim()));r.click()});await p.waitForTimeout(600);
 t=await p.evaluate(()=>document.body.innerText);chk('Dialog öffnet',/Installiert:/.test(t));
 await p.evaluate(()=>{LANG='en';sheetAppSet()});await p.waitForTimeout(300);
-t=await p.evaluate(()=>document.body.innerText);console.log(/entries/.test(t));
+t=await p.evaluate(()=>document.body.innerText);chk('EN entries',/entries/.test(t));
 console.log('ok',ok,'bad',bad,errs);await b.close()})();

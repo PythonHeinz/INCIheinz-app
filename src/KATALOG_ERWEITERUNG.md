@@ -48,3 +48,7 @@ Ziel: Zu möglichst vielen Rohstoffen die Angaben unten recherchieren, neutral u
 6. Prüfen: JSON gültig, Anzahl der Einträge unverändert, keine `id` geändert, nur die vorgesehenen Felder gefüllt.
 7. Commit („Katalog 1.2.0: …, ungeprüft“), nach main pushen. Der Nutzer testet in der App mit Mehr › Katalog aktualisieren. Eigene Werte und Texte des Nutzers bleiben dabei unverändert.
 - Nicht gleichzeitig mit einem App-Build arbeiten: vor dem Start `git pull`, nach dem Push dem Nutzer Bescheid geben.
+
+## Neue Spalten 1.5.0: `was` und `tensidklasse`
+- `was`: waschaktive Substanz in %, als Text mit Spanne („51–55 %“). Bei mehreren Lieferformen der Hinweis im Text („ca. 95 % (Pulver) bzw. 25–30 % (Lösung)“); die App rechnet damit nicht, bis der Nutzer seinen Wert einträgt.
+- `tensidklasse`: anionisch, nichtionisch, amphoter oder Gemisch (…).

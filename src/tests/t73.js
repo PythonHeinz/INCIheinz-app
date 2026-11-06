@@ -28,7 +28,7 @@ for(const w of ['lager','rez']){
 // Einstellung ändern: Fenster bleibt, Pfeil bleibt
 await p.evaluate(()=>{tab('lager');sheetMehr()});await W();
 await p.evaluate(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/Einstellungen/.test(r.innerText)).click()});await W();
-await p.evaluate(()=>accSet('l',0));await W();
-chk('Einstellungen nach Änderung offen mit Pfeil',await p.evaluate(()=>!!document.querySelector('#sheet .bk')&&/Genauigkeit/.test(document.getElementById('sheet').innerText)));
-await p.evaluate(()=>document.querySelector('#sheet .bk').click());await W();chk('zurück ins Mehr',/Statistik/.test(await txt()||''));
+await p.evaluate(()=>{[...document.querySelectorAll('#sheet .row')].find(r=>/Mengeneinstellungen/.test(r.innerText)).click()});await W();await p.evaluate(()=>accSet('l',0));await W();
+chk('Einstellungen nach Änderung offen mit Pfeil',await p.evaluate(()=>!!document.querySelector('#sheet .bk')&&/Mengeneinstellungen/.test(document.getElementById('sheet').innerText)));
+await p.evaluate(()=>document.querySelector('#sheet .bk').click());await W();chk('zurück zur Einstellungen-Liste',await p.evaluate(()=>/Sprache/.test(document.getElementById('sheet').innerText)));await p.evaluate(()=>document.querySelector('#sheet .bk').click());await W();chk('zurück ins Mehr',/Statistik/.test(await txt()||''));
 console.log('ok',ok,'bad',bad,errs);await b.close()})();
