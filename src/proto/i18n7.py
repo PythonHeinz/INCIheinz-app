@@ -874,3 +874,10 @@ P7.extend([
 (r"^Seifenmasse gesamt ca\. ([\d,]+) g$",r"Total soap mass approx. \1 g",r"Masa total de jabón aprox. \1 g"),
 ])
 N7["Als Rezept übernehmen"]=("Take over as recipe","Aplicar como receta")
+N7.update({"Seifenwerte":("Soap values","Valores para jabón"),"Härte, RZF, Einsatz":("Hardness, RF, use","Dureza, FR, uso"),"Verseifung":("Saponification","Saponificación"),"g/ml":("g/ml","g/ml"),
+"Ranziditätsfaktor (RZF)":("Rancidity factor (RF)","Factor de rancidez (FR)"),"Härte":("Hardness","Dureza"),"Seifenfarbe":("Soap color","Color del jabón"),"Schaum":("Lather","Espuma"),"Einsatz in Seife":("Use in soap","Uso en jabón"),
+"z. B. 30":("e.g. 30","p. ej. 30"),"z. B. 87":("e.g. 87","p. ej. 87"),"z. B. weiß bis cremefarben":("e.g. white to cream","p. ej. blanco a crema"),"z. B. cremig, stabil":("e.g. creamy, stable","p. ej. cremosa, estable"),"z. B. bis 100 %":("e.g. up to 100 %","p. ej. hasta 100 %"),"z. B. 0,91":("e.g. 0.91","p. ej. 0,91"),
+"Damit rechnet die App zwischen Gramm und Millilitern um. Leer lassen, wenn du die Dichte nicht kennst.":("The app uses it to convert between grams and milliliters. Leave empty if you don't know the density.","La app la usa para convertir entre gramos y mililitros. Déjalo vacío si no conoces la densidad."),
+"Leer lassen heißt: Richtwert aus dem Katalog. Härte und RZF verwendet der Seifenrechner für die Eigenschaften der Seife.":("Leave empty to use the catalog guide value. The soap calculator uses hardness and RF for the soap's properties.","Déjalo vacío para usar el valor orientativo del catálogo. La calculadora de jabón usa dureza y FR para las propiedades del jabón."),
+"Noch keine Werte. Du kannst sie beim Bearbeiten eintragen.":("No values yet. You can enter them when editing.","Aún no hay valores. Puedes introducirlos al editar."),
+"Noch keine Dichte angegeben. Du kannst sie beim Bearbeiten eintragen.":("No density entered yet. You can enter it when editing.","Aún no hay densidad. Puedes introducirla al editar.")})

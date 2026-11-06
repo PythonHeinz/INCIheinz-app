@@ -119,3 +119,31 @@ d.phasen=[{id:uid(),typ:'',name:'Fettphase',z:c.rows.map(r=>mkz(r.i.name,r.g,r.i
 const zz=[...(c.duft?[mkz('Duft',c.duft)]:[]),...X.zus.filter(z=>z.n&&(num(z.g)||0)>0).map(z=>mkz(z.n,num(z.g)))];if(zz.length)d.phasen.push({id:uid(),typ:'',name:'Zusätze',z:zz});
 d.mod=[{id:uid(),t:'hinweis',titel:'Achtung',text:'Lauge ist ätzend. Schutzbrille und Handschuhe tragen, die Lauge immer ins Wasser geben und gut lüften.',o:true}];if(X.notes&&X.notes.trim())d.mod.push({id:uid(),t:'hinweis',titel:'Notizen',text:X.notes.trim(),o:true});
 rzPoolFix(d);RE={id:null,base:0,d,dirty:true,photo:''};stack.push(R);R={name:'reze',id:null};draw();toast('Als neues Rezept geöffnet. Prüfe die Mengen und speichere.')}
+
+/* ---------- Artikelseite: Dichte, Fettkennzahlen und Seifenwerte als einklappbare Menüs am Seitenende ---------- */
+/* Seifenwerte: eigener Wert am Artikel (i.rzf, i.hae, i.sfar, i.sch, i.sein) vor Katalogwert (rzf, haerte, seifenfarbe, schaum, seifeneinsatz) */
+const SWK=[['rzf','rzf','Ranziditätsfaktor (RZF)','z. B. 30'],['hae','haerte','Härte','z. B. 87'],['sfar','seifenfarbe','Seifenfarbe','z. B. weiß bis cremefarben'],['sch','schaum','Schaum','z. B. cremig, stabil'],['sein','seifeneinsatz','Einsatz in Seife','z. B. bis 100 %']];
+function swOf(i){const c=(i&&i.cid&&CM[i.cid])||{};const o={};SWK.forEach(([k,ck])=>{const own=i&&i[k]!=null&&String(i[k]).trim()!==''?String(i[k]).trim():'';const cv=c[ck]!=null&&c[ck]!==''?String(c[ck]):'';o[k]={v:own||cv,src:own?'own':cv?'cat':'',cat:cv}});o.any=SWK.some(([k])=>o[k].v!=='');o.own=SWK.some(([k])=>o[k].src==='own');return o}
+{const a3=artikel;artikel=function(i){a3.apply(this,arguments);const box=document.getElementById('af2'),m=document.getElementById('main');if(!box||!m||!i)return;
+/* lose Blöcke aus „Meine Angaben“ entfernen */
+const fb=box.querySelector('#fettbox');if(fb)fb.remove();
+[...box.querySelectorAll('.cap')].forEach(c=>{if(c.textContent.trim()==='Fettkennzahlen'){let n=c.nextElementSibling;while(n&&(n.classList.contains('two')||n.classList.contains('hint'))){const x=n.nextElementSibling;n.remove();n=x}c.remove()}});
+const f=fettOf(i),sw=swOf(i),c=(i.cid&&CM[i.cid])||{},ed=!!R.edit,seife=FZKAT.includes(i.kat)||f.any||sw.any;
+const tag=s=>s==='own'?' <span class="s">· eigener Wert</span>':s==='calc'?' <span class="s">· berechnet</span>':'';
+const acc=(t,sm,body,open)=>`<details class="acc"${open?' open':''}><summary>${t}${sm?' <small>'+sm+'</small>':''}</summary><div class="in">${body}</div></details>`;
+const parts=[];
+/* Dichte */
+const dn=i.dens>0?fz(String(i.dens)):'';
+parts.push(acc('Dichte','g/ml',ed?`<label class="fld"><span>Dichte (g/ml)</span><input id="f_dens" inputmode="decimal" value="${esc(dn)}" placeholder="z. B. 0,91"></label><div class="hint">Damit rechnet die App zwischen Gramm und Millilitern um. Leer lassen, wenn du die Dichte nicht kennst.</div>`:(dn?`<div class="kv"><span>Dichte</span><span>${esc(dn)} g/ml</span></div>`:'<div class="s">Noch keine Dichte angegeben. Du kannst sie beim Bearbeiten eintragen.</div>')));
+if(seife){
+/* Fettkennzahlen */
+if(ed)parts.push(acc('Fettkennzahlen','Verseifung',`<div class="two"><label class="fld"><span>Verseifungszahl (mg KOH/g)</span><input id="f_sapk" value="${esc(i.sapk||'')}" placeholder="${esc(f.sapk.cat?fz(f.sapk.cat):'z. B. 185–200')}"></label><label class="fld"><span>NaOH-Bedarf (g je g Fett)</span><input id="f_sapn" value="${esc(i.sapn||'')}" placeholder="${esc(f.sapn.v?fz(f.sapn.v):'z. B. 0,135')}"></label></div><div class="two"><label class="fld"><span>Jodzahl</span><input id="f_iod" value="${esc(i.iod||'')}" placeholder="${esc(f.iod.cat?fz(f.iod.cat):'z. B. 95–105')}"></label><label class="fld"><span>Schmelzpunkt</span><input id="f_smp" value="${esc(i.smp||'')}" placeholder="${esc(f.smp.cat?fz(f.smp.cat):'z. B. 61–66 °C')}"></label></div><div class="hint">Wert oder Spanne (zum Beispiel 185–200). Der Rechner nimmt bei einer Spanne die Mitte. Leer lassen heißt: Richtwert aus dem Katalog. Trägst du nur die Verseifungszahl ein, rechnet die App den NaOH-Bedarf daraus.</div>`));
+else if(f.any){const nur=FZK.every(([k])=>f[k].src!=='own');parts.push(acc('Fettkennzahlen','Verseifung',`<div id="fettbox">${FZK.filter(([k])=>f[k].v!=='').map(([k,,l])=>`<div class="kv"><span>${l}</span><span>${esc(fz(f[k].v))}${tag(f[k].src)}</span></div>`).join('')}${nur?'<div class="s">Richtwerte aus dem Katalog, ungeprüft</div>':'<div class="s">Eigene Werte haben Vorrang vor dem Katalog.</div>'}</div>`))}
+else parts.push(acc('Fettkennzahlen','Verseifung','<div class="s">Noch keine Werte. Du kannst sie beim Bearbeiten eintragen.</div>'));
+/* Seifenwerte */
+if(ed)parts.push(acc('Seifenwerte','Härte, RZF, Einsatz',SWK.map(([k,,l,ph])=>`<label class="fld"><span>${l}</span><input id="f_${k}" value="${esc(i[k]||'')}" placeholder="${esc(sw[k].cat||ph)}"></label>`).join('')+'<div class="hint">Leer lassen heißt: Richtwert aus dem Katalog. Härte und RZF verwendet der Seifenrechner für die Eigenschaften der Seife.</div>'));
+else if(sw.any){const nur=!sw.own;parts.push(acc('Seifenwerte','Härte, RZF, Einsatz',`<div id="swbox">${SWK.filter(([k])=>sw[k].v!=='').map(([k,,l])=>`<div class="kv"><span>${l}</span><span>${esc(fz(sw[k].v))}${tag(sw[k].src)}</span></div>`).join('')}${nur?'<div class="s">Richtwerte aus dem Katalog, ungeprüft</div>':'<div class="s">Eigene Werte haben Vorrang vor dem Katalog.</div>'}${c.sq&&nur?'<div class="s">'+esc(c.sq)+'</div>':''}</div>`))}
+else parts.push(acc('Seifenwerte','Härte, RZF, Einsatz','<div class="s">Noch keine Werte. Du kannst sie beim Bearbeiten eintragen.</div>'));
+}
+const ds=[...m.querySelectorAll(':scope > details.acc')];const last=ds[ds.length-1];if(last)last.insertAdjacentHTML('afterend',parts.join(''))}}
+{const s3=saveArt;saveArt=function(id){const i=getI(id);if(i&&document.getElementById('f_name')&&val('f_name').trim()){const d=document.getElementById('f_dens');if(d){const n=pNum(d.value);i.dens=n>0?n:0}SWK.forEach(([k])=>{const e=document.getElementById('f_'+k);if(e)i[k]=e.value.trim()})}return s3.apply(this,arguments)}}

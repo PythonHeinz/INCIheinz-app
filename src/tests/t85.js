@@ -12,10 +12,10 @@ await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},ids[0]);await W();
 let t=await p.evaluate(()=>{const w=document.getElementById('warnbox');return w?{t:w.innerText,bg:getComputedStyle(w).backgroundColor}:null});console.log(JSON.stringify(t));
 chk('Warnbox sichtbar',t&&/Anhang III Nr\. 60/.test(t.t)&&/rgb\(251, 233, 231\)/.test(t.bg));
 await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},ids[1]);await W();
-t=await p.evaluate(()=>{const f=document.getElementById('fettbox');return {f:f&&f.innerText,w:!!document.getElementById('warnbox')}});console.log(JSON.stringify(t));
+t=await p.evaluate(()=>{const f=document.getElementById('fettbox');return {f:f&&f.textContent,w:!!document.getElementById('warnbox')}});console.log(JSON.stringify(t));
 chk('Fettkennzahlen',t.f&&/Verseifungszahl/.test(t.f)&&/185–200/.test(t.f)&&/0,136/.test(t.f)&&/Jodzahl/.test(t.f));chk('keine Warnbox bei Öl',!t.w);
 await p.evaluate(()=>{LANG='en';draw()});await W();
-t=await p.evaluate(()=>document.getElementById('fettbox').innerText);chk('EN',/Saponification value/.test(t));
+t=await p.evaluate(()=>document.getElementById('fettbox').textContent);chk('EN',/Saponification value/.test(t));
 await p.evaluate(()=>{LANG='de'});
 // Update 1.2.18-Zustand: neue Spalten/Einträge raus, K0194 zurück, Nutzer-Verweis auf K0194
 const r1=await p.evaluate(()=>{const nid=CAT.filter(c=>+c.id.slice(1)>=1060).map(c=>c.id);CAT.splice(0,CAT.length,...CAT.filter(c=>!nid.includes(c.id)));nid.forEach(i=>delete CM[i]);

@@ -1,0 +1,40 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};const W=()=>p.waitForTimeout(300);
+const id=await p.evaluate(()=>{const it=mk(CM['K0301'],{});S.items.push(it);return it.id});
+const lay=()=>p.evaluate(()=>[...document.getElementById('main').querySelectorAll(':scope > details.acc')].map(d=>({t:d.querySelector('summary').textContent.trim(),open:d.open})));
+await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},id);await W();
+let L=await lay();console.log(JSON.stringify(L.map(x=>x.t)));
+const ix=n=>L.findIndex(x=>x.t.startsWith(n));
+chk('Reihenfolge Ansicht',ix('Bezugsquellen')<ix('Dichte')&&ix('Dichte')<ix('Fettkennzahlen')&&ix('Fettkennzahlen')<ix('Seifenwerte'));
+chk('zugeklappt',['Dichte','Fettkennzahlen','Seifenwerte'].every(n=>!L[ix(n)].open));
+chk('Karte Artikelcode danach',await p.evaluate(()=>{const ds=[...document.getElementById('main').children];const k=ds.findIndex(e=>/Artikelcode/.test(e.innerText));const s=ds.map(e=>e.querySelector&&e.querySelector('summary')&&e.querySelector('summary').textContent.trim()||'');return k>s.findIndex(x=>x.startsWith('Seifenwerte'))}));
+chk('keine losen Blöcke in Meine Angaben',await p.evaluate(()=>!/Fettkennzahlen|Verseifungszahl/.test(document.getElementById('af2').innerText)));
+let t=await p.evaluate(()=>document.getElementById('swbox').textContent);console.log(t);
+chk('Katalog: RZF 30, Härte 87, Quelle',/30/.test(t)&&/87/.test(t)&&/Neumann/.test(t)&&/Richtwerte/.test(t));
+// bearbeiten
+await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id);await W();
+L=await lay();chk('Reihenfolge Bearbeiten',ix('Bezugsquellen')<ix('Dichte')&&ix('Dichte')<ix('Fettkennzahlen')&&ix('Fettkennzahlen')<ix('Seifenwerte'));
+chk('Felder da',await p.evaluate(()=>['f_dens','f_sapk','f_iod','f_rzf','f_hae','f_sfar','f_sch','f_sein'].every(k=>document.getElementById(k))));
+chk('Platzhalter Katalog',await p.evaluate(()=>document.getElementById('f_rzf').placeholder==='30'&&document.getElementById('f_hae').placeholder==='87'));
+await p.evaluate(()=>{f_dens.value='0,91';f_rzf.value='28';f_hae.value='85';f_sapk.value='190'});
+await p.evaluate(id=>saveArt(id),id);await W();
+let r=await p.evaluate(id=>{const i=getI(id);return {d:i.dens,r:i.rzf,h:i.hae,sw:swOf(i),k:i.sapk}},id);console.log(JSON.stringify(r.sw.rzf),r.d);
+chk('gespeichert',r.d===0.91&&r.r==='28'&&r.h==='85'&&r.k==='190'&&r.sw.rzf.src==='own'&&r.sw.sein.src==='cat');
+await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},id);await W();
+t=await p.evaluate(()=>document.getElementById('swbox').textContent+'|'+document.getElementById('fettbox').textContent);
+chk('Anzeige eigener Wert',/28/.test(t)&&/eigener Wert/.test(t)&&/190/.test(t));
+chk('Dichte Anzeige',await p.evaluate(()=>/0,91 g\/ml/.test(document.getElementById('main').textContent)));
+// leeren -> Katalog
+await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id);await W();
+await p.evaluate(()=>{f_rzf.value='';f_hae.value=''});await p.evaluate(id=>saveArt(id),id);await W();
+chk('leer = Katalog',await p.evaluate(id=>{const s=swOf(getI(id));return s.rzf.src==='cat'&&s.rzf.v==='30'},id));
+// Artikel ohne Seifenbezug (Tensid): Dichte ja, Seifenmenüs nein
+const id2=await p.evaluate(()=>{const it=mk(CM['K0798'],{});S.items.push(it);return it.id});
+await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id2);await W();
+chk('Tensid: nur Dichte',await p.evaluate(()=>!!f_dens&&!document.getElementById('f_rzf')&&!document.getElementById('f_sapk')));
+await p.evaluate(()=>{LANG='en'});await p.evaluate(id=>{go('artikel',id);R.edit=true;draw()},id);await W();
+const en=await p.evaluate(()=>document.body.textContent);console.log(/Density/.test(en),/Soap values/.test(en),/Saponification value/.test(en));
+chk('EN',/Density/.test(en)&&/Soap values/.test(en)&&/Rancidity/.test(en));
+console.log('ok',ok,'bad',bad,errs);await b.close()})();

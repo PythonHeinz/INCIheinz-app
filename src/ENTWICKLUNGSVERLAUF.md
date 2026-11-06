@@ -231,3 +231,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Aus dem Notebook (Neumann S. 94, 115, 135, 138): Olivenöl NaOH 0,135, Jod 78–98, RZF 30, Härte 87, Einsatz bis 100 %; Palmöl NaOH 0,142, RZF 19,7; Rapsöl NaOH 0,133, Jod 94–120, RZF 73,5, Härte 69, beige bis hellbraun, bis 25 %. Palmkernöl: keine Zahlen im Notebook.
 - Widerspruch im Buch: Text nennt RZF 30 für Olivenöl, das Rechenbeispiel (Grundrezept) benutzt 27; übernommen 30. Rapsöl RZF 72 (S. 115) oder 73,5 (S. 94): 73,5.
 - Das Notebook hat von den Rohstoffen 26–50 nur Olive, Palm, Palmkern und Raps beantwortet; die übrigen Öle dieses Blocks (Kürbiskern, Macadamia, Lein, Mais, Nachtkerze u. a.) stehen noch aus.
+
+## Artikelseite: Dichte, Fettkennzahlen, Seifenwerte als einklappbare Menüs am Seitenende
+- Drei eigene `details.acc`-Menüs, immer zugeklappt, nach „Bezugsquellen & Preise“ (in der Ansicht vor der Karte Artikelcode): Dichte (g/ml), Fettkennzahlen (Verseifung), Seifenwerte (Härte, RZF, Einsatz). Die losen Blöcke aus „Meine Angaben“ sind weg.
+- Dichte ist jetzt auf der Bearbeitungsseite ein Feld (`f_dens`, speichert `i.dens`); der Dialog `rzDens` bleibt. Dichte und Schüttdichte bleiben ein Feld, die Unterscheidung nur in den internen Notizen.
+- Seifenwerte als eigener korrigierbarer Wert je Artikel: `i.rzf`, `i.hae`, `i.sfar`, `i.sch`, `i.sein` vor Katalog (`rzf`, `haerte`, `seifenfarbe`, `schaum`, `seifeneinsatz`), Helfer `swOf(i)` (für Teil B). Leer = Katalogwert als Platzhalter. Ansicht zeigt „eigener Wert“ und die Quelle `sq`.
+- Fettkennzahlen/Seifenwerte nur bei Fettkategorien oder wenn Werte vorhanden sind; Dichte immer.
+- Test t88 (14 Prüfungen); t85/t86 lesen die Blöcke mit textContent (zugeklappt).
