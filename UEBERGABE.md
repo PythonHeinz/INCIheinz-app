@@ -26,6 +26,9 @@ Pipeline: `tpl5_pre6.html` → `patch7.py` (R(alt,neu,anzahl) = exakter Ersatz m
 - Funktionsdeklarationen werden gehoistet; spätere Neudefinitionen (js16/js17) überschreiben frühere.
 - Neue sichtbare Texte immer in `i18n7.py` (N7/P7) übersetzen (EN/ES).
 - Pfade im Build sind absolut (`/mnt/user-data/...`); `build.sh` legt sie an.
+- `src/proto/build_netlify.py` liest den Katalog aus `/home/claude/work/katalog_master.json`: nach jeder Katalogänderung `src/katalog_master.json` dorthin kopieren, sonst wird ein alter Katalog gebaut.
+- `viewCols` ist `let` (patch6.py), damit js31.js es umhüllen kann; Listenfunktionen (`pickGap`, `pickSort`, `sheetCols`, `lbody`) werden in js31.js überschrieben, nicht in chk.js.
+- Neue Spalten/Sortierungen: `COLS`, `SORTS`, `SKEY`, `CWID`, `COLX`, `SXP` ergänzen (Beispiel `VW` in js31.js); Lückenfilter in `GAPS`, Ausschlussregeln in `APPL`.
 
 ## Wichtige Strukturen
 Zustand `S` (IndexedDB), Ansichtszustand `Q`, `viewCols()`, `COLS/CWID/cellSt`, `statusIcons(i)`/`ampel(i)`, `toast()`, Undo: `UNDO`, `undoWrap`, `UNDO_BAR` (nur zerstörende Aktionen). Mehr-Menü in js16 (`sheetMehr`). Katalog `katalog.json` (Pflege siehe README, Regeln in `src/regeln.md`).
