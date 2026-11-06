@@ -245,3 +245,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - „Weiß“ ist nur eine Faustregel: ausgeschlossen werden Fette, deren Seifenfarbe gelb, grün, rot, braun oder dunkel genannt ist. „Rückfettend“ bedeutet milderer Härtebereich, höherer Laugenunterschuss, wenig reinigende Fette; keine Wirkaussagen.
 - Grenzen: Nur 35 Katalogeinträge haben bisher Härte und RZF (Palmöl ohne Härte); je mehr Werte am Artikel oder im Katalog stehen, desto besser die Vorschläge.
 - Test t89 (17 Prüfungen).
+
+## Katalog 1.4.3: Notebook-Block 26–75 (+109–111)
+- Aus der Liste für NotebookLM (111 Rohstoffe) kam Block 26–75 und der Schluss 109–111 zurück; 76–108 fehlen noch. Viele Antworten „nicht im Notebook“ oder nur „–“ (z. B. Haferöl, Heidelbeerkern, Himbeerkern, Illipe, Kirschkern, Kalahari, Montanwachs, Moringa, Mowrah, Neem, Papaya, Para, Pekan, Pistazie, Kaffeeöl, Kokum, Kukui, Mohn, Palmkern).
+- Eingetragen (Buchwerte, Stufe 2): Kürbiskernöl (Schmelzpunkt, RZF 98, Härte 50, Seifenfarbe), Macadamia (Schmelzpunkt, RZF 3,7, Härte 95), Mangokernöl (NaOH 0,136, Jod 33–49, Schmelzpunkt, RZF 12, Härte 94, hellbeige, Schaum, Einsatz 10–25 % bis 40 %), Johannisbeerkernöl (Jod 160–175, Einsatz 5–10 %), Nachtkerzenöl (Jod 145–162, Einsatz 5–10 %), Pflaumenkernöl (KOH 188–199, Jod 90–108), Jasminwachs (Schmelzpunkt), Jojobabeads (Einsatz 5 %), Murumuru (Hinweis Einsatz).
+- Regel diesmal: Käser-Spannen überschreiben vorhandene Händlerwerte nur, wenn sie enger sind oder der Händlerwert leer ist; sonst bleibt der vorhandene Wert (z. B. Japanwachs, Perilla, Pfirsichkern, MCT, Leinöl, Marula, Wiesenschaumblume).
+- Gruppenwerte ohne Einzelzahl (RZF „> 130“, Härte „weich“ bei Johannisbeere/Nachtkerze) nicht übernommen. Auffällig: Macadamia und Kürbiskern haben im Notebook identische NaOH-/KOH-Zahlen (0,139 / 0,1946); bei Macadamia unverändert gelassen, bitte gelegentlich gegenprüfen.
