@@ -1,7 +1,7 @@
 /* ---- Teilen statt nur Herunterladen (nur Exporte) ---- */
 let SHARE22=0;
 function dl22(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
-function dlBlob(name,blob){if(SHARE22&&navigator.share&&navigator.canShare){try{const f=new File([blob],name,{type:blob.type||'application/octet-stream'});if(navigator.canShare({files:[f]})){navigator.share({files:[f],title:name}).catch(e=>{if(!e||e.name!=='AbortError')dl22(name,blob)});return}}catch(_){}}dl22(name,blob)}
+function dlBlob(name,blob){if(SHARE22&&navigator.share&&navigator.canShare){try{const f=new File([blob],name,{type:blob.type||'application/octet-stream'});if(navigator.canShare({files:[f]})){navigator.share({files:[f]}).catch(e=>{if(!e||e.name!=='AbortError')dl22(name,blob)});return}}catch(_){}}dl22(name,blob)}
 {const o=outFile;outFile=function(){SHARE22=1;try{return o.apply(this,arguments)}finally{SHARE22=0}}}
 /* ---- Regal-Check: alle angezeigten übernehmen ---- */
 function ckAll(){const cat=R.id;const terms=CK.q.trim().toLowerCase().split(/\s+/).filter(Boolean);let l=CAT.filter(c=>c.k===cat);if(terms.length)l=l.filter(c=>score({n:c.n,a:c.a,i:c.i,k:''},terms));

@@ -1,0 +1,25 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}};const W=()=>p.waitForTimeout(300);
+const id=await p.evaluate(()=>{S.expert=true;demoLoad();tab('rez');const r=rzAll().find(x=>x.vers.length&&rzCurV(x).d.mod.length)||rzAll()[0];const c=JSON.parse(JSON.stringify(rzCurV(r)));c.n=r.vers.length+1;c.d.phasen[0].z[0].g=(+c.d.phasen[0].z[0].g||1)+3;c.d.phasen[0].z.pop();c.d.mod.forEach(m=>m.text=(m.text||'')+' neu');c.d.mod.push({id:'zz',t:'abfuell',titel:'Abfüllen',text:'in Dosen'});c.d.zweck='Test';c.diff=['x'];r.vers.push(c);save();go('rezv',r.id);return r.id});await W();
+await p.screenshot({path:'/tmp/s_rv.png'});
+chk('Aktionsleiste Rezeptseite',await p.evaluate(()=>document.querySelectorAll('#main .rz-ab button').length)===3&&await p.evaluate(()=>!document.querySelector('#main .rz-lk')));
+await p.evaluate(id=>{stack.push(R);R={name:'verl',id};draw()},id);await W();
+await p.evaluate(()=>{const d=[...document.querySelectorAll('details.rz-v')];d[d.length-1].open=true});await W();
+await p.screenshot({path:'/tmp/s_vl.png'});
+chk('Versions-Aktionen',await p.evaluate(()=>document.querySelectorAll('details.rz-v .rz-ab button').length)>=5);
+await p.evaluate(()=>[...document.querySelectorAll('details.rz-v .rz-ab button')].find(x=>/Vergleichen/.test(x.innerText)).click());await W();
+chk('Vergleich Dialog zentriert',await p.evaluate(()=>{const r=document.getElementById('dlg').getBoundingClientRect();return Math.abs((r.top+r.bottom)/2-450)<120}));
+await p.screenshot({path:'/tmp/s_cmp.png'});await p.evaluate(()=>closeDlg());
+await p.evaluate(()=>[...document.querySelectorAll('details.rz-v .rz-ab button')].find(x=>/Markieren/.test(x.innerText)).click());await W();
+chk('Markieren: genau 2 Kacheln',await p.evaluate(()=>document.querySelectorAll('#dlg .dtile').length)===2);
+await p.screenshot({path:'/tmp/s_mk.png'});
+await p.evaluate(()=>document.querySelector('#dlg .dtile').click());await W();
+chk('Favorit gesetzt',await p.evaluate(id=>rzGet(id).vers.some(v=>v.st==='fav'),id)&&await p.evaluate(()=>!document.getElementById('dlg')));
+// Teilen von der Rezeptseite
+await p.evaluate(id=>{R={name:'rezv',id,ver:0};draw()},id);await W();
+await p.evaluate(()=>[...document.querySelectorAll('#main .btn')].find(x=>/teilen/.test(x.innerText)).click());await W();
+chk('Teilen ohne Rezeptauswahl',await p.evaluate(()=>!/Welches Rezept/.test(document.getElementById('sheet').innerText)));
+await p.screenshot({path:'/tmp/s_sh.png'});
+console.log('ok',ok,'bad',bad,errs);await b.close()})();

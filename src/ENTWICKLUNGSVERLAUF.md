@@ -125,3 +125,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Mischbar ist kein Leisteneintrag mehr, sondern Filter „Alle / Mischbar“ (mit Zählern) oben in der Rezeptliste.
 - Platz 2 der Leiste im Rezeptbuch („Bald“) zeigt vorerst „Hier ist eine Baustelle“, bis der Usability-Chat die Funktion festlegt. Test: t74.js.
 - Menüs Mehr und Einstellungen in beiden Bereichen geprüft und abgeschlossen.
+
+## Rezeptseite, Versionen, Dialoge (06.11.2026)
+- Rezeptseite: Chargen (mit Zähler), Als Kopie und Foto als runde Symbole mit Beschriftung unter Mischen/Bearbeiten/Versionen, wie beim Artikel.
+- Versionen: Aktionen als kompakte Symbolleiste (Ansehen, Bearbeiten, Als Kopie, Vergleichen, Markieren). „Unterschied zur aktuellen“ heißt jetzt „Vergleichen“ (mit aktueller Version).
+- Neue Dialoge in der Bildschirmmitte (js26.js, openDlg): Versionsvergleich grafisch gruppiert (Zutaten, Ablauf und Hinweise, Eckdaten; + neu, ↔ geändert, − entfernt, Mengenänderung mit Delta, gleiche Einträge zusammengefasst) und Markieren mit genau zwei Kacheln (Favorit, nicht verwendbar; erneutes Tippen entfernt).
+- Rezept teilen von der Rezeptseite fragt nicht mehr nach dem Rezept. Teilen ohne Titel-Parameter (Test gegen den Gmail-Anhangfehler). Tests: t75.js.
+- „Werkbank“ ist nur ein interner Name im Code; in der App heißt es „Mischen“.
