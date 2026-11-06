@@ -23,10 +23,11 @@ if(!COLX.includes(k))COLX.push(k);if(!SXP.includes(k))SXP.push(k);CWID[k]=CWID[k
 GAPS['v_'+k]=['Ohne '+full,i=>appl(k,i)&&key(i)==null]});
 const VGAPS=Object.keys(VW).map(k=>'v_'+k);
 /* Lückenfinder: Werte-Lücken nur im Expertenmodus, mit Anzahl (so sieht man sofort, wie viele Rohstoffe schon einen Wert haben) */
-pickGap=function(){const own=S.items;const base=Object.keys(GAPS).filter(k=>!VGAPS.includes(k));
+pickGap=function(){const own=S.items;const base=Object.keys(GAPS).filter(k=>!VGAPS.includes(k)&&k!=='tg_none'&&k.indexOf('t:')!==0);
 const rows=[['','Kein Filter']].concat(base.map(k=>[k,GAPS[k][0]+' ('+own.filter(GAPS[k][1]).length+')']));
+rows.splice(1,0,['__t','Schlagwort …'],['tg_none','Ohne Schlagwort ('+own.filter(GAPS.tg_none[1]).length+')']);
 if(S.expert)rows.push(['__w','Fehlende Werte …']);
-pick('Lücken finden',rows,Q.gap,v=>{if(v==='__w'){setTimeout(pickGapW,30);return}Q.gap=v;Q.view='liste';lager()})};
+pick('Lücken finden',rows,Q.gap,v=>{if(v==='__w'){setTimeout(pickGapW,30);return}if(v==='__t'){setTimeout(pickGapT,30);return}Q.gap=v;Q.view='liste';lager()})};
 function pickGapW(){const own=S.items;pick('Wert fehlt bei',VGAPS.map(k=>[k,GAPS[k][0].replace('Ohne ','')+' ('+own.filter(GAPS[k][1]).length+' ohne, '+(own.filter(i=>appl(k.slice(2),i)).length-own.filter(GAPS[k][1]).length)+' mit)']),Q.gap,v=>{Q.gap=v;Q.view='liste';const k=v.slice(2);if(COLS[k]&&!Q.xcol)Q.xcol=k;lager()})}
 /* Gap-Spalte automatisch einblenden, wenn nach einem Wert gefiltert wird */
 {const vc=viewCols;viewCols=function(){const r=vc.apply(this,arguments);if(S.expert&&Q.gap&&Q.gap.startsWith('v_')){const k=Q.gap.slice(2);if(COLS[k]&&!r.includes(k)){if(r.length>=8)r.pop();r.push(k)}}return r}}
@@ -56,3 +57,26 @@ el.dataset.fh=1;el.innerHTML=`<span style="display:block;font-size:.74rem;font-w
 if(R.edit){['f_beschr','f_verw','f_notiz'].forEach(id=>{const e=document.getElementById(id);const l=e&&e.closest('label');const sp=l&&l.querySelector('span');if(sp)fldHead(sp)})}
 else{document.querySelectorAll('#af2 .txt').forEach(b=>{const s=b.querySelector(':scope > .s');if(!s)return;const t=s.textContent.trim();if(!/^(Beschreibung|Verwendung|Notiz)/.test(t))return;fldHead(s);s.style.marginBottom='4px';if(/^Notiz/.test(t))b.style.fontWeight='600'})}
 if(LANG!=='de')trWalk(document.getElementById('main')||document.body)}catch(e){}}}
+
+/* ---------- Schlagwörter (Tags) ---------- */
+const TAGS_BASE=['Favorit','Bio','Vegan','Nachbestellen','Aufbrauchen','Testen','Seife','Creme','Lotion','Lippenpflege','Haarpflege','Gesichtspflege','Körperpflege','Duschgel','Shampoo','Deo','Badezusatz','Peeling','Geschenk','Sommer','Winter'];
+GAPS.tg_none=['Ohne Schlagwort',i=>!(i.tags&&i.tags.length)];
+const tagsUsed=()=>{const m={};S.items.forEach(i=>(i.tags||[]).forEach(t=>m[t]=(m[t]||0)+1));return m};
+const tagsAll=()=>{const u=tagsUsed();const seen=new Set();return TAGS_BASE.concat(S.tags||[],Object.keys(u)).filter(t=>t&&!seen.has(FOLD(t))&&seen.add(FOLD(t)))};
+function pickGapT(){const u=tagsUsed();const ks=Object.keys(u).sort((a,b)=>a.localeCompare(b,'de'));
+if(!ks.length){toast('Noch kein Schlagwort vergeben');return}
+pick('Schlagwort',ks.map(t=>[t,t+' ('+u[t]+')']),'',v=>tagGo(v))}
+function tagGo(t){const k='t:'+t;GAPS[k]=['Schlagwort: '+t,i=>(i.tags||[]).includes(t)];Q.gap=k;Q.view='liste';Q.xcol='tags';if(R.id||R.name!=='lager')stack=[];go('lager','');lager()}
+COLS.tags=['Schlagwörter',i=>esc((i.tags||[]).join(', '))];SORTS.tags=['Schlagwörter',1];SKEY.tags=i=>(i.tags&&i.tags.length)?i.tags.slice().sort((a,b)=>a.localeCompare(b,'de')).join(', ').toLowerCase():null;
+if(!COLX.includes('tags'))COLX.push('tags');if(!SXP.includes('tags'))SXP.push('tags');CWID.tags=140;
+{const f0=fields;fields=function(i){const f=f0.apply(this,arguments);f.a=(f.a||'')+' '+((i&&i.tags)||[]).join(' ');return f}}
+function tgDraw(){const e=document.getElementById('tgchips');if(!e)return;const on=new Set((window.__tg||[]).map(FOLD));
+e.innerHTML=tagsAll().concat((window.__tg||[]).filter(t=>!tagsAll().some(x=>FOLD(x)===FOLD(t)))).map(t=>{const a=on.has(FOLD(t));return `<button type="button" class="pill" style="${a?'background:var(--pri);color:#fff;border-color:var(--pri)':''}" aria-pressed="${a}" data-t="${esc(t)}" onclick="tgTog(this.dataset.t)">${esc(t)}</button>`}).join('');try{if(LANG!=='de')trWalk(e)}catch(x){}}
+function tgTog(t){const a=window.__tg=window.__tg||[];const k=a.findIndex(x=>FOLD(x)===FOLD(t));if(k>=0)a.splice(k,1);else a.push(t);tgDraw()}
+function tgAdd(){const e=document.getElementById('tgnew');const t=(e.value||'').trim().replace(/[,;]+/g,' ').slice(0,30);if(!t)return;S.tags=S.tags||[];if(!tagsAll().some(x=>FOLD(x)===FOLD(t)))S.tags.push(t);const a=window.__tg=window.__tg||[];if(!a.some(x=>FOLD(x)===FOLD(t)))a.push(t);e.value='';tgDraw()}
+{const a3=artikel;artikel=function(i){a3.apply(this,arguments);try{
+if(R.edit){const n=document.getElementById('f_notiz');const l=n&&n.closest('label');if(l&&!document.getElementById('tgbox')){window.__tg=(i.tags||[]).slice();
+l.insertAdjacentHTML('afterend',`<div id="tgbox" class="fld"><span><span style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase">Schlagwörter</span><span style="display:block;font-size:.78rem;color:var(--sub);margin-top:2px">Zum Sortieren, Filtern und Suchen. Antippen zum Setzen.</span></span><div id="tgchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0"></div><div style="display:flex;gap:8px"><input id="tgnew" placeholder="Eigenes Schlagwort" maxlength="30" onkeydown="if(event.key==='Enter'){event.preventDefault();tgAdd()}"><button type="button" class="pill" onclick="tgAdd()">Hinzufügen</button></div></div>`);tgDraw()}}
+else if(i.tags&&i.tags.length){const box=document.getElementById('af2');if(box&&!document.getElementById('tgview')){box.insertAdjacentHTML('beforeend',`<div id="tgview" class="txt" style="margin-top:10px"><div class="s"><span style="display:block;font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase">Schlagwörter</span></div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">${i.tags.map(t=>`<button type="button" class="pill" data-t="${esc(t)}" onclick="tagGo(this.dataset.t)">${esc(t)}</button>`).join('')}</div></div>`)}}
+if(LANG!=='de')trWalk(document.getElementById('main')||document.body)}catch(e){}}}
+{const s9=saveArt;saveArt=function(id){const i=getI(id);if(i&&document.getElementById('tgbox')&&window.__tg){i.tags=window.__tg.slice();const tg=new Set(S.tags||[]);i.tags.forEach(t=>{if(!TAGS_BASE.includes(t))tg.add(t)});S.tags=[...tg]}return s9.apply(this,arguments)}}

@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250));const r={};S.expert=true;
+const a=mk(CM['K0787'],{kind:'m',total:100}),c=mk(CM['K0556'],{kind:'m',total:50});S.items.push(a,c);
+go('artikel',a.id);await W();R.edit=true;draw();await W();
+r.box=!!document.getElementById('tgbox');tgTog('Bio');tgTog('Seife');document.getElementById('tgnew').value='Rosenreihe';tgAdd();r.sel=window.__tg.slice();
+saveArt(a.id);await W();r.saved=getI(a.id).tags;r.custom=S.tags;
+R.edit=false;draw();await W();r.view=!!document.getElementById('tgview');
+r.search=S.items.filter(i=>match(i,'rosenreihe').ok).length;
+r.none=S.items.filter(GAPS.tg_none[1]).length;
+tagGo('Bio');await W();r.list=document.querySelectorAll('.tr').length;r.head=[...document.querySelectorAll('.th .c2')].map(e=>e.textContent.trim());r.cell=document.querySelector('.tr .c2')&&document.querySelector('.tr .c2').textContent;
+LANG='en';go('artikel',a.id);R.edit=true;draw();await W();r.en=document.getElementById('tgbox').innerText.slice(0,80);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();
