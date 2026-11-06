@@ -199,3 +199,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Neue Katalogspalten `sap_koh`, `sap_naoh`, `jodzahl`, `schmelzpunkt`, `sap_quelle` (87 Fette, Öle, Wachse, Stufe ≥ 2; Einzelquellen K0443, K0449, K0993 draußen) und `w` (Rechtlicher Hinweis, zunächst K0798 Cocamide DEA, Anhang III Nr. 60). Werte als Text (Spannen wie „185–200“). Das Update überträgt sie (Feldliste in js7).
 - Anzeige am Artikel: Block „Fettkennzahlen“ mit Hinweis „ungeprüft“, roter Kasten „Rechtlicher Hinweis“. Tests t85 (Anzeige, Update 1.2.18 → 1.3.0, Umleitung), t83 angepasst.
 - Offen: Tensidklasse/WAS und Schüttdichte als Felder, K0474 INCI, K0195 Dichte, Varianten Cocobetain/Kaliumcocoat, Fettwerte als Rechenfelder für Seifenrechner.
+
+## Fettkennzahlen am Artikel editierbar (vor dem Seifenrechner)
+- Am Rohstoff eigene Felder `sapk`, `sapn`, `iod`, `smp` (Text, Wert oder Spanne). Bearbeiten: Block „Fettkennzahlen“ für Pflanzenöl, Butter & Wachs, Ester & Emollient, Seifenrohstoff und überall, wo Werte vorhanden sind; Platzhalter zeigt den Katalogwert, leer = Katalog. Eigener Wert hat Vorrang (Live-Fallback wie bei `einsatzOf`).
+- `fettOf(i)` liefert die wirksamen Werte mit Herkunft (`own`/`cat`/`calc`); NaOH wird aus eigener Verseifungszahl × 0,7130/1000 berechnet, wenn kein eigener NaOH-Wert steht. `fettNum(text)` liefert den Zahlenwert (Mitte einer Spanne). Der künftige Seifenrechner muss genau diese Funktionen nutzen, damit Artikelseite und Rechner dieselben Werte zeigen.
+- Export um vier Spalten erweitert (wirksame Werte); Import liest sie noch nicht. Test t86.

@@ -828,3 +828,7 @@ N7.update({
 })
 N7["Richtwerte aus dem Katalog, ungeprüft"]=("Guide values from the catalog, unverified","Valores orientativos del catálogo, sin verificar")
 N7["Natriumbenzoat (auf der Haut verbleibend)"]=("Sodium benzoate (leave-on)","Benzoato de sodio (sin aclarado)")
+N7.update({"Wert oder Spanne (zum Beispiel 185–200). Der Rechner nimmt bei einer Spanne die Mitte. Leer lassen heißt: Richtwert aus dem Katalog. Trägst du nur die Verseifungszahl ein, rechnet die App den NaOH-Bedarf daraus.":("Value or range (for example 185–200). The calculator uses the midpoint of a range. Leave empty to use the catalog guide value. If you only enter the saponification value, the app calculates the NaOH need from it.","Valor o intervalo (por ejemplo 185–200). La calculadora usa el punto medio de un intervalo. Déjalo vacío para usar el valor orientativo del catálogo. Si solo introduces el índice de saponificación, la app calcula la necesidad de NaOH a partir de él."),
+"Eigene Werte haben Vorrang vor dem Katalog.":("Your own values take precedence over the catalog.","Tus propios valores tienen prioridad sobre el catálogo."),
+"· eigener Wert":("· own value","· valor propio"),"· berechnet":("· calculated","· calculado"),
+"z. B. 185–200":("e.g. 185–200","p. ej. 185–200"),"z. B. 0,135":("e.g. 0.135","p. ej. 0,135"),"z. B. 95–105":("e.g. 95–105","p. ej. 95–105"),"z. B. 61–66 °C":("e.g. 61–66 °C","p. ej. 61–66 °C")})
