@@ -61,3 +61,8 @@ Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
 
 ## Statistik als Dashboard (Idee)
 - In beiden Bereichen später frei anordenbare Dashboard-Widgets statt fester Kacheln.
+
+## Artikelseite: Bearbeiten-Leiste und „Änderungen verwerfen?“ (Fehler, gemeldet 06.11.2026, noch nicht behoben)
+- Nach einer Änderung steht oben links neben dem X „Bearbeiten *“. Dort soll „Abbrechen“ stehen, denn X oder Wischen nach links öffnet die Rückfrage „Änderungen verwerfen?“.
+- Die Rückfrage (Sheet) wird unten von der Speicherleiste (`#sb22`, „Speichern“) überdeckt, deren Stapelreihenfolge höher liegt. Die Knöpfe „Verwerfen“ und „Weiter bearbeiten“ sind nicht erreichbar, der Dialog lässt sich nicht bestätigen.
+- Zu klären beim Beheben: Speicherleiste ausblenden oder unter das Sheet legen, solange ein Sheet oder Dialog offen ist (z. B. `body:has(.sheet) #sb22{display:none}`); danach gleichen Fall in Rezept-Editor und anderen Bearbeiten-Seiten prüfen. Test ergänzen (Änderung machen, X tippen, „Verwerfen“ antippbar).
