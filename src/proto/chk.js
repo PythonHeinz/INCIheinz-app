@@ -2633,18 +2633,21 @@ rzf:['RZF',i=>{const f=swOf(i).rzf.v;return f===''?null:numMid(f)},(v,i)=>esc(sw
 hae:['Härte',i=>{const f=swOf(i).hae.v;return f===''?null:numMid(f)},(v,i)=>esc(swOf(i).hae.v),-1,'Härte'],
 sein:['Einsatz',i=>{const f=swOf(i).sein.v;return f===''?null:String(f).toLowerCase()},(v,i)=>esc(swOf(i).sein.v),1,'Einsatz in Seife'],
 spr:['Spreit',i=>{const s=i.spr!=null&&String(i.spr).trim()!==''?i.spr:(i.cid&&CM[i.cid]&&CM[i.cid].spr);return s==null||s===''?null:(numMid(s)==null?String(s).toLowerCase():numMid(s))},(v,i)=>esc(String(i.spr||'').slice(0,12)),1,'Spreitwert']};
+/* Ausschlussregeln: Lücken zählen nur bei Rohstoffen, für die der Wert überhaupt sinnvoll ist */
+const APPL={sapn:FZKAT,sapk:FZKAT,iod:FZKAT,smp:FZKAT,rzf:FZKAT,hae:FZKAT,sein:FZKAT,spr:['Pflanzenöl','Ester & Emollient'],was:['Tensid','Emulgator'],tkl:['Tensid','Emulgator']};
+const appl=(k,i)=>!APPL[k]||APPL[k].includes(i.kat);
 Object.keys(VW).forEach(k=>{const [lab,key,show,dir,full]=VW[k];
 COLS[k]=[lab,i=>{const v=key(i);return v==null?'':show(v,i)}];
 SORTS[k]=[full,dir];SKEY[k]=key;
 if(!COLX.includes(k))COLX.push(k);if(!SXP.includes(k))SXP.push(k);CWID[k]=CWID[k]||(k==='sein'||k==='was'?90:72);
-GAPS['v_'+k]=['Ohne '+full,i=>key(i)==null]});
+GAPS['v_'+k]=['Ohne '+full,i=>appl(k,i)&&key(i)==null]});
 const VGAPS=Object.keys(VW).map(k=>'v_'+k);
 /* Lückenfinder: Werte-Lücken nur im Expertenmodus, mit Anzahl (so sieht man sofort, wie viele Rohstoffe schon einen Wert haben) */
 pickGap=function(){const own=S.items;const base=Object.keys(GAPS).filter(k=>!VGAPS.includes(k));
 const rows=[['','Kein Filter']].concat(base.map(k=>[k,GAPS[k][0]+' ('+own.filter(GAPS[k][1]).length+')']));
 if(S.expert)rows.push(['__w','Fehlende Werte …']);
 pick('Lücken finden',rows,Q.gap,v=>{if(v==='__w'){setTimeout(pickGapW,30);return}Q.gap=v;Q.view='liste';lager()})};
-function pickGapW(){const own=S.items;pick('Wert fehlt bei',VGAPS.map(k=>[k,GAPS[k][0].replace('Ohne ','')+' ('+own.filter(GAPS[k][1]).length+' ohne, '+(own.length-own.filter(GAPS[k][1]).length)+' mit)']),Q.gap,v=>{Q.gap=v;Q.view='liste';const k=v.slice(2);if(COLS[k]&&!Q.xcol)Q.xcol=k;lager()})}
+function pickGapW(){const own=S.items;pick('Wert fehlt bei',VGAPS.map(k=>[k,GAPS[k][0].replace('Ohne ','')+' ('+own.filter(GAPS[k][1]).length+' ohne, '+(own.filter(i=>appl(k.slice(2),i)).length-own.filter(GAPS[k][1]).length)+' mit)']),Q.gap,v=>{Q.gap=v;Q.view='liste';const k=v.slice(2);if(COLS[k]&&!Q.xcol)Q.xcol=k;lager()})}
 /* Gap-Spalte automatisch einblenden, wenn nach einem Wert gefiltert wird */
 {const vc=viewCols;viewCols=function(){const r=vc.apply(this,arguments);if(S.expert&&Q.gap&&Q.gap.startsWith('v_')){const k=Q.gap.slice(2);if(COLS[k]&&!r.includes(k)){if(r.length>=8)r.pop();r.push(k)}}return r}}
 
