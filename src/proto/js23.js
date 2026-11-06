@@ -1,0 +1,223 @@
+/* =====================================================================
+   js23: Entwurf, Zurück-Geste, Tastatur, Ziehen, Foto, Menüs, Rezept-Import/Export
+   ===================================================================== */
+/* ---------- Tastatur: Speichern-Leiste und Kopf weichen ---------- */
+let HMAX=window.innerHeight;
+const isTxt=e=>!!e&&((e.tagName==='INPUT'&&!/^(checkbox|radio|file|button|submit|range|color)$/i.test(e.type))||e.tagName==='TEXTAREA');
+function kbSync(){const foc=isTxt(document.activeElement);if(!foc||window.innerHeight>HMAX)HMAX=window.innerHeight;document.documentElement.classList.toggle('kb',foc&&window.innerHeight<HMAX-120)}
+['focusin','focusout','resize'].forEach(ev=>window.addEventListener(ev,()=>setTimeout(kbSync,60)));
+
+/* ---------- Zurück-Geste von Android: einen Schritt zurück, nie die App schließen ---------- */
+let HD=0,HIGN=0,HBUSY=false,HT=null;
+try{history.replaceState({n:0},'')}catch(_){}
+const hDepth=()=>stack.length+(document.getElementById('sheet')?1:0)+(document.getElementById('sheet2')?1:0);
+function hSync(){clearTimeout(HT);HT=setTimeout(hDo,30)}
+function hDo(){if(HBUSY)return;const d=hDepth();try{if(d>HD){for(let k=HD+1;k<=d;k++)history.pushState({n:k},'');HD=d}else if(d<HD){HBUSY=true;HIGN=1;const k=HD-d;HD=d;history.go(-k)}}catch(_){HBUSY=false;HIGN=0}}
+window.addEventListener('popstate',e=>{if(HIGN){HIGN=0;HBUSY=false;hSync();return}
+const k=(e.state&&e.state.n)||0;HD=k;
+if(document.getElementById('sheet2'))closePick();else if(document.getElementById('sheet'))closeSheet();else if(stack.length)back();
+hSync()});
+['openSheet','closeSheet','draw','pick','closePick'].forEach(n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){const r=f.apply(this,arguments);hSync();return r}});
+
+/* ---------- Entwurf: nichts geht verloren, auch wenn Android die App beendet ---------- */
+var OCRCB=null;
+let DR_LAST='',DR_PEND=null;
+const DR_KEY='inciheinz-draft';
+function draftSnap(){if(R.name==='reze'&&RE&&RE.dirty)return JSON.stringify({v:1,kind:'reze',RE,R:{name:'reze',id:RE.id}});
+if(R.name==='misch'&&RM&&RM.touched)return JSON.stringify({v:1,kind:'misch',RM,R:{name:'misch',id:R.id,ver:R.ver}});return ''}
+function draftPut(s){const o=JSON.parse(s);o.t=Date.now();try{localStorage.setItem(DR_KEY,JSON.stringify(o))}catch(e){try{if(o.RE){o.RE.photo='';localStorage.setItem(DR_KEY,JSON.stringify(o))}}catch(_){}}}
+function draftFlush(){const s=draftSnap();if(s&&s!==DR_LAST){DR_LAST=s;draftPut(s)}}
+function draftClear(){DR_LAST='';DR_PEND=null;try{localStorage.removeItem(DR_KEY)}catch(_){}}
+setInterval(()=>{const s=draftSnap();if(s){if(s!==DR_LAST){DR_LAST=s;draftPut(s)}}else if(!DR_PEND&&DR_LAST)draftClear()},1200);
+window.addEventListener('pagehide',draftFlush);document.addEventListener('visibilitychange',()=>{if(document.hidden)draftFlush()});
+function draftCheck(){let d=null;try{d=JSON.parse(localStorage.getItem(DR_KEY)||'null')}catch(_){}
+if(!d||!d.kind||Date.now()-d.t>14*864e5||(d.kind==='misch'&&!rzGet(d.R.id))){if(d)draftClear();return}
+if(RE||RM)return;DR_PEND=d;const dt=new Date(d.t);const when=dde(dt.toISOString().slice(0,10))+', '+String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0')+' Uhr';
+const nm=d.kind==='reze'?(d.RE.d.name||''):(()=>{const r=rzGet(d.R.id);return r?rzCurV(r).d.name:''})();
+openSheet(`<h2>Entwurf gefunden</h2><div style="font-size:.92rem;line-height:1.45">${d.kind==='reze'?'Dein Rezept':'Deine Mischung'}${nm?` <b class="nm">${esc(nm)}</b>`:''} war noch in Arbeit (${when}). Möchtest du dort weitermachen?</div><div class="btns"><button class="btn" onclick="draftRestore()">Weiter bearbeiten</button><button class="btn sec" onclick="draftDrop()">Verwerfen</button></div>`)}
+function draftRestore(){const d=DR_PEND;DR_PEND=null;if(!d)return;closeSheet();
+if(d.kind==='reze'){RE=d.RE;RE.dirty=true;stack=[{name:'rez',id:null}];R={name:'reze',id:RE.id}}else{RM=d.RM;stack=[{name:'rez',id:null}];R={name:'misch',id:d.R.id,ver:d.R.ver};rzWake(true)}draw()}
+function draftDrop(){draftClear();closeSheet()}
+(async()=>{for(let k=0;k<150;k++){let ok=false;try{ok=S&&S.seeded&&document.getElementById('view')&&document.getElementById('view').children.length}catch(_){}if(ok)break;await new Promise(r=>setTimeout(r,100))}try{draftCheck()}catch(_){}})();
+
+/* ---------- Ziehen am Griff (Module und Phasen) ---------- */
+let DRG=null;
+function rzDrag(ev,sel,done){if(ev.button>0)return;ev.preventDefault();ev.stopPropagation();const g=ev.currentTarget;const item=g.closest(sel);if(!item)return;const cont=item.parentElement;const main=document.getElementById('main');
+cont.classList.add('rz-dragging');const r0=item.getBoundingClientRect();
+DRG={item,cont,sel,main,done,g,grab:Math.min(ev.clientY-r0.top,Math.max(r0.height-6,6)),y:ev.clientY,pid:ev.pointerId};item.classList.add('rz-drag-on');
+window.addEventListener('pointermove',rzDragMove);window.addEventListener('pointerup',rzDragEnd);window.addEventListener('pointercancel',rzDragEnd);
+try{navigator.vibrate&&navigator.vibrate(12)}catch(_){}
+DRG.timer=setInterval(rzDragTick,16);rzDragTick()}
+function rzDragMove(ev){if(DRG)DRG.y=ev.clientY}
+function rzDragTick(){const d=DRG;if(!d)return;const mr=d.main.getBoundingClientRect();if(d.y<mr.top+70)d.main.scrollTop-=12;else if(d.y>mr.bottom-70)d.main.scrollTop+=12;
+d.item.style.transform='';const h=d.item.getBoundingClientRect().height;const cy=d.y-d.grab+h/2;
+const sibs=[...d.cont.children].filter(e=>e!==d.item&&e.matches(d.sel));let before=null;for(const s of sibs){const r=s.getBoundingClientRect();if(cy<r.top+r.height/2){before=s;break}}
+const cur=d.item.nextElementSibling&&d.item.nextElementSibling.matches(d.sel)?d.item.nextElementSibling:(()=>{let n=d.item.nextElementSibling;while(n&&!n.matches(d.sel))n=n.nextElementSibling;return n})();
+if(before!==cur){if(before)d.cont.insertBefore(d.item,before);else d.cont.appendChild(d.item)}
+d.item.style.transform='';const top0=d.item.getBoundingClientRect().top;d.item.style.transform=`translateY(${d.y-d.grab-top0}px)`}
+function rzDragEnd(){const d=DRG;if(!d)return;DRG=null;clearInterval(d.timer);window.removeEventListener('pointermove',rzDragMove);window.removeEventListener('pointerup',rzDragEnd);window.removeEventListener('pointercancel',rzDragEnd);
+d.item.style.transform='';d.item.classList.remove('rz-drag-on');d.cont.classList.remove('rz-dragging');
+const ids=[...d.cont.children].filter(e=>e.matches(d.sel)).map(e=>e.dataset.id);d.done(ids)}
+
+/* ---------- Foto des fertigen Produkts ---------- */
+let RZPHCB=null;
+function rzImgScale(f,max,q){return createImageBitmap(f).then(bm=>{const k=Math.min(1,max/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(bm.width*k));c.height=Math.max(1,Math.round(bm.height*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',q||.82)})}
+function rzPhotoSheet(cb){RZPHCB=cb;openSheet(`<h2>Foto des fertigen Produkts</h2><div class="s" style="margin:4px 0 10px">Das Foto liegt nur auf deinem Gerät. Du kannst es später auf Rezeptkarten und in Publikationen verwenden.</div><div class="btns col"><button class="btn" onclick="rzPhotoGo('cam')">Kamera</button><button class="btn sec" onclick="rzPhotoGo('gal')">Galerie</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)}
+function rzPhotoGo(m){const i=document.createElement('input');i.type='file';i.accept='image/*';if(m==='cam')i.setAttribute('capture','environment');i.style.display='none';
+i.onchange=async()=>{const f=i.files&&i.files[0];i.remove();if(!f)return;try{const u=await rzImgScale(f,1000,.82);closeSheet();const cb=RZPHCB;RZPHCB=null;if(cb)cb(u)}catch(e){toast('Das Bild konnte nicht gelesen werden')}};document.body.appendChild(i);i.click()}
+function rzPhotoMenu(id){const r=rzGet(id);if(!r)return;
+openSheet(`<h2>Foto</h2>${rowH(['photo',r.photo?'Foto ändern':'Foto hinzufügen','',`rzPhotoSheet(u=>{rzGet('${id}').photo=u;save();draw();toast('Foto gespeichert')})`])}${r.photo?rowH(['trash','Foto entfernen','',`closeSheet();delete rzGet('${id}').photo;save();draw()`,'var(--err)']):''}`)}
+
+/* ---------- Mehr-Menüs: je Bereich eigene Einträge, unten die gemeinsamen Einstellungen ---------- */
+let SETCTX='app';
+const mcap=t=>`<div class="cap" style="margin:12px 0 0">${t}</div>`;
+const mrows=a=>a.map(x=>rowH([x[0],x[1],x[3]||'',x[2]])).join('');
+const mAppBlock=()=>mcap('Für die ganze App')+`<div class="s" style="margin:2px 0 2px">Gilt für Lager und Rezeptbuch gleichermaßen, hier und dort dasselbe.</div>`+mrows([['gear','Einstellungen',"sheetAppSet()",'Sprache, Expertenmodus'],['shield','Sicherung der ganzen App',"sheetBackup()",'Backup speichern und laden, Schritt zurück'],['book','Anleitung',"sheetHilfe()"],['info','Info',"sheetInfo()"]]);
+sheetMehr=function(){const rz=document.getElementById('app')&&document.getElementById('app').classList.contains('rez');
+if(rz)openSheet(mcap('Rezeptbuch')+mrows([['import','Rezepte importieren',"sheetRzImport()",'Aus Notizen: Text einfügen oder Foto lesen'],['export','Exportieren &amp; Publizieren',"sheetRzExport()",'Rezeptkarte, Rezeptbuch, Chargenprotokoll, Sicherung']])+mcap('Rezept-Einstellungen')+mrows([['gear','Module &amp; Rundung',"sheetRzSet()",'Welche Bausteine du beim Schreiben nutzt']])+mAppBlock());
+else openSheet(mcap('Arbeiten')+mrows([['tag','Etiketten &amp; Druck',"sheetLabels()"],['cart','Bestellliste',"tab('einkauf');closeSheet()"],['stat','Statistik',"closeSheet();go('stat')"]])+mcap('Daten')+mrows([['import','Import',"sheetImport()"],['export','Export',"sheetExpOpen()"],['refresh','Katalog aktualisieren',"sheetCatUpd()"]])+mcap('Lager-Einstellungen')+mrows([['gear','Lagerorte &amp; Lieferanten',"sheetLagerSet()",'Orte für Gefäße, Versandkosten je Lieferant']])+mAppBlock())};
+function sheetExpOpen(){sheetExport()}
+const scap=t=>`<div class="cap" style="font-size:1rem;font-weight:700;color:var(--pri);letter-spacing:0;text-transform:none;border-bottom:2px solid var(--muted);padding-bottom:6px;margin:0 0 8px">${t}</div>`;
+function sheetAppSet(){SETCTX='app';openSheet(`<h2>Einstellungen</h2><div class="s" style="margin-bottom:12px">Diese Einstellungen gelten für die ganze App, im Lager und im Rezeptbuch.</div>
+${scap('Sprache')}<button class="selbtn" onclick="pickLang()"><span>${{de:'Deutsch',en:'English',es:'Español'}[LANG]||'Deutsch'}</span><span style="color:var(--sub)">▾</span></button>
+<div style="height:26px"></div>${scap('Sichern und zurücknehmen')}${rowH(['shield','Sicherung der ganzen App','Backup speichern und laden',"sheetBackup()"])}${UNDO?rowH(['refresh','Letzte Änderung rückgängig',esc(UNDO.label),"closeSheet();doUndo(true)"]):''}
+<div style="height:26px"></div><label class="chk" style="margin:0 0 4px"><input type="checkbox" ${S.expert?'checked':''} onchange="S.expert=this.checked;save();sheetAppSet()"> Expertenmodus (Entwickleroptionen)</label>${S.expert?expertCard():'<div style="height:14px"></div>'}${demoBlockHtml()}`)}
+function sheetLagerSet(){SETCTX='lager';openSheet(`<h2>Lager-Einstellungen</h2>${scap('Lagerorte')}<div class="s" style="margin-bottom:6px">Diese Orte kannst du bei Artikeln und Gefäßen auswählen.</div>${S.orte.map((o,n)=>`<div class="row" style="padding:0 2px;cursor:default"><div class="t"><b>${esc(o)}</b></div><button class="ib" style="color:var(--sub)" onclick="delOrt(${n})" aria-label="Entfernen">${ic('x','var(--sub)',20)}</button></div>`).join('')||'<div class="s">Noch keine Orte.</div>'}
+<div style="display:flex;gap:8px;margin-top:12px"><input id="no" placeholder="Neuer Lagerort, z. B. Schuhkarton" style="flex:1;min-width:0;height:46px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit"><button class="btn" onclick="addOrt()">Hinzufügen</button></div>
+<div style="height:30px"></div>${scap('Lieferanten')}<div class="s" style="margin-bottom:6px">Versandkosten und Webseite je Lieferant. Neue legst du auch direkt bei der Bezugsquelle an.</div>${liefsHtml()}<button class="pill" style="margin-top:10px" onclick="LIEFCB=null;sheetLiefEdit(null)">+ Lieferant hinzufügen</button><div style="height:14px"></div>`)}
+sheetSettings=function(){return SETCTX==='lager'?sheetLagerSet():sheetAppSet()};
+/* Sicherung: Hinweis auf die getrennten Rezept-Exporte */
+
+/* ---------- Rezept-Einstellungen: Module verwalten, Rundung ---------- */
+function sheetRzSet(){SETCTX='rez';const off=S.rzModOff||[];const st=rzStep();
+openSheet(`<h2>Rezept-Einstellungen</h2>${scap('Module')}<div class="s" style="margin-bottom:6px">Diese Bausteine bietest du beim Schreiben eines Rezepts an. Bereits angelegte Module bleiben erhalten.</div>
+${Object.keys(RZMT).map(k=>`<label class="chk" style="padding:8px 0;border-bottom:1px solid var(--line);margin:0"><input type="checkbox" ${off.includes(k)?'':'checked'} onchange="rzModTog('${k}',this.checked)"> ${RZMT[k][0]}</label>`).join('')}
+<div style="height:26px"></div>${scap('Standard-Ablauf')}<div class="s" style="margin-bottom:6px">Diese Titel setzt „Standard-Ablauf einfügen“ als Schritte ein. Der Text bleibt für dich leer.</div>
+${rzAbl().map((x,n)=>`<div class="row" style="padding:0 2px;cursor:default"><div class="t"><b class="nm">${esc(x)}</b></div><button class="ib" style="color:var(--sub)" onclick="rzAblDel(${n})" aria-label="Entfernen">${ic('x','var(--sub)',20)}</button></div>`).join('')}
+<div style="display:flex;gap:8px;margin-top:10px"><input id="rzab" placeholder="Neuer Schritt, z. B. Abfüllen" style="flex:1;min-width:0;height:46px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit"><button class="btn" onclick="rzAblAdd()">Hinzufügen</button></div>
+${S.rzAbl?`<button class="lnk" style="margin-top:8px" onclick="S.rzAbl=null;save();sheetRzSet()">Auf Standard zurücksetzen</button>`:''}
+<div style="height:26px"></div>${scap('Rundung der Mengen')}<div class="s" style="margin-bottom:8px">Auf diesen Wert rundet der Rechner und die Werkbank.</div>
+<div class="tb" style="gap:8px;flex-wrap:wrap">${[[0.01,'0,01 g'],[0.1,'0,1 g'],[0.5,'0,5 g'],[1,'1 g']].map(o=>`<button type="button" class="pill ${Math.abs(st-o[0])<1e-9?'on':''}" style="width:auto;height:auto" onclick="rzStepSet(${o[0]})">${o[1]}</button>`).join('')}</div><div style="height:14px"></div>`)}
+function rzModTog(k,on){const a=new Set(S.rzModOff||[]);if(on)a.delete(k);else a.add(k);S.rzModOff=[...a];save()}
+function rzAblAdd(){const v=val('rzab').trim();if(!v)return;const a=rzAbl().slice();a.push(v);S.rzAbl=a;save();sheetRzSet()}
+function rzAblDel(n){const a=rzAbl().slice();a.splice(n,1);S.rzAbl=a.length?a:null;save();sheetRzSet()}
+function rzStepSet(v){S.rezStep=v;save();sheetRzSet()}
+
+/* ---------- Rezepte importieren: Text oder Bild (Notizen) ---------- */
+const RZI_U='kg|g|gr|mg|ml|l|%|prozent|tropfen|tr\\.?|el|tl|msp\\.?|prise|stk\\.?|stück';
+const rzNum='\\d+(?:[.,]\\d+)?';
+const rziA=new RegExp('^(?:[-•*·–]\\s*)?('+rzNum+')\\s*('+RZI_U+')\\s*(?:von\\s+|[:\\-–]\\s*)?(.+?)\\s*$','i');
+const rziB=new RegExp('^(?:[-•*·–]\\s*)?([^\\d].*?)[\\s.:–\\-]*\\s('+rzNum+')\\s*('+RZI_U+')\\s*$','i');
+const rziPhaseTyp=t=>{t=FOLD(t);if(/wasser|aqua|hydro/.test(t))return 'A';if(/oel|fett|lipid|butter|wachs|heiss|hei(ss|ß)/.test(t))return 'B';if(/kalt|abkuehl|wirkstoff|duft|konserv|waermeempfind/.test(t))return 'C';if(/\bph\b|ph-?einstell/.test(t))return 'D';return ''};
+function rziAmount(n,u,name){u=u.toLowerCase().replace(/\.$/,'');let g=num(n)||0,warn='',un='';
+if(u==='kg')g*=1000;else if(u==='mg')g/=1000;else if(u==='g'||u==='gr'){}else if(u==='%'||u==='prozent'){warn='Prozentwert als Gramm übernommen'}else if(u==='ml'||u==='l'){if(u==='l')g*=1000;un='ml'}
+else{warn='Menge in „'+n+' '+u+'“ bitte in Gramm eintragen';g=0}
+return {g,warn,un}}
+function rziMatch(n){const f=FOLD(n);if(!f)return {k:'t'};const own=S.items.find(x=>FOLD(x.name)===f)||S.items.find(x=>{const o=FOLD(x.name);return o.length>=4&&(o.startsWith(f+' ')||f.startsWith(o+' '))});if(own)return {k:'i',i:own};
+const c=CAT.find(c=>FOLD(c.n)===f)||CAT.find(c=>FOLD(c.n).startsWith(f+' '));if(c)return {k:'c',c};return {k:'t'}}
+function rzParse(raw){const lines=String(raw||'').replace(/\r/g,'').split('\n').map(l=>l.replace(/[\u00a0\t]+/g,' ').trim()).filter(Boolean);
+const d={name:'',zweck:'',ph:'',ergibt:'',zeit:'',grad:'',phasen:[],mod:[]};const warn=[];let cur=null,mode='z',ing=0;
+const newPh=(typ,name)=>{cur={id:uid(),typ,name:name||(typ?'Phase '+typ+' · '+RZPH[typ]:'Zutaten'),z:[]};d.phasen.push(cur);return cur};
+const addZ=(name,g,warnTxt,un)=>{if(!cur)newPh('','Zutaten');const m=rziMatch(name);const z={id:uid(),item:m.k==='i'?m.i.id:'',cid:m.k==='i'?(m.i.cid||''):m.k==='c'?m.c.id:'',name:m.k==='i'?m.i.name:m.k==='c'?m.c.n:name,g};
+if(un==='ml'){const dn=m.k==='i'&&m.i.dens>0?m.i.dens:(/^(wasser|aqua|dest)/i.test(name)?1:0);if(dn>0)z.g=Math.round(g*dn*1000)/1000;else warn.push(name+': ml ohne Dichte als Gramm übernommen')}
+if(warnTxt)warn.push(name+': '+warnTxt);cur.z.push(z);ing++};
+for(let line of lines){let m;
+if(/^(summe|gesamt|gesamtmenge|total|insgesamt)\b/i.test(line))continue;
+if(/^(zutaten|inhaltsstoffe|zutatenliste)\s*:?$/i.test(line)){mode='z';continue}
+if(/^(zubereitung|anleitung|herstellung|vorgehen|vorgehensweise|arbeitsschritte|ablauf|so geht['’]?s)\s*:?$/i.test(line)){mode='s';continue}
+if(m=line.match(/^(?:rezept|name|titel)\s*:\s*(.+)$/i)){d.name=m[1].trim();continue}
+if(m=line.match(/^(?:ergibt|menge|ausbeute)\s*:\s*(.+)$/i)&&!/^\d/.test(line)){d.ergibt=m[1].trim();continue}
+if(m=line.match(/^(?:dauer|zeit|zeitaufwand)\s*:\s*(.+)$/i)){d.zeit=m[1].trim();continue}
+if(m=line.match(/^(?:ziel-?)?ph(?:-wert)?\s*:\s*(.+)$/i)){d.ph=m[1].trim();continue}
+if(m=line.match(/^(?:einsatz(?:zweck)?|zweck|verwendung)\s*:\s*(.+)$/i)){d.zweck=m[1].trim();continue}
+if(m=line.match(/^haltbarkeit\s*:\s*(.+)$/i)){d.mod.push({id:uid(),t:'halt',titel:'Haltbarkeit',text:m[1].trim()});continue}
+if(m=line.match(/^(achtung|tipp|hinweis|sicherheit|wichtig)\s*:\s*(.+)$/i)){const k=m[1].toLowerCase();d.mod.push({id:uid(),t:'hinweis',titel:k==='tipp'?'Tipp':k==='sicherheit'?'Sicherheit':'Achtung',text:m[2].trim()});continue}
+if(m=line.match(/^abf(?:ü|ue)llung\s*:\s*(.+)$/i)){d.mod.push({id:uid(),t:'abfuell',titel:'Abfüllung',text:m[1].trim()});continue}
+/* Zutat? */
+const bare=line.replace(/^\d+\s*[.)]\s+/,'');let a=line.match(rziA)||bare.match(rziA),b=null;if(!a)b=line.match(rziB)||bare.match(rziB);
+if(a&&mode==='z'){const r=rziAmount(a[1],a[2],a[3]);addZ(a[3].replace(/[.,;:]+$/,''),r.g,r.warn,r.un);continue}
+if(b&&mode==='z'){const r=rziAmount(b[2],b[3],b[1]);addZ(b[1].replace(/[.,;:\-–]+$/,'').trim(),r.g,r.warn,r.un);continue}
+/* Phase? */
+if(m=line.match(/^phase\s*([a-d1-4])\b\s*[:.\-–·)]*\s*(.*)$/i)){const t=/[a-d]/i.test(m[1])?m[1].toUpperCase():'ABCD'[+m[1]-1];newPh(t,m[2]?'Phase '+t+' · '+m[2].replace(/:$/,'').trim():'');mode='z';continue}
+if(m=line.match(/^([a-d])\s*[:.)]\s*(.{0,40})$/i)){const t=m[1].toUpperCase();newPh(t,m[2]?'Phase '+t+' · '+m[2].replace(/:$/,'').trim():'');mode='z';continue}
+if(m=line.match(/^(wasser|öl|oel|fett|heiß|heiss|kalt|wirkstoff|abkühl|duft|konservier)[\wäöüß\- \/]{0,24}?(phase)\s*:?\s*$/i)){const t=rziPhaseTyp(line);newPh(t,line.replace(/:$/,''));mode='z';continue}
+if(/^[^\d]{2,40}:$/.test(line)&&mode==='z'&&!/^(rezept|name|titel)/i.test(line)){const nm=line.slice(0,-1).trim();newPh(rziPhaseTyp(nm),nm);continue}
+/* Schritt */
+const sm=line.match(/^(?:schritt\s*)?\d+\s*[.)\-:]\s+(.+)$/i);
+if(sm||mode==='s'||(ing>0&&line.length>25)){d.mod.push({id:uid(),t:'schritt',titel:'',text:(sm?sm[1]:line.replace(/^[-•*·–]\s*/,'')).trim()});continue}
+if(!d.name&&!ing&&!cur){d.name=line.replace(/^#+\s*/,'');continue}
+d.mod.push({id:uid(),t:'notiz',titel:'',text:line})}
+d.phasen=d.phasen.filter(p=>p.z.length);
+return {d,warn,ing}}
+let RZIM=null;
+function sheetRzImport(txt){const hasOcr=!!window.OCRCB;
+openSheet(`<h2>Rezept importieren</h2><div class="s" style="margin-bottom:6px">Hol ein Rezept aus deinen Notizen. Du siehst vorher eine Vorschau und kannst alles im Editor noch ändern. Es wird nichts gespeichert, bevor du es selbst speicherst.</div>
+<div class="two" style="margin:8px 0"><button class="btn sec" onclick="rzOcr('cam')">Kamera</button><button class="btn sec" onclick="rzOcr('gal')">Galerie / Screenshot</button></div>
+<label class="fld" style="margin-top:4px"><span>Oder Text einfügen</span><textarea id="rzit" style="min-height:170px" placeholder="Name des Rezepts&#10;Phase A: Wasserphase&#10;80 g Wasser&#10;Phase B: Ölphase&#10;Sheabutter 20 g&#10;1. Alles erwärmen …">${esc(txt||'')}</textarea></label><div class="s" id="er" style="color:var(--err);margin-top:4px"></div>
+<div class="cap" style="margin:12px 0 2px">So liest die App deine Notizen</div>
+<div style="font-size:.88rem;line-height:1.5">Phasen: „Phase A“, „Wasserphase“, „Ölphase“ oder eine Zeile mit Doppelpunkt am Ende<br>Zutaten: „30 g Sheabutter“ oder „Sheabutter 30 g“ (g, kg, ml, %)<br>Schritte: nummerierte Zeilen oder alles nach „Zubereitung“<br>Hinweise: Zeilen mit „Achtung:“, „Tipp:“, „Haltbarkeit:“<br>Zutaten werden mit deinem Lager und dem Katalog abgeglichen.</div>
+<div class="btns"><button class="btn" onclick="rzImportRun()">Text auswerten</button><button class="btn sec" onclick="$('#rzif').click()">Rezeptdatei (.json) öffnen</button></div>
+<input type="file" id="rzif" accept=".json,application/json" style="display:none" onchange="rzImportFile(this)">`)}
+function rzOcr(m){OCRCB=t=>{sheetRzImport(t);if(!t.trim()){const e=document.getElementById('er');if(e)e.textContent='Im Bild wurde kein Text erkannt. Versuche ein schärferes Bild oder einen Screenshot.'}else toast('Text aus Bild gelesen. Bitte prüfen, dann auswerten.')};ocrPick(m)}
+{const sp=sheetProduct;sheetProduct=function(){OCRCB=null;return sp.apply(this,arguments)}}
+function rzImportRun(){const t=val('rzit');if(!t.trim()){$('#er').textContent='Bitte zuerst Text einfügen oder ein Foto lesen lassen.';return}
+const r=rzParse(t);if(!r.ing){$('#er').textContent='Es wurden keine Zutaten mit Mengen erkannt. Eine Zutat pro Zeile, zum Beispiel „30 g Sheabutter“.';return}RZIM=r;rzImportPrev(t)}
+function rzImportPrev(txt){const {d,warn}=RZIM;const nz=d.phasen.reduce((a,p)=>a+p.z.length,0);const ns=d.mod.filter(m=>m.t==='schritt').length;
+const tag=z=>z.item?'<span class="s"> · im Lager</span>':z.cid?'<span class="s"> · aus Katalog</span>':'<span class="s"> · freier Text</span>';
+openSheet(`<h2>Das habe ich erkannt</h2><div class="rz-t nm" style="font-size:1.2rem">${esc(d.name||'(ohne Namen)')}</div><div class="s" style="margin-bottom:8px">${d.phasen.length} Phase${d.phasen.length===1?'':'n'} · ${nz} Zutat${nz===1?'':'en'} · ${ns} Schritt${ns===1?'':'e'}</div>
+<div style="max-height:46vh;overflow:auto">${d.phasen.map(p=>`<div class="cap nm" style="margin:10px 0 2px;text-transform:none;letter-spacing:0;font-size:.9rem">${esc(p.name)}</div>${p.z.map(z=>`<div class="rz-dl"><span class="nm">${esc(z.name)}${tag(z)}</span><span>${z.g>0?rzG(z.g)+' g':'<span class="amb">Menge fehlt</span>'}</span></div>`).join('')}`).join('')}</div>
+${warn.length?`<div class="hint" style="margin-top:10px">Bitte prüfen: ${esc(warn.slice(0,6).join('; '))}${warn.length>6?' …':''}</div>`:''}
+<div class="btns"><button class="btn" onclick="rzImportOpen()">Im Editor öffnen</button><button class="btn sec" onclick="sheetRzImport(${JSON.stringify(txt||'').replace(/</g,'\\u003c').replace(/"/g,'&quot;')})">Zurück zum Text</button></div>`)}
+function rzImportOpen(){if(!RZIM)return;const d=RZIM.d;RZIM=null;RE={id:null,base:0,d:rzPoolFix(d),dirty:true,photo:''};closeSheet();if(R.name==='reze')R={name:'reze',id:null};else{stack.push(R);R={name:'reze',id:null}}draw();toast('Rezept übernommen. Prüfe die Angaben und speichere es.')}
+function rzImportFile(inp){const f=inp.files&&inp.files[0];if(!f)return;f.text().then(t=>{inp.value='';let j;try{j=JSON.parse(t)}catch(e){j=null}
+if(!j||!(j.rez||j.items)){$('#er').textContent='Diese Datei kann ich nicht lesen. Erwartet wird eine INCIheinz-Rezeptdatei (.json).';return}
+if(!j.rez){$('#er').textContent='Das ist eine Sicherung der ganzen App. Lade sie unter Mehr › Sicherung der ganzen App.';return}
+rzAll();rzChgAll();let nr=0,nc=0;j.rez.forEach(r=>{if(!S.rez.find(x=>x.id===r.id)){S.rez.push(r);nr++}});(j.chg||[]).forEach(c=>{if(!S.chg.find(x=>x.id===c.id)){S.chg.push(c);nc++}});
+if(!nr&&!nc){$('#er').textContent='Alle Rezepte aus der Datei sind schon vorhanden.';return}save();closeSheet();tab('rez');toast(nr+' Rezept'+(nr===1?'':'e')+(nc?' und '+nc+' Charge'+(nc===1?'':'n'):'')+' übernommen')})}
+
+/* ---------- Rezepte exportieren: Publikationen mit Auswahl, Format und Vorauswahl ---------- */
+const RZPUB={
+card:{ic:'tag',t:'Rezeptkarte',s:'Ein Rezept pro Seite, zum Drucken oder als PDF',need:'Zutaten, Eckdaten, Ablauf und Hinweise, Foto',fm:[['pdf','PDF / Drucken','zum Ansehen, Drucken oder Senden'],['txt','Text','zum Kopieren oder Teilen']],opts:[['foto','Foto'],['eck','Eckdaten'],['ablauf','Ablauf und Hinweise'],['inci','INCI-Entwurf'],['sh','Hinweise zu Rohstoffen']]},
+book:{ic:'book',t:'Rezeptbuch',s:'Mehrere Rezepte in einem Dokument, mit Titelseite und Inhaltsverzeichnis',need:'Zutaten, Eckdaten, Ablauf und Hinweise, Foto',fm:[['pdf','PDF / Drucken','zum Ansehen, Drucken oder Senden']],opts:[['foto','Foto'],['eck','Eckdaten'],['ablauf','Ablauf und Hinweise'],['inci','INCI-Entwurf'],['sh','Hinweise zu Rohstoffen']]},
+chg:{ic:'list',t:'Chargenprotokoll',s:'Tabelle deiner Chargen mit Soll- und Ist-Mengen',need:'Chargen aus der Werkbank, Bewertung und Notizen',fm:[['xlsx','Excel (.xlsx)','öffnet sich überall korrekt'],['csv','CSV (.csv)','UTF-8 mit Semikolon, für Tabellen-Programme'],['pdf','PDF','zum Ansehen, Drucken oder Senden'],['txt','Text','kopieren oder teilen']],opts:[]},
+txt:{ic:'export',t:'Rezepte als Text',s:'Gut lesbar, ideal zum Teilen. Die App kann ihn über „Rezepte importieren“ wieder einlesen',need:'Zutaten, Phasen, Ablauf und Hinweise, Eckdaten',fm:[['view','Anzeigen und kopieren','zum Einfügen in Messenger oder Notizen'],['file','Datei (.txt)','speichern oder teilen']],opts:[]},
+json:{ic:'shield',t:'Rezeptdaten sichern',s:'Alle Rezepte mit Versionen als Datei (.json), zum Wiederherstellen oder für ein anderes Gerät',need:'alles, was du im Rezeptbuch gepflegt hast',fm:[],opts:[['chg','Chargen'],['foto','Fotos']]}};
+let RZX=null;
+function sheetRzExport(){openSheet(`<h2>Exportieren &amp; Publizieren</h2><div class="s" style="margin-bottom:6px">Aus deinen Rezepten entstehen hier Dokumente zum Drucken, Weitergeben und Sichern. Jede Publikation nutzt die Module, die du im Rezept gepflegt hast. Je mehr du pflegst, desto vollständiger wird sie.</div>`+Object.keys(RZPUB).map(k=>{const p=RZPUB[k];return rowH([p.ic,p.t,p.s+'. Nutzt: '+p.need+'.',`sheetRzPub('${k}')`])}).join('')+`<div class="hint" style="margin:10px 0 0">Die Gestaltung der Dokumente folgt in einem späteren Schritt. Eine Sicherung der ganzen App findest du unter Mehr › Sicherung der ganzen App.</div>`)}
+function rzPubDefaultIds(kind){const all=rzAll();let l=all.filter(r=>!r.demo);if(!l.length)l=all.slice();if(kind==='chg')l=l.filter(r=>rzChgAll().some(c=>c.rez===r.id));return new Set(l.map(r=>r.id))}
+function sheetRzPub(kind,keep){const p=RZPUB[kind];if(!rzAll().length){sheetMsg('Noch keine Rezepte','Lege zuerst ein Rezept an, dann kannst du es hier exportieren.');return}
+if(!keep||!RZX||RZX.kind!==kind){const o={};p.opts.forEach(x=>o[x[0]]=1);RZX={kind,ids:rzPubDefaultIds(kind),fmt:p.fm.length?p.fm[0][0]:'',o}}
+const L=rzAll().slice().sort((a,b)=>FOLD(rzCurV(a).d.name)<FOLD(rzCurV(b).d.name)?-1:1);
+openSheet(`<h2>${p.t}</h2><div class="s">${p.s}.</div><div class="cap" style="margin:12px 0 2px">Dafür nutzt die App</div><div class="s">${p.need}.</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><span class="cap" style="margin:0">Welche Rezepte?</span><span><button class="lnk" style="margin-right:14px" onclick="rzxAll(1)">Alle</button><button class="lnk" onclick="rzxAll(0)">Keine</button></span></div>
+<div style="max-height:30vh;overflow:auto;margin-top:4px">${L.map(r=>{const v=rzCurV(r);const nc=rzChgAll().filter(c=>c.rez===r.id).length;return `<label class="chk" style="padding:8px 0;border-bottom:1px solid var(--line);margin:0;align-items:flex-start"><input type="checkbox" data-id="${r.id}" ${RZX.ids.has(r.id)?'checked':''} onchange="rzxTog('${r.id}',this.checked)"> <span><span class="nm">${esc(v.d.name)}</span>${r.demo?' <span class="s">Testrezept</span>':''}<br><span class="s">${kind==='chg'?(nc?nc+(nc===1?' Charge':' Chargen'):'keine Charge'):'Version '+v.n+(r.photo?' · Foto':'')}</span></span></label>`}).join('')}</div>
+<div id="rzxc" class="s" style="margin-top:8px"></div>
+${p.fm.length>1?`<div class="cap" style="margin:14px 0 2px">Format</div>`+p.fm.map(f=>`<label class="chk" style="align-items:flex-start;margin-top:10px"><input type="radio" name="rzxf" value="${f[0]}" ${RZX.fmt===f[0]?'checked':''} onchange="RZX.fmt=this.value"> <span>${f[1]}<br><span class="s">${f[2]}</span></span></label>`).join(''):''}
+${p.opts.length?`<div class="cap" style="margin:14px 0 6px">Das soll enthalten sein</div><div class="tb" style="gap:8px;flex-wrap:wrap">${p.opts.map(x=>`<button type="button" class="pill ${RZX.o[x[0]]?'on':''}" style="width:auto;height:auto" onclick="RZX.o['${x[0]}']=RZX.o['${x[0]}']?0:1;this.classList.toggle('on')">${x[1]}</button>`).join('')}</div>`:''}
+<div class="btns"><button class="btn" onclick="rzPubGo()">Erstellen</button><button class="btn sec" onclick="sheetRzExport()">Zurück</button></div>`);rzxCnt()}
+function rzxTog(id,on){if(on)RZX.ids.add(id);else RZX.ids.delete(id);rzxCnt()}
+function rzxAll(on){RZX.ids=on?new Set(rzAll().map(r=>r.id)):new Set();sheetRzPub(RZX.kind,true)}
+function rzxCnt(){const e=document.getElementById('rzxc');if(!e)return;const ids=[...RZX.ids].map(rzGet).filter(Boolean);const n=ids.length;let t=n+(n===1?' Rezept gewählt':' Rezepte gewählt');
+if(RZX.kind==='chg')t+=' · '+rzChgAll().filter(c=>RZX.ids.has(c.rez)).length+' Chargen';else if(['card','book','txt'].includes(RZX.kind)&&n){const f=ids.filter(r=>r.photo).length,a=ids.filter(r=>rzCurV(r).d.mod.length).length;t+=` · Foto bei ${f}, Ablauf bei ${a}`}
+e.textContent=t}
+function rzTextOf(id,vn){const r=rzGet(id);const v=rzVer(r,vn||rzCurV(r).n);const d=v.d;const sum=rzSum(d);const L=[d.name,'Version '+v.n+' · '+dde(v.date.slice(0,10))];
+if(d.zweck)L.push('Einsatzzweck: '+d.zweck);if(d.ph)L.push('Ziel-pH: '+d.ph);if(d.ergibt)L.push('Ergibt: '+d.ergibt);if(d.zeit)L.push('Zeitaufwand: '+rzZeit(d.zeit));if(d.grad)L.push('Schwierigkeit: '+d.grad);
+L.push('','Zutaten');d.phasen.forEach(p=>{if(p.typ||d.phasen.length>1)L.push('',p.name+':');p.z.forEach(z=>L.push(rzIv(z.g)+' g '+rzName(z)))});L.push('Summe: '+rzIv(sum)+' g');
+const st=d.mod.filter(m=>m.t==='schritt');if(st.length){L.push('','Zubereitung');let n=0;d.mod.forEach(m=>{if(m.t==='schritt'){n++;L.push(n+'. '+[m.titel,m.text].filter(Boolean).join(': '))}})}
+d.mod.filter(m=>m.t!=='schritt').forEach(m=>{const k={hinweis:m.titel||'Hinweis',halt:'Haltbarkeit',abfuell:'Abfüllung',notiz:m.titel||'Notiz'}[m.t];L.push('',k+': '+(m.text||''))});
+const inci=rzInci(d).text;if(inci)L.push('','INCI (Entwurf): '+inci);return L.join('\n')}
+function rzPubGo(){const p=RZPUB[RZX.kind];const ids=[...RZX.ids].filter(rzGet);if(!ids.length){toast('Bitte mindestens ein Rezept wählen');return}
+const L=ids.map(rzGet).sort((a,b)=>FOLD(rzCurV(a).d.name)<FOLD(rzCurV(b).d.name)?-1:1);const o=RZX.o;
+if(RZX.kind==='card'||RZX.kind==='book'){if(RZX.kind==='card'&&RZX.fmt==='txt'){sheetText(L.map(r=>rzTextOf(r.id)).join('\n\n----------\n\n'));return}
+let css='';const pages=L.map((r,n)=>{const x=rzCardHtml(r.id,rzCurV(r).n,o);css=x.css;return '<div style="'+(n<L.length-1?'page-break-after:always':'')+'">'+x.body+'</div>'}).join('');
+let front='';if(RZX.kind==='book'){front=`<div style="page-break-after:always;text-align:center;padding-top:70mm"><h1 style="font-size:34px">Mein Rezeptbuch</h1><div class="s">${L.length} Rezept${L.length===1?'':'e'} · ${dde(today())}</div></div><div style="page-break-after:always"><h2>Inhalt</h2>${L.map(r=>`<div style="padding:4px 0;border-bottom:1px solid #ddd">${esc(rzCurV(r).d.name)}</div>`).join('')}</div>`}
+closeSheet();rzPrintDoc(css,RZX.kind==='book'?'INCIheinz Rezeptbuch':rzCurV(L[0]).d.name,front+pages);return}
+if(RZX.kind==='chg'){const cs=rzChgAll().filter(c=>RZX.ids.has(c.rez)).sort((a,b)=>a.date<b.date?-1:1);if(!cs.length){toast('Für diese Auswahl gibt es noch keine Charge');return}
+const head=['Datum','Rezept','Version','Gesamtmenge (g)','Zutat','Soll (g)','Ist (g)','Bewertung','Notiz'];const rows=[];
+cs.forEach(c=>{const r=rzGet(c.rez);const nm=r?rzVer(r,c.ver).d.name:'Gelöschtes Rezept';c.lines.forEach((l,n)=>rows.push([dde(c.date.slice(0,10)),nm,'v'+c.ver,c.total,l.n,Math.round(l.soll*100)/100,Math.round(l.ist*100)/100,n===0&&c.stars?'★'.repeat(c.stars):'',n===0?c.note||'':'']))});
+const txt=cs.map(c=>{const r=rzGet(c.rez);return (r?rzVer(r,c.ver).d.name:'Gelöschtes Rezept')+' · '+dde(c.date.slice(0,10))+' · v'+c.ver+' · '+nf(c.total)+' g'+(c.stars?' · '+'★'.repeat(c.stars):'')+'\n'+c.lines.map(l=>'  '+rzG(l.ist)+' g '+l.n+(Math.abs(l.ist-l.soll)>0.001?' (Soll '+rzG(l.soll)+' g)':'')).join('\n')+(c.note?'\n  Notiz: '+c.note:'')}).join('\n\n');
+outFile('INCIheinz-Chargen-'+today(),head,rows,RZX.fmt,txt,'Chargen');return}
+if(RZX.kind==='txt'){const txt=L.map(r=>rzTextOf(r.id)).join('\n\n----------\n\n');if(RZX.fmt==='file'){dl22('INCIheinz-Rezepte-'+today()+'.txt',new Blob(['﻿'+txt],{type:'text/plain;charset=utf-8'}));closeSheet();toast('Textdatei gespeichert')}else sheetText(txt);return}
+if(RZX.kind==='json'){const rez=L.map(r=>{const c=rzClone(r);if(!o.foto)delete c.photo;return c});const d={app:'INCIheinz-Rezepte',v:2,date:new Date().toISOString(),rez,chg:o.chg?rzChgAll().filter(c=>RZX.ids.has(c.rez)):[]};
+dl22('INCIheinz-Rezepte-'+today()+'.json',new Blob([JSON.stringify(d)],{type:'application/json'}));closeSheet();toast('Rezeptdaten gespeichert')}}
+function rzPrintBook(){RZX={kind:'book',ids:rzPubDefaultIds('book'),fmt:'pdf',o:{foto:1,eck:1,ablauf:1,inci:1,sh:1}};rzPubGo()}

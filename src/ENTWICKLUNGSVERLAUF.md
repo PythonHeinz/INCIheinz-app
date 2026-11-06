@@ -76,3 +76,16 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Speichern unten im Bearbeiten-Modus (feste Leiste, blendet die Tab-Leiste aus); Warnung beim Verlassen mit offenen Änderungen über `tab()` und `back()`.
 - Produktseite lesen: bekannter Lieferant im Text wird vorgewählt. Test t66.js.
 - Bewusst nicht geändert: Mengen werden schon intern in Basiseinheit (g, ml) gespeichert, die Anzeige wechselt nur ab 1000 zu kg/l. Kachel / Filter in der Lager-Übersicht müssen am Bildschirm geprüft werden. Zurückgestellt: +1 Gebinde auf der Karte, konfigurierbare Dashboard-Kacheln (nach Gefäß-Entscheidung jetzt möglich, eigener Schritt).
+
+## Rezeptbuch-Korrekturrunde (06.11.2026, js18/js19/js23, css23)
+- Zutaten werden einmal oben erfasst (Sammel-Phase `pool:true`, Name „Zutaten“) und den Phasen per „Zuordnen“ zugewiesen; nicht zugeordnete bleiben in „Weitere Zutaten“. Dadurch bleibt der Import aus Text/Foto einfach: Phasen sind optional.
+- Zeitaufwand ist eine Zahl in Minuten (Suffix „min“). Mengen bleiben intern Gramm; `z.u:'ml'` ist nur eine Anzeigewahl und braucht Dichte (`rzDensZ`). Die Werkbank bleibt in Gramm.
+- Umrechnen auf beliebige Gesamtmenge (nicht nur 100 g).
+- Eingaben gehen nicht mehr verloren: Entwurf automatisch in localStorage (`inciheinz-draft`), Wiederherstellen beim Start. Zurückwischen (Android) geht über die History-API einen Schritt zurück, schließt Fenster zuerst.
+- Tastatur: Speicherleiste und Tab-Leiste werden ausgeblendet, solange ein Textfeld Fokus hat (`html.kb`); Mengen müssen nicht gespeichert werden.
+- Module und Phasen per Finger verschieben, nur am farbig abgesetzten Griff.
+- Neues Rezept aus einer Version („Als neues Rezept speichern“), Link zu den Chargen des Rezepts; Menüpunkt „Chargenbuch“ entfernt (gleiche Seite wie Tab Chargen).
+- Foto des fertigen Produkts pro Rezept (nicht pro Version), max. 1000 px.
+- Menüs: „Mehr“ je Bereich getrennt, unten „Für die ganze App“ (gleich in beiden). Lagerorte/Lieferanten nur im Lager, Module/Standard-Ablauf/Rundung nur im Rezeptbuch.
+- Rezept-Import (Text, Foto per OCR, .json) und Export als Publikationen (Karte, Rezeptbuch, Chargenprotokoll, Text, JSON) mit Auswahl und Kurzbeschreibung. Gestaltung der Publikationen folgt zuletzt.
+- Tests: `src/tests/t67.js` (43 Prüfungen), `t68.js` sammelt unübersetzte Texte.

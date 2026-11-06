@@ -13,7 +13,7 @@ const rzGet=id=>rzAll().find(r=>r.id===id);
 const rzCurV=r=>r.vers[r.vers.length-1];
 const rzVer=(r,n)=>r.vers.find(v=>v.n===n)||rzCurV(r);
 const rzClone=o=>JSON.parse(JSON.stringify(o));
-const rzEmpty=()=>({name:'',zweck:'',ph:'',ergibt:'',zeit:'',grad:'',phasen:[{id:uid(),typ:'',name:'Zutaten',z:[]}],mod:[]});
+const rzEmpty=()=>({name:'',zweck:'',ph:'',ergibt:'',zeit:'',grad:'',phasen:[{id:uid(),typ:'',name:'Zutaten',pool:true,z:[]}],mod:[]});
 const rzSum=d=>d.phasen.reduce((s,p)=>s+p.z.reduce((a,z)=>a+(+z.g||0),0),0);
 const rzIv=x=>String(Math.round((+x||0)*100)/100).replace('.',LANG==='de'?',':'.');
 const rzStep=()=>S.rezStep||0.1;
@@ -21,7 +21,15 @@ const rzR=x=>{const s=rzStep();return Math.round(x/s)*s};
 const rzG=x=>nf(Math.round(rzR(x)*100)/100,2);
 const RZPH={A:'Wasserphase',B:'Fett-/Ölphase',C:'Wärmeempfindliche Phase',D:'pH-Einstellung','':'Eigene Phase'};
 const RZMT={schritt:['Arbeitsschritt','list'],hinweis:['Hinweis','info'],abfuell:['Abfüllung & Verpackung','drop'],halt:['Haltbarkeit','refresh'],notiz:['Notiz','book']};
-const RZABL=['Einwiegen & Erhitzen','Emulgieren','Abkühlen & sanft rühren','Wirkstoffe einrühren','Qualitätskontrolle'];
+const RZABL0=['Einwiegen & Erhitzen','Emulgieren','Abkühlen & sanft rühren','Wirkstoffe einrühren','Qualitätskontrolle'];
+const rzAbl=()=>Array.isArray(S.rzAbl)&&S.rzAbl.length?S.rzAbl:RZABL0;
+const rzMinOf=s=>{const t=String(s==null?'':s).trim().toLowerCase().replace(',','.');let m=t.match(/^(\d+(?:\.\d+)?)\s*(min|m|minuten?)?$/);if(m)return +m[1];m=t.match(/^(\d+(?:\.\d+)?)\s*(h|std|stunden?)\s*(?:(\d+)\s*(?:min|m)?)?$/);if(m)return Math.round(+m[1]*60+(+m[3]||0));return null};
+const rzZeit=s=>{const n=rzMinOf(s);if(n==null)return String(s||'');if(n>=60){const h=Math.floor(n/60),m=Math.round(n%60);return h+' h'+(m?' '+m+' min':'')}return Math.round(n)+' min'};
+/* Dichte je Zutat (Lager, sonst Wasser = 1) und Volumenrechnung */
+const rzDensZ=z=>{const i=rzItem(z);if(i&&i.dens>0)return i.dens;return /^(wasser|aqua|dest)/i.test(rzName(z)||'')?1:0};
+const rzVolBase=d=>d.phasen.reduce((s,p)=>s+p.z.reduce((a,z)=>{const g=+z.g||0,dn=rzDensZ(z);return a+(g>0&&dn>0?g/dn:0)},0),0);
+const rzVolMiss=d=>{const o=[];d.phasen.forEach(p=>p.z.forEach(z=>{if((+z.g||0)>0&&!(rzDensZ(z)>0)&&!o.some(x=>x.n===rzName(z)))o.push({n:rzName(z),i:rzItem(z)})}));return o};
+const rzVolOk=d=>rzSum(d)>0&&!rzVolMiss(d).length;
 
 /* ---------- Zutat ↔ Lager ---------- */
 function rzItem(z){if(z.item){const i=getI(z.item);if(i)return i}
@@ -52,9 +60,9 @@ return `<header class="h2"><div class="hr">${bk?`<button class="ib" onclick="bac
 <div class="reg"><button class="${w==='lager'?'on':''}" onclick="rzWorld('lager')">Lager</button><button class="${w==='rez'?'on':''}" onclick="rzWorld('rez')">Rezeptbuch</button></div></header>`};
 function rzDirty(){return (R.name==='reze'&&RE&&RE.dirty)||(R.name==='misch'&&RM&&RM.touched)}
 function rzAsk(title,text,ok,fn){RZ_CB=fn;openSheet(`<h2>${title}</h2><div style="font-size:.92rem">${text}</div><div class="btns"><button class="btn" onclick="const f=RZ_CB;RZ_CB=null;closeSheet();f()">${ok}</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)}
-function rzWorld(w){const f=()=>{RE=null;RM=null;tab(w==='rez'?'rez':'lager')};
+function rzWorld(w){const f=()=>{RE=null;RM=null;draftClear();tab(w==='rez'?'rez':'lager')};
 if(rzDirty())rzAsk('Ungespeicherte Arbeit','Wenn du jetzt wechselst, gehen die Änderungen verloren.','Trotzdem wechseln',f);else f()}
-const back18=back;back=function(){if(rzDirty()){rzAsk('Ungespeicherte Arbeit','Wenn du zurückgehst, gehen die Änderungen verloren.','Verwerfen',()=>{RE=null;RM=null;back18()});return}
+const back18=back;back=function(){if(rzDirty()){rzAsk('Ungespeicherte Arbeit','Wenn du zurückgehst, gehen die Änderungen verloren.','Verwerfen',()=>{RE=null;RM=null;draftClear();back18()});return}
 if(R.name==='reze'||R.name==='misch'){RE=null;RM=null}back18()};
 function rznav(a){const it=(k,l,i)=>`<button class="${a===k?'on':''}" onclick="tab('${k}')">${ic(i)}<span>${l}</span></button>`;
 return `<nav>${it('rez','Rezepte','book')}${it('mbar','Mischbar','check')}<div style="flex:1;display:flex;flex-direction:column;align-items:center"><button class="plus" onclick="rzEdit(null)" aria-label="Neues Rezept">${ic('plus','#fff',26)}</button><span style="font-size:.68rem;font-weight:500;color:var(--sub);margin-top:2px">Neu</span></div>${it('chgs','Chargen','list')}<button onclick="sheetMehr()">${ic('more')}<span>Mehr</span></button></nav>`}
@@ -62,7 +70,7 @@ const draw18=draw;
 draw=function(){const rz=!!RZP[R.name];$('#app').classList.toggle('rez',rz);if(!rz)return draw18.apply(this,arguments);
 const v=$('#view');closeSheet();$('#app').classList.remove('artpg');
 const sub={rez:'REZEPTBUCH',mbar:'MISCHBAR',chgs:'CHARGENBUCH'}[R.name]||'REZEPTBUCH';
-const bk=!['rez','mbar','chgs'].includes(R.name);
+const bk=!['rez','mbar','chgs'].includes(R.name)||(R.name==='chgs'&&!!R.rez);
 const nav=['reze','misch'].includes(R.name)?'':rznav(R.name==='verl'||R.name==='rezv'?'rez':R.name==='chg'?'chgs':R.name);
 v.innerHTML=header(sub,bk)+`<main id="main"></main>`+nav;
 ({rez:rzList,rezv:rzView,reze:rzEd,verl:rzVerl,misch:rzMisch,mbar:rzMbar,chgs:rzChgs,chg:rzChg})[R.name]();
@@ -96,16 +104,18 @@ function rzBan(c){if(c.ok){const u=c.rows.filter(x=>x.st==='unb').length,dn=c.ro
 const l=c.miss.map(a=>esc(rzName(a.z))).concat(c.low.map(a=>esc(rzName(a.z))+' (−'+rzG(a.fehlt)+' g)'));
 return {cls:'err',h:'Noch nicht mischbar',s:'Es fehlt: '+l.join(', ')+(c.max>0?'. Mit deinem Lager gehen höchstens '+nf(Math.floor(c.max))+' g.':'')}}
 function rzView(){const r=rzGet(R.id);if(!r){tab('rez');return}const cur=rzCurV(r);const vn=R.ver||cur.n;const v=rzVer(r,vn);const d=v.d;
-if(RC.id!==r.id||RC.ver!==vn)RC={id:r.id,ver:vn,total:Math.round(rzSum(d)*100)/100||100,anchor:null};
+if(RC.id!==r.id||RC.ver!==vn)RC={id:r.id,ver:vn,total:Math.round(rzSum(d)*100)/100||100,anchor:null,unit:'g'};
 const m=$('#main');const c=rzCheck(d,RC.total);const ban=rzBan(c);const cost=rzCost(c.rows);const inci=rzInci(d);const nch=rzChgAll().filter(x=>x.rez===r.id).length;
-const meta=[d.zweck&&`<div class="kv"><span>Einsatzzweck</span><span class="nm">${esc(d.zweck)}</span></div>`,d.ph&&`<div class="kv"><span>Ziel-pH</span><span class="nm">${esc(d.ph)}</span></div>`,d.ergibt&&`<div class="kv"><span>Ergibt</span><span class="nm">${esc(d.ergibt)}</span></div>`,d.zeit&&`<div class="kv"><span>Zeitaufwand</span><span class="nm">${esc(d.zeit)}</span></div>`,d.grad&&`<div class="kv"><span>Schwierigkeit</span><span>${esc(d.grad)}</span></div>`].filter(Boolean).join('');
-m.innerHTML=`<div class="rz-t nm">${esc(d.name)}</div>
+const meta=[d.zweck&&`<div class="kv"><span>Einsatzzweck</span><span class="nm">${esc(d.zweck)}</span></div>`,d.ph&&`<div class="kv"><span>Ziel-pH</span><span class="nm">${esc(d.ph)}</span></div>`,d.ergibt&&`<div class="kv"><span>Ergibt</span><span class="nm">${esc(d.ergibt)}</span></div>`,d.zeit&&`<div class="kv"><span>Zeitaufwand</span><span class="nm">${esc(rzZeit(d.zeit))}</span></div>`,d.grad&&`<div class="kv"><span>Schwierigkeit</span><span>${esc(d.grad)}</span></div>`].filter(Boolean).join('');
+const ml=rzUnitOn(d),vok=rzVolOk(d),vm=rzVolMiss(d);
+m.innerHTML=`${r.photo?`<button class="rz-photo" onclick="rzPhotoMenu('${r.id}')" aria-label="Foto ändern"><img src="${r.photo}" alt=""></button>`:''}<div class="rz-t nm">${esc(d.name)}</div>
 <div class="s" style="margin-top:4px">Version ${vn} · ${dde(v.date.slice(0,10))}${nch?` · ${nch} ${nch===1?'Charge':'Chargen'}`:''}${v.st==='fav'?' · <b style="color:var(--pri)">Favorit</b>':v.st==='bad'?' · verworfen':''}</div>
 ${vn!==cur.n?`<div class="rz-old">Das ist eine ältere Version. <button class="lnk" onclick="rzOpen('${r.id}')">Zur aktuellen Version (v${cur.n})</button></div>`:''}
 ${v.note?`<div class="rz-note nm">${esc(v.note)}</div>`:''}
 <div class="btns"><button class="btn" onclick="rzMischStart('${r.id}',${vn})">Mischen</button><button class="btn sec" onclick="rzEdit('${r.id}',${vn})">Bearbeiten</button><button class="btn sec" onclick="stack.push(R);R={name:'verl',id:'${r.id}'};draw()">Versionen</button></div>
+<div class="rz-lk" style="margin-top:6px"><button class="lnk" onclick="rzChgOf('${r.id}')">${nch?`Chargen (${nch})`:'Noch keine Chargen'}</button><button class="lnk" onclick="rzFork('${r.id}',${vn})">Als neues Rezept speichern</button>${r.photo?'':`<button class="lnk" onclick="rzPhotoMenu('${r.id}')">Foto hinzufügen</button>`}</div>
 <div class="rz-ban ${ban.cls}" id="rzban"><b>${ban.h}</b><div>${ban.s}</div></div>
-<div class="card rz-calc"><div style="padding:12px 14px 4px"><label class="fld" style="margin:0"><span>Gesamtmenge (g)</span><input id="rz_tot" inputmode="decimal" value="${rzIv(RC.total)}" oninput="rzTot(this.value)"></label><div class="s" style="margin-top:6px">Tippe eine Menge an und ändere sie, zum Beispiel auf das, was du noch hast. Alle anderen Zutaten rechnen sich mit.</div></div>
+<div class="card rz-calc"><div style="padding:12px 14px 4px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px"><label class="fld" style="margin:0;flex:1"><span>Gesamtmenge (${ml?'ml':'g'})</span><input id="rz_tot" inputmode="decimal" value="${rzIv(rzTotShow(d))}" oninput="rzTot(this.value)"></label>${vok?`<div class="seg2" role="group" aria-label="Einheit"><button class="${ml?'':'on'}" onclick="rzUnit('g')">g</button><button class="${ml?'on':''}" onclick="rzUnit('ml')">ml</button></div>`:''}</div><div class="s" style="margin-top:6px">Tippe eine Menge an und ändere sie, zum Beispiel auf das, was du noch hast. Alle anderen Zutaten rechnen sich mit.${!vok&&vm.length&&rzSum(d)>0?` Anzeige in ml geht, sobald bei allen Zutaten die Dichte bekannt ist (fehlt bei ${esc(vm.map(x=>x.n).join(', '))}).`:''}</div></div>
 ${d.phasen.map((p,pi)=>`<div class="rz-ph-h">${p.typ?`<span class="rz-badge">${p.typ}</span>`:''}<span class="nm">${esc(p.name)}</span></div>${p.z.map((z,zi)=>rzCalcRow(c,pi,zi)).join('')}`).join('')}
 <div class="rz-sum" id="rzsum">${rzSumTxt(c,cost)}</div></div>
 ${c.miss.concat(c.low).some(a=>rzItem(a.z))?`<div class="btns"><button class="btn sec" onclick="rzToShop()">Fehlendes auf die Einkaufsliste</button></div>`:''}
@@ -115,21 +125,25 @@ ${inci.un.length||inci.no.length?`<div class="hint" style="margin-top:8px">${inc
 ${meta?`<details class="acc"><summary>Eckdaten</summary><div class="in">${meta}</div></details>`:''}
 ${d.mod.length?`<details class="acc"><summary>Ablauf und Hinweise <small>${d.mod.length}</small></summary><div class="in">${d.mod.map((x,n)=>`<div class="rz-mv"><div class="rz-mvh">${x.t==='schritt'?`<span class="rz-badge">${d.mod.slice(0,n+1).filter(y=>y.t==='schritt').length}</span>`:''}<b class="nm">${esc(x.titel||RZMT[x.t][0])}</b>${x.t!=='schritt'?`<span class="s"> · ${RZMT[x.t][0]}</span>`:''}</div>${x.text?`<div class="nm" style="white-space:pre-wrap;font-size:.92rem">${esc(x.text)}</div>`:''}</div>`).join('')}</div></details>`:''}
 <div class="btns"><button class="btn sec" onclick="rzPrint('${r.id}',${vn})">Rezeptkarte drucken</button></div>`}
+const rzUnitOn=d=>RC.unit==='ml'&&rzVolOk(d);
+const rzTotShow=d=>{const s=rzSum(d)||1;return rzUnitOn(d)?RC.total/s*rzVolBase(d):RC.total};
+function rzUnit(u){RC.unit=u;rzView()}
 const rzCurD=()=>{const r=rzGet(R.id);return rzVer(r,R.ver||rzCurV(r).n).d};
 function xtCopyStr(t){try{navigator.clipboard.writeText(t).then(()=>toast('Kopiert'),()=>toast('Kopieren nicht möglich'))}catch(e){toast('Kopieren nicht möglich')}}
-function rzSumTxt(c,cost){return `<div class="kv"><span>Summe</span><span>${rzG(RC.total)} g</span></div>${cost.c>0?`<div class="kv"><span>Kosten ca.</span><span>${eur(cost.c)}${RC.total>0?` · ${eur(cost.c/RC.total*100)} je 100 g`:''}</span></div>${cost.n?`<div class="s">${cost.n} Zutat${cost.n>1?'en':''} ohne Preis nicht eingerechnet.</div>`:''}`:''}`}
-function rzCalcRow(c,pi,zi){const x=c.rows.find(a=>a.pi===pi&&a.zi===zi);const z=x.z;const key=pi+'.'+zi;
-return `<div class="rz-r ${RC.anchor===key?'anc':''}" id="rzr_${pi}_${zi}"><div class="rz-n" ${x.item?(x.st==='dens'?`onclick="rzDens('${x.item.id}','draw()')"`:`onclick="go('artikel','${x.item.id}')"`):''}><span class="dot ${rzDot(x.st)}"></span><div style="min-width:0"><b class="nm">${esc(rzName(z)||'Zutat')}</b><div class="s" id="rzs_${pi}_${zi}">${rzStTxt(x)}</div></div></div><input class="rz-a" id="rza_${pi}_${zi}" inputmode="decimal" value="${rzIv(rzR(x.need))}" oninput="rzAnch(${pi},${zi},this.value)"><span class="rz-u">g</span></div>`}
+function rzSumTxt(c,cost){const d=rzVer(rzGet(RC.id),RC.ver).d;const ml=rzUnitOn(d);return `<div class="kv"><span>Summe</span><span>${ml?rzIv(rzTotShow(d))+' ml · ':''}${rzG(RC.total)} g</span></div>${cost.c>0?`<div class="kv"><span>Kosten ca.</span><span>${eur(cost.c)}${RC.total>0?` · ${eur(cost.c/RC.total*100)} je 100 g`:''}</span></div>${cost.n?`<div class="s">${cost.n} Zutat${cost.n>1?'en':''} ohne Preis nicht eingerechnet.</div>`:''}`:''}`}
+const rzShow=(z,need,ml)=>{if(ml){const dn=rzDensZ(z);return {v:rzIv(Math.round(need/dn*10)/10),u:'ml'}}return {v:rzIv(rzR(need)),u:'g'}};
+function rzCalcRow(c,pi,zi){const x=c.rows.find(a=>a.pi===pi&&a.zi===zi);const z=x.z;const key=pi+'.'+zi;const d=rzVer(rzGet(RC.id),RC.ver).d;const sh=rzShow(z,x.need,rzUnitOn(d));
+return `<div class="rz-r ${RC.anchor===key?'anc':''}" id="rzr_${pi}_${zi}"><div class="rz-n" ${x.item?(x.st==='dens'?`onclick="rzDens('${x.item.id}','draw()')"`:`onclick="go('artikel','${x.item.id}')"`):''}><span class="dot ${rzDot(x.st)}"></span><div style="min-width:0"><b class="nm">${esc(rzName(z)||'Zutat')}</b><div class="s" id="rzs_${pi}_${zi}">${rzStTxt(x)}</div></div></div><input class="rz-a" id="rza_${pi}_${zi}" inputmode="decimal" value="${sh.v}" oninput="rzAnch(${pi},${zi},this.value)"><span class="rz-u">${sh.u}</span></div>`}
 const rzDot=st=>st==='ok'?'ok':st==='knapp'?'warn':st==='fehlt'?'err':'';
 function rzStTxt(x){if(x.st==='ok')return 'Lager: '+fmt(x.item.total,x.item.kind);if(x.st==='knapp')return `Lager: ${rzG(x.have)} g · es fehlen ${rzG(x.need-x.have)} g`;
 if(x.st==='fehlt')return x.item?'nicht vorrätig':'nicht im Lager';if(x.st==='unb')return 'Menge im Lager unbekannt';if(x.st==='dens')return 'Lager: '+fmt(x.item.total,'v')+' · Dichte fehlt, tippen zum Eintragen';return x.z.cid?'':''}
-function rzUpd(skip){const r=rzGet(RC.id);if(!r)return;const d=rzVer(r,RC.ver).d;const c=rzCheck(d,RC.total);const cost=rzCost(c.rows);
-c.rows.forEach(x=>{const k=x.pi+'_'+x.zi;const inp=document.getElementById('rza_'+k);if(inp&&('rza_'+k)!==skip)inp.value=rzIv(rzR(x.need));const s=document.getElementById('rzs_'+k);if(s)s.textContent=rzStTxt(x);
+function rzUpd(skip){const r=rzGet(RC.id);if(!r)return;const d=rzVer(r,RC.ver).d;const c=rzCheck(d,RC.total);const cost=rzCost(c.rows);const ml=rzUnitOn(d);
+c.rows.forEach(x=>{const k=x.pi+'_'+x.zi;const inp=document.getElementById('rza_'+k);if(inp&&('rza_'+k)!==skip)inp.value=rzShow(x.z,x.need,ml).v;const s=document.getElementById('rzs_'+k);if(s)s.textContent=rzStTxt(x);
 const row=document.getElementById('rzr_'+k);if(row){const dot=row.querySelector('.dot');if(dot)dot.className='dot '+rzDot(x.st);row.classList.toggle('anc',RC.anchor===x.pi+'.'+x.zi)}});
-const t=document.getElementById('rz_tot');if(t&&skip!=='rz_tot')t.value=rzIv(RC.total);const ban=rzBan(c);const b=document.getElementById('rzban');if(b){b.className='rz-ban '+ban.cls;b.innerHTML=`<b>${ban.h}</b><div>${ban.s}</div>`}
+const t=document.getElementById('rz_tot');if(t&&skip!=='rz_tot')t.value=rzIv(rzTotShow(d));const ban=rzBan(c);const b=document.getElementById('rzban');if(b){b.className='rz-ban '+ban.cls;b.innerHTML=`<b>${ban.h}</b><div>${ban.s}</div>`}
 const s=document.getElementById('rzsum');if(s)s.innerHTML=rzSumTxt(c,cost)}
-function rzTot(v){const n=num(v);if(!(n>0))return;RC.total=n;RC.anchor=null;rzUpd('rz_tot')}
-function rzAnch(pi,zi,v){const n=num(v);const r=rzGet(RC.id);const d=rzVer(r,RC.ver).d;const z=d.phasen[pi].z[zi];if(!(n>0)||!(z.g>0))return;RC.total=n/z.g*rzSum(d);RC.anchor=pi+'.'+zi;rzUpd('rza_'+pi+'_'+zi)}
+function rzTot(v){const n=num(v);if(!(n>0))return;const d=rzVer(rzGet(RC.id),RC.ver).d;RC.total=rzUnitOn(d)?n/rzVolBase(d)*rzSum(d):n;RC.anchor=null;rzUpd('rz_tot')}
+function rzAnch(pi,zi,v){let n=num(v);const r=rzGet(RC.id);const d=rzVer(r,RC.ver).d;const z=d.phasen[pi].z[zi];if(rzUnitOn(d))n=n*rzDensZ(z);if(!(n>0)||!(z.g>0))return;RC.total=n/z.g*rzSum(d);RC.anchor=pi+'.'+zi;rzUpd('rza_'+pi+'_'+zi)}
 function rzToShop(){const r=rzGet(RC.id);const d=rzVer(r,RC.ver).d;const c=rzCheck(d,RC.total);let n=0;
 c.miss.concat(c.low).forEach(a=>{const i=rzItem(a.z);if(!i||!'wv'.includes(i.kind))return;let need=a.fehlt!=null?a.fehlt:a.need;if(i.kind==='v')need=i.dens>0?need/i.dens:0;if(!(need>0))return;
 if(S.shop.some(s=>s.item===i.id))return;S.shop.push({id:uid(),item:i.id,menge:Math.ceil(need),lief:''});n++});save();toast(n?n+' Posten auf der Einkaufsliste':'Nichts hinzugefügt, die Zutaten stehen schon auf der Liste oder sind nicht im Lager')}

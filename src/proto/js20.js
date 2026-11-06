@@ -1,9 +1,10 @@
 /* Testdaten: Rezepte + Lager laden/entfernen (nur Expertenmodus, nie automatisch) */
 const DEMO_NOTE='Testdaten – Zusammensetzung nicht geprüft, nicht zum Nachmischen';
 function demoCount(){return {r:(S.rez||[]).filter(x=>x.demo).length,i:S.items.filter(x=>x.demo).length}}
+function demoBlockHtml(){if(!S.expert)return '';const c=demoCount();
+return `<div style="height:22px"></div><div class="cap" style="font-size:1rem;font-weight:700;color:var(--pri);letter-spacing:0;text-transform:none;border-bottom:2px solid var(--muted);padding-bottom:6px;margin-bottom:8px">Testdaten</div><div class="s" style="margin-bottom:8px">${DEMO.rez.length} Beispielrezepte mit passendem Lager zum Ausprobieren. Deine eigenen Daten bleiben unberührt.${c.r||c.i?` Geladen: ${c.r} Rezepte, ${c.i} Rohstoffe.`:''}</div><div class="btns"><button class="btn" onclick="demoAsk()">Testdaten laden</button>${c.r||c.i?'<button class="btn sec" onclick="demoRmAsk()">Testdaten entfernen</button>':''}</div>`}
 const sheetSettings2=sheetSettings;
-sheetSettings=function(){sheetSettings2();const s=shEl();if(!s||!S.expert)return;const c=demoCount();
-s.insertAdjacentHTML('beforeend',`<div style="height:22px"></div><div class="cap" style="font-size:1rem;font-weight:700;color:var(--pri);letter-spacing:0;text-transform:none;border-bottom:2px solid var(--muted);padding-bottom:6px;margin-bottom:8px">Testdaten</div><div class="s" style="margin-bottom:8px">${DEMO.rez.length} Beispielrezepte mit passendem Lager zum Ausprobieren. Deine eigenen Daten bleiben unberührt.${c.r||c.i?` Geladen: ${c.r} Rezepte, ${c.i} Rohstoffe.`:''}</div><div class="btns"><button class="btn" onclick="demoAsk()">Testdaten laden</button>${c.r||c.i?'<button class="btn sec" onclick="demoRmAsk()">Testdaten entfernen</button>':''}</div>`)};
+sheetSettings=function(){sheetSettings2();const s=shEl();if(!s||!S.expert)return;s.insertAdjacentHTML('beforeend',demoBlockHtml())};
 function demoAsk(){openSheet(`<h2>Testdaten laden?</h2><div style="font-size:.92rem">Es werden ${DEMO.rez.length} Beispielrezepte angelegt und die dafür nötigen Rohstoffe in üblichen Packungsgrößen als vorhanden eingetragen. Bei Rohstoffen, die du schon hast, wird höchstens eine fehlende Dichte ergänzt. Die Zusammensetzungen sind nicht geprüft und nicht zum Nachmischen gedacht. Du kannst alles wieder entfernen.</div><div class="btns"><button class="btn" onclick="demoLoad()">Laden</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)}
 function demoLoad(){const snap=JSON.stringify(S);if(!S.rez)S.rez=[];const ex=new Set(S.rez.filter(r=>r.demo).map(r=>r.demo));
 const today10=new Date().toISOString().slice(0,10);const mh=new Date();mh.setMonth(mh.getMonth()+20);const mhd=mh.toISOString().slice(0,10);
@@ -29,11 +30,3 @@ openSheet(`<h2 class="nm">${esc(i.name)}</h2><div style="font-size:.92rem;line-h
 <div class="btns"><button class="btn" onclick="rzDensSave()">Speichern</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)}
 function rzDensSave(){const i=getI(RZDN.id);const n=num(val('dn'));if(!(n>0.3&&n<3)){toast('Bitte eine Dichte zwischen 0,3 und 3 eintragen');return}
 i.dens=n;i.chg=today();save();closeSheet();const a=RZDN.after;RZDN=null;toast('Dichte gespeichert');if(a)new Function(a)()}
-
-/* Mehr-Menü im Rezeptbereich */
-const sheetMehr20=sheetMehr;
-sheetMehr=function(){const app=document.getElementById('app');if(!app||!app.classList.contains('rez')){sheetMehr20();return}
-const g=(t,a)=>`<div class="cap" style="margin:12px 0 0">${t}</div>`+a.map(x=>rowH([x[0],x[1],'',x[2]])).join('');
-openSheet(g('Rezeptbuch',[['tag','Rezeptbuch drucken',"closeSheet();rzPrintBook()"],['export','Rezepte sichern (Datei)',"rzExport()"],['stat','Chargenbuch',"closeSheet();tab('chgs')"]])+g('Daten',[['import','Import',"sheetImport()"],['shield','Sicherung der ganzen App',"sheetBackup()"]])+g('App',[['gear','Einstellungen',"sheetSettings()"],['book','Anleitung',"sheetHilfe()"],['info','Info',"sheetInfo()"]]))};
-function rzExport(){closeSheet();const d={app:'INCIheinz-Rezepte',v:1,date:new Date().toISOString(),rez:(S.rez||[]).filter(r=>!r.demo),chg:(S.chg||[]).filter(c=>(S.rez||[]).some(r=>r.id===c.rez&&!r.demo))};
-if(!d.rez.length){toast('Noch keine eigenen Rezepte');return}dlFile('INCIheinz-Rezepte-'+today()+'.json',JSON.stringify(d),'application/json');toast('Rezepte gesichert')}

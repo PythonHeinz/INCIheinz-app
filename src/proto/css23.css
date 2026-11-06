@@ -1,0 +1,28 @@
+/* ===== js23: Tastatur, Ziehen, Foto, Einheiten ===== */
+html.kb .rz-bar,html.kb .sb22bar,html.kb #view>nav,html.kb header.h2 .reg{display:none!important}
+html.kb header.h2 .hr{min-height:44px}
+.rz-grip{touch-action:none;user-select:none;-webkit-user-select:none;flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:40px;margin-right:8px;border-radius:10px;background:#EAD9BC;color:var(--pri);cursor:grab}
+.rz-grip:active{cursor:grabbing}
+.rz-dw summary .rz-sl{flex:1;min-width:0;display:flex;align-items:center;gap:6px;overflow:hidden}
+.rz-dw>details.acc{margin-top:10px}
+.rz-phh .rz-grip{height:36px;width:30px;margin-right:4px}
+.rz-drag-on{position:relative;z-index:30;box-shadow:0 10px 26px rgba(43,33,24,.28);opacity:.97;pointer-events:none}
+.rz-dragging .rz-ins{display:none}
+.rz-dragging details.acc .in{display:none}
+.rz-dragging .rz-ph .rz-zr,.rz-dragging .rz-ph>button.lnk{display:none}
+.rz-un{flex:none;width:38px;height:42px;border:1px solid var(--line);border-radius:10px;background:var(--muted);color:var(--sub);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.rz-un.on{background:var(--pri);color:var(--onpri);border-color:var(--pri)}
+.rz-u{width:auto;min-width:20px}
+.rz-pc{width:46px}
+.seg2{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;flex:none}
+.seg2 button{height:46px;min-width:46px;padding:0 12px;border:0;background:var(--surf);color:var(--sub);font:inherit;font-weight:600;cursor:pointer}
+.seg2 button.on{background:var(--pri);color:var(--onpri)}
+.inwu{position:relative}.inwu input{width:100%;padding-right:46px}.inwu b{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-weight:500;font-size:.88rem;color:var(--sub);pointer-events:none}
+.rz-phb{display:flex;gap:12px;align-items:center;margin-top:12px;padding:10px;background:var(--surf);border:1px solid var(--line);border-radius:14px}
+.rz-phb img,.rz-phph{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:none;background:var(--muted);display:flex;align-items:center;justify-content:center}
+.rz-phb .rz-lk{margin-top:2px}
+.rz-photo{display:block;width:100%;padding:0;border:0;background:none;margin:0 0 12px;border-radius:16px;overflow:hidden;cursor:pointer}
+.rz-photo img{display:block;width:100%;max-height:260px;object-fit:cover}
+.rz-addrow{display:flex;gap:4px 20px;flex-wrap:wrap;padding:2px 14px 6px;border-top:1px solid var(--line)}.rz-addrow .lnk{padding:10px 0}
+.rz-dragging .rz-ph .rz-addrow{display:none}
+.rz-pool .rz-phh{padding-bottom:0}

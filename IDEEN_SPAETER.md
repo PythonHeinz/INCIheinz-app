@@ -26,3 +26,10 @@ Du wählst aus einer Liste selbst, welche Kacheln im Dashboard erscheinen (begre
 - Rezepte mit abgelaufenen Zutaten
 
 Hinweis: Nur Lager- und Rezeptdaten, keine Wirkversprechen.
+
+## Schickes Rezeptbuch (nach der nächsten Version)
+- Mehrere Layouts zur Auswahl: Klassisch (Titelseite, Inhaltsverzeichnis, eine Rezeptseite je Rezept), Karteikarten (A6, zwei pro Seite), Magazin (großes Foto, Zutaten in Spalte), Minimal (nur Rezeptur und Ablauf).
+- Foto des fertigen Produkts, Phasen als farbige Blöcke, INCI-Liste, Modulinhalte (Ablauf, Haltbarkeit, Hinweise) je nach Pflegegrad.
+- Titelseite mit eigenem Namen/Logo, Inhaltsverzeichnis, Seitenzahlen, Auswahl einzelner Rezepte.
+- Hinweis im Export, welche Module für ein schönes Ergebnis gepflegt sein sollten.
+- Gestaltung insgesamt erst am Ende. Keine Wirk- oder Gesundheitsversprechen.

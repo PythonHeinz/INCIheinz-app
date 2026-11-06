@@ -21,8 +21,8 @@ try{await ocrScript();const img=await ocrImg(f);if(OCRX)return;
 w=await Tesseract.createWorker(ocrLangs(),1,{workerPath:ocrUrl('worker.min.js'),corePath:ocrUrl('tesseract-core-simd-lstm.wasm.js'),langPath:new URL('ocr',location.href).href,cacheMethod:'none',gzip:true,logger:m=>{if(OCRX||!m)return;if(m.status==='recognizing text')ocrBar('Text wird gelesen … '+Math.round(m.progress*100)+' %',m.progress);else ocrBar('Lesemodul startet …',0.05)}});
 const r=await w.recognize(img,{},{blocks:true});await w.terminate();w=null;if(OCRX)return;
 let t=(r.data.text||'').split('\n').filter(l=>/[A-Za-zÄÖÜäöüßÁÉÍÓÚáéíóúñ]{3}/.test(l)||!l.trim()).join('\n').replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
-const ti=ocrTitle(r.data,img.h);if(ti&&!/^\s*Produktname\s*:/im.test(t))t='Produktname: '+ti+'\n'+t;
-sheetProduct(PP&&PP.id);const ta=document.getElementById('pt');if(ta)ta.value=t;
+const ti=window.OCRCB?'':ocrTitle(r.data,img.h);if(ti&&!/^\s*Produktname\s*:/im.test(t))t='Produktname: '+ti+'\n'+t;
+if(window.OCRCB){const cb=window.OCRCB;window.OCRCB=null;cb(t);return}sheetProduct(PP&&PP.id);const ta=document.getElementById('pt');if(ta)ta.value=t;
 const h=document.querySelector('#sheet .hint,.sheet .hint');
 if(!t){$('#er').textContent='Im Bild wurde kein Text erkannt. Versuche ein schärferes Bild oder einen Screenshot.'}else{$('#er').textContent='';toast('Text aus Bild gelesen. Bitte kurz prüfen.')}
 }catch(e){try{if(w)await w.terminate()}catch(_){}if(!OCRX)sheetMsg('Lesen nicht möglich','Das Bild konnte nicht gelesen werden. Möglicherweise unterstützt dieses Gerät das Lesemodul nicht. Du kannst den Text stattdessen kopieren und einfügen.')}}
