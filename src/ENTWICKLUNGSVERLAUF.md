@@ -159,3 +159,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Abstand am Listenende
 - `main#main` unten 128 px (plus Safe-Area), mit Speicherleiste 136 px, in Lager und Rezeptbuch: der letzte Eintrag scrollt frei über den Neu-Knopf (vorher 100 px).
+
+## Einsatzkonzentration und Rechner „Dosierung prüfen"
+- Neues Rohstofffeld: `i.dmin` / `i.dmax` (Einsatz in % der Gesamtmenge, 0 = nicht gesetzt). Bearbeiten: Block „Einsatzkonzentration“ (von/bis) unter Verwendung/Wirkweise; Ansicht zeigt die Zeile. Nur eine Seite eingetragen → nur diese Seite wird geprüft. von > bis wird abgelehnt.
+- Katalog-Vorbefüllung vorbereitet: `einsatzOf(i)` fällt auf `CM[cid].e0/e1` zurück, sobald der Katalog diese Felder bekommt (noch keine Daten, keine eigenen Grenzwerte in der App).
+- Dosierung prüfen (`js28.js`): Rezept wählen → Anteil je Zutat an der Rezeptsumme gegen den Bereich: Prüfen (zu niedrig/zu hoch) · Im Bereich · Ohne Einsatzbereich. Tippen öffnet Dialog mit zwei Wegen: Rohstoff im Bearbeiten-Modus öffnen oder Rezept ansehen. Test t80.
+- Offen: CSV-Export/-Import und Spalten der Lagerliste kennen das Feld noch nicht.
