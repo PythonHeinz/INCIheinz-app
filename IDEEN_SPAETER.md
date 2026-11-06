@@ -66,3 +66,6 @@ Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
 - Nach einer Änderung steht oben links neben dem X „Bearbeiten *“. Dort soll „Abbrechen“ stehen, denn X oder Wischen nach links öffnet die Rückfrage „Änderungen verwerfen?“.
 - Die Rückfrage (Sheet) wird unten von der Speicherleiste (`#sb22`, „Speichern“) überdeckt, deren Stapelreihenfolge höher liegt. Die Knöpfe „Verwerfen“ und „Weiter bearbeiten“ sind nicht erreichbar, der Dialog lässt sich nicht bestätigen.
 - Zu klären beim Beheben: Speicherleiste ausblenden oder unter das Sheet legen, solange ein Sheet oder Dialog offen ist (z. B. `body:has(.sheet) #sb22{display:none}`); danach gleichen Fall in Rezept-Editor und anderen Bearbeiten-Seiten prüfen. Test ergänzen (Änderung machen, X tippen, „Verwerfen“ antippbar).
+
+## Import der Fettkennzahlen (06.11.2026)
+- Der Export enthält die vier Spalten Verseifungszahl, NaOH-Bedarf, Jodzahl, Schmelzpunkt (wirksame Werte, also auch Katalogwerte). Der Import (`COLMAP` in js7.js) liest sie noch nicht ein. Beim Einbau beachten: Nur Werte übernehmen, die vom Katalogwert abweichen, sonst werden Katalogwerte zu „eigenen“ Werten. Gleiches gilt schon für Einsatz von/bis und Dichte.
