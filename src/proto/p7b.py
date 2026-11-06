@@ -62,7 +62,7 @@ css+="""
 .big{font-size:1.5rem;font-weight:600;letter-spacing:-.02em}
 """
 R("navb('scan'),scan2()}","navb('scan'),scan2()\nelse if(R.name==='stat')v.innerHTML=header('STATISTIK',1)+`<main id=\"main\"></main>`+navb('lager'),stat()}")
-R("""['cart','Bestellliste',"closeSheet();tab('einkauf')"],""","""['cart','Bestellliste',"closeSheet();tab('einkauf')"],['stat','Statistik',"closeSheet();go('stat')"],""")
+R("""['cart','Einkaufsliste',"closeSheet();tab('einkauf')"],""","""['cart','Einkaufsliste',"closeSheet();tab('einkauf')"],['stat','Statistik',"closeSheet();go('stat')"],""")
 
 R("<span>Nichts gefunden.</span>${q?`<br><button class=\"btn\" style=\"margin-top:12px\" onclick=\"sheetNeu(Q.q)\">„${esc(q)}“ neu anlegen</button>`:''}","<span>Nicht im Lager.</span>${q?lagerCatHits(q):''}${q?`<br><button class=\"btn\" style=\"margin-top:12px\" onclick=\"sheetNeu(Q.q)\">„${esc(q)}“ neu anlegen</button>`:''}")
 
@@ -110,7 +110,7 @@ R("${cats[k].length} · ${Object.keys(sums).map(x=>fmt(sums[x],x)).join(' + ')}"
 R("class=\"card ${cols.length>3?'sc':''}\" style=\"overflow:","class=\"card ${cols.length>3?'sc':''}\" style=\"overflow:")
 css+="#toast{top:60px!important;bottom:auto!important;text-align:center;background:#24332b!important}.nm{display:block!important;overflow-wrap:break-word!important;word-break:normal!important;-webkit-hyphens:auto;hyphens:auto}.nm .t{display:block;overflow-wrap:break-word;word-break:normal;-webkit-hyphens:auto;hyphens:auto}.ri{margin-top:3px}.card.nl .lead{display:none}.card.nl .th,.card.nl .tr{padding-left:12px;padding-right:12px;gap:6px}.card.sc .nm{overflow-wrap:break-word!important}"
 R('<span class="ri">${statusIcons(i)}</span>','${statusIcons(i)?`<span class="ri">${statusIcons(i)}</span>`:\'\'}')
-R('m.innerHTML=head+body+`<button class="btn" style="width:100%;margin-top:16px" onclick="sheetExport()">Bestellliste exportieren …</button>`}','m.innerHTML=head+body}')
+R('m.innerHTML=head+body+`<button class="btn" style="width:100%;margin-top:16px" onclick="sheetExport()">Einkaufsliste exportieren …</button>`}','m.innerHTML=head+body}')
 R("${esc(p.x)} · ${p.c!=null?eur(p.c):'–'}","${esc(p.x)}${p.c!=null?' · '+eur(p.c):''}")
 R("<div style=\"font-size:.88rem\">${c!=null?eur(c):'–'}</div>","<div style=\"font-size:.88rem\">${c!=null?eur(c):''}</div>")
 R("${l?eur(total):'–'}","${l?eur(total):''}")

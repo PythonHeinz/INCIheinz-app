@@ -4,7 +4,7 @@ const rowH=x=>`<div class="row" style="padding:6px 2px" onclick="${x[3]}"><div s
 
 /* Mehr-Menü */
 sheetMehr=function(){const g=(t,a)=>`<div class="cap" style="margin:12px 0 0">${t}</div>`+a.map(x=>rowH([x[0],x[1],'',x[2]])).join('');
-openSheet(g('Arbeiten',[['tag','Etiketten &amp; Druck',"sheetLabels()"],['cart','Bestellliste',"tab('einkauf');closeSheet()"],['stat','Statistik',"closeSheet();go('stat')"]])+g('Daten',[['import','Import',"sheetImport()"],['export','Export',"sheetExport()"],['shield','Sicherung',"sheetBackup()"],['refresh','Katalog aktualisieren',"sheetCatUpd()"]])+g('App',[['gear','Einstellungen',"sheetSettings()"],['book','Anleitung',"sheetHilfe()"],['info','Info',"sheetInfo()"]]))};
+openSheet(g('Arbeiten',[['tag','Etiketten &amp; Druck',"sheetLabels()"],['cart','Einkaufsliste',"tab('einkauf');closeSheet()"],['stat','Statistik',"closeSheet();go('stat')"]])+g('Daten',[['import','Import',"sheetImport()"],['export','Export',"sheetExport()"],['shield','Sicherung',"sheetBackup()"],['refresh','Katalog aktualisieren',"sheetCatUpd()"]])+g('App',[['gear','Einstellungen',"sheetSettings()"],['book','Anleitung',"sheetHilfe()"],['info','Info',"sheetInfo()"]]))};
 
 /* Import: erst erklären, dann Dateiauswahl */
 function sheetImport(){openSheet(`<h2>Import</h2><div class="s" style="margin-bottom:6px">Hol Listen in dein Lager. Neue Rohstoffe werden angelegt, bei vorhandenen kommen neue Preise dazu. Du siehst vorher eine Vorschau, es wird nichts ohne Bestätigung geändert.</div>

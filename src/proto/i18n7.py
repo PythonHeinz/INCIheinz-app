@@ -661,3 +661,41 @@ N7.update({
 P7.extend([(r"^(Klein 38×21|Mittel 48×25|Groß 63×38) mm · Stück je Rohstoff$",r"\1 mm · pieces per raw material",r"\1 mm · unidades por materia prima"),(r"^(\d+) Etiketten? drucken$",r"Print \1 label(s)",r"Imprimir \1 etiqueta(s)")])
 N7.update({"Alle Größen platzsparend auf einem Bogen (zum Ausschneiden)":("All sizes packed on one sheet (to cut out)","Todos los tamaños juntos en una hoja (para recortar)"),
 "Der Druckdialog deines Geräts öffnet sich. Wähle dort „Tatsächliche Größe“ bzw. 100 %, damit die Etiketten maßgetreu bleiben. Ohne Haken beginnt jede Größe auf einem neuen Bogen, damit du das passende Etikettenpapier einlegen kannst.":("Your device's print dialog opens. Choose “Actual size” or 100 % there so the labels keep their exact size. Without the tick, each size starts on a new sheet so you can load the matching label paper.","Se abre el diálogo de impresión. Elige «Tamaño real» o 100 %. Sin la marca, cada tamaño empieza en una hoja nueva para cargar el papel adecuado.")})
+N7.update({
+"Ein Rezept pro Seite, zum Drucken oder als PDF":("One recipe per page, to print or as PDF","Una receta por página, para imprimir o en PDF"),
+"Nutzt: Zutaten, Eckdaten, Ablauf und Hinweise, Foto":("Uses: ingredients, key data, procedure and notes, photo","Usa: ingredientes, datos básicos, pasos y notas, foto"),
+"Mehrere Rezepte in einem Dokument, mit Titelseite und Inhaltsverzeichnis":("Several recipes in one document, with title page and table of contents","Varias recetas en un documento, con portada e índice"),
+"Tabelle deiner Chargen mit Soll- und Ist-Mengen":("Table of your batches with target and actual amounts","Tabla de tus lotes con cantidades previstas y reales"),
+"Nutzt: Chargen aus der Werkbank, Bewertung und Notizen":("Uses: batches from the workbench, rating and notes","Usa: lotes del banco de trabajo, valoración y notas"),
+"Gut lesbar, ideal zum Teilen. Die App kann ihn über Import wieder einlesen":("Easy to read, ideal for sharing. The app can read it back in via Import","Fácil de leer, ideal para compartir. La app puede volver a leerlo con Importar"),
+"Nutzt: Zutaten, Phasen, Ablauf und Hinweise, Eckdaten":("Uses: ingredients, phases, procedure and notes, key data","Usa: ingredientes, fases, pasos y notas, datos básicos"),
+"Ausgewählte Rezepte mit Versionen als Datei (.json), zum Weitergeben oder Zurückspielen. Die Sicherung der ganzen App liegt unter Einstellungen":("Selected recipes with versions as a file (.json), to pass on or restore. The backup of the whole app is under Settings","Recetas seleccionadas con versiones como archivo (.json), para compartir o restaurar. La copia de toda la app está en Ajustes"),
+"Nutzt: alles, was du im Rezeptbuch gepflegt hast":("Uses: everything you maintained in the recipe book","Usa: todo lo que has mantenido en el recetario"),
+"zum Kopieren oder Teilen":("to copy or share","para copiar o compartir"),
+"Deine Eingaben werden laufend als Entwurf auf dem Gerät gesichert. Zum Rezept wird es erst mit „Speichern“.":("Your input is saved continuously as a draft on this device. It only becomes a recipe when you tap “Save”.","Lo que escribes se guarda continuamente como borrador en el dispositivo. Solo se convierte en receta con «Guardar»."),
+"Teile die Zutaten in Phasen auf, so wie du arbeitest: zuerst Phase A, dann B und so weiter. Beim Anlegen einer Phase wählst du die Zutaten aus deiner Liste, du musst sie nicht neu suchen.":("Split the ingredients into phases the way you work: first phase A, then B and so on. When you create a phase you pick the ingredients from your list, no need to search again.","Divide los ingredientes en fases como trabajas: primero la fase A, luego la B y así. Al crear una fase eliges los ingredientes de tu lista, sin buscarlos de nuevo."),
+"Orte für Gefäße, Versandkosten je Lieferant":("Places for containers, shipping costs per supplier","Lugares para envases, gastos de envío por proveedor"),
+"Diese Einstellungen gelten für die ganze App, im Lager und im Rezeptbuch.":("These settings apply to the whole app, in stock and in the recipe book.","Estos ajustes valen para toda la app, en el almacén y en el recetario."),
+"Backup speichern und laden":("Save and load backup","Guardar y cargar copia"),
+"(.csv, .tsv, .txt), Trennzeichen werden erkannt":("(.csv, .tsv, .txt), separators are detected","(.csv, .tsv, .txt), los separadores se detectan"),
+"Preisliste eines Lieferanten":("A supplier's price list","Lista de precios de un proveedor"),"Deine bisherige Lagerliste in Excel":("Your existing stock list in Excel","Tu lista de existencias actual en Excel"),
+"Bestellung oder Rechnung als Tabelle":("Order or invoice as a table","Pedido o factura como tabla"),"Export aus einer anderen App":("Export from another app","Exportación de otra app"),
+"Eine Sicherung der ganzen App speicherst du unter Mehr › Einstellungen › Sicherung der ganzen App.":("You save a backup of the whole app under More › Settings › Backup of the whole app.","La copia de toda la app se guarda en Más › Ajustes › Copia de seguridad de toda la app."),
+"Hol ein Rezept aus deinen Notizen. Du siehst vorher eine Vorschau und kannst alles im Editor noch ändern. Es wird nichts gespeichert, bevor du es selbst speicherst.":("Bring a recipe in from your notes. You see a preview first and can still change everything in the editor. Nothing is saved until you save it yourself.","Trae una receta desde tus notas. Antes ves una vista previa y aún puedes cambiar todo en el editor. No se guarda nada hasta que lo guardes tú."),
+"So liest die App deine Notizen":("How the app reads your notes","Cómo lee la app tus notas"),
+"Phasen: „Phase A“, „Wasserphase“, „Ölphase“ oder eine Zeile mit Doppelpunkt am Ende":("Phases: “Phase A”, “Water phase”, “Oil phase” or a line ending with a colon","Fases: «Fase A», «Fase acuosa», «Fase oleosa» o una línea que termina en dos puntos"),
+"Zutaten: „30 g Sheabutter“ oder „Sheabutter 30 g“ (g, kg, ml, %)":("Ingredients: “30 g shea butter” or “shea butter 30 g” (g, kg, ml, %)","Ingredientes: «30 g manteca de karité» o «manteca de karité 30 g» (g, kg, ml, %)"),
+"Hinweise: Zeilen mit „Achtung:“, „Tipp:“, „Haltbarkeit:“":("Notes: lines with “Caution:”, “Tip:”, “Shelf life:”","Notas: líneas con «Atención:», «Consejo:», «Caducidad:»"),
+"Zutaten werden mit deinem Lager und dem Katalog abgeglichen.":("Ingredients are matched with your stock and the catalogue.","Los ingredientes se comparan con tu almacén y el catálogo."),
+"Die Gestaltung der Dokumente folgt in einem späteren Schritt.":("The design of the documents follows in a later step.","El diseño de los documentos llegará en un paso posterior."),
+})
+P7.extend([
+(r"^Ohne INCI: (.*)\. INCI nicht geprüft bei: (.*)\.$",r"No INCI: \1. INCI not verified for: \2.",r"Sin INCI: \1. INCI sin verificar en: \2."),
+(r"^INCI nicht geprüft bei: (.*)\.$",r"INCI not verified for: \1.",r"INCI sin verificar en: \1."),
+(r"^Ohne INCI: (.*)\.$",r"No INCI: \1.",r"Sin INCI: \1."),
+(r"^Tippe eine Menge an und ändere sie, zum Beispiel auf das, was du noch hast\. Alle anderen Zutaten rechnen sich mit\. Anzeige in ml geht, sobald bei allen Zutaten die Dichte bekannt ist \(fehlt bei (.*)\)\.$",r"Tap an amount and change it, for example to what you have left. All other ingredients scale with it. Display in ml works once the density is known for all ingredients (missing for \1).",r"Toca una cantidad y cámbiala, por ejemplo a lo que te queda. Los demás ingredientes se recalculan. La vista en ml funciona cuando se conoce la densidad de todos los ingredientes (falta en \1)."),
+])
+N7.update({
+"Listen zum Weitergeben oder Auswerten. Zum Weitergeben ganzer Rezepte nutzt du „Rezepte teilen“ oder die Sicherung der ganzen App unter Einstellungen.":("Lists for sharing or analysis. To pass on whole recipes use “Share recipes” or the backup of the whole app under Settings.","Listas para compartir o analizar. Para pasar recetas completas usa «Compartir recetas» o la copia de toda la app en Ajustes."),
+"alles, was du im Rezeptbuch gepflegt hast.":("everything you maintained in the recipe book.","todo lo que has mantenido en el recetario."),
+})
