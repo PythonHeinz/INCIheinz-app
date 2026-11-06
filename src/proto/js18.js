@@ -5,7 +5,7 @@
            misch (Werkbank), mbar (Mischbar), chgs (Chargenbuch), chg (Charge)
    Daten: S.rez[] (Rezepte mit Versionen), S.chg[] (Chargen)
    ===================================================================== */
-const RZP={rez:1,rezv:1,reze:1,verl:1,misch:1,mbar:1,chgs:1,chg:1,rzstat:1};
+const RZP={rez:1,rezv:1,reze:1,verl:1,misch:1,mbar:1,bau:1,chgs:1,chg:1,rzstat:1};
 let RE=null,RC={id:null,ver:0,total:0,anchor:null},RM=null,RZQ='',RZF='alle',RZ_CB=null;
 const rzAll=()=>S.rez=S.rez||[];
 const rzChgAll=()=>S.chg=S.chg||[];
@@ -65,15 +65,15 @@ if(rzDirty())rzAsk('Ungespeicherte Arbeit','Wenn du jetzt wechselst, gehen die �
 const back18=back;back=function(){if(rzDirty()){rzAsk('Ungespeicherte Arbeit','Wenn du zurückgehst, gehen die Änderungen verloren.','Verwerfen',()=>{RE=null;RM=null;draftClear();back18()});return}
 if(R.name==='reze'||R.name==='misch'){RE=null;RM=null}back18()};
 function rznav(a){const it=(k,l,i)=>`<button class="${a===k?'on':''}" onclick="tab('${k}')">${ic(i)}<span>${l}</span></button>`;
-return `<nav>${it('rez','Rezepte','book')}${it('mbar','Mischbar','check')}<div style="flex:1;display:flex;flex-direction:column;align-items:center"><button class="plus" onclick="rzEdit(null)" aria-label="Neues Rezept">${ic('plus','#fff',26)}</button><span style="font-size:.68rem;font-weight:500;color:var(--sub);margin-top:2px">Neu</span></div>${it('chgs','Chargen','list')}<button onclick="sheetMehr()">${ic('more')}<span>Mehr</span></button></nav>`}
+return `<nav>${it('rez','Rezepte','book')}${it('bau','Bald','gear')}<div style="flex:1;display:flex;flex-direction:column;align-items:center"><button class="plus" onclick="rzEdit(null)" aria-label="Neues Rezept">${ic('plus','#fff',26)}</button><span style="font-size:.68rem;font-weight:500;color:var(--sub);margin-top:2px">Neu</span></div>${it('chgs','Chargen','list')}<button onclick="sheetMehr()">${ic('more')}<span>Mehr</span></button></nav>`}
 const draw18=draw;
 draw=function(){const rz=!!RZP[R.name];$('#app').classList.toggle('rez',rz);if(!rz)return draw18.apply(this,arguments);
 const v=$('#view');closeSheet();$('#app').classList.remove('artpg');
-const sub={rez:'REZEPTBUCH',mbar:'MISCHBAR',chgs:'CHARGENBUCH',rzstat:'STATISTIK'}[R.name]||'REZEPTBUCH';
-const bk=!['rez','mbar','chgs'].includes(R.name)||(R.name==='chgs'&&!!R.rez);
+const sub={rez:'REZEPTBUCH',bau:'REZEPTBUCH',mbar:'MISCHBAR',chgs:'CHARGENBUCH',rzstat:'STATISTIK'}[R.name]||'REZEPTBUCH';
+const bk=!['rez','mbar','bau','chgs'].includes(R.name)||(R.name==='chgs'&&!!R.rez);
 const nav=['reze','misch'].includes(R.name)?'':rznav(R.name==='verl'||R.name==='rezv'||R.name==='rzstat'?'rez':R.name==='chg'?'chgs':R.name);
 v.innerHTML=header(sub,bk)+`<main id="main"></main>`+nav;
-({rez:rzList,rezv:rzView,reze:rzEd,verl:rzVerl,misch:rzMisch,mbar:rzMbar,chgs:rzChgs,chg:rzChg,rzstat:rzStatPage})[R.name]();
+({rez:rzList,rezv:rzView,reze:rzEd,verl:rzVerl,misch:rzMisch,mbar:rzMbar,bau:rzBau,chgs:rzChgs,chg:rzChg,rzstat:rzStatPage})[R.name]();
 if(R.name!=='misch')rzWake(false)};
 let RZW=null;async function rzWake(on){try{if(on&&navigator.wakeLock&&!RZW){RZW=await navigator.wakeLock.request('screen')}else if(!on&&RZW){RZW.release();RZW=null}}catch(_){RZW=null}}
 function rzOpen(id,ver){stack.push(R);R={name:'rezv',id,ver:ver||0,edit:false};RC={id:null,ver:0,total:0,anchor:null};draw()}
@@ -85,7 +85,7 @@ function rzList(){const m=$('#main');const all=rzAll().slice().sort((a,b)=>rzCur
 if(!all.length){m.innerHTML=`<div class="card rz-empty"><div class="rz-t" style="margin-bottom:6px">Dein Rezeptbuch</div><div class="s" style="font-size:.92rem;line-height:1.5">Schreibe Rezepte mit Zutaten aus deinem Lager. Die App rechnet Mengen um, zeigt, ob du alles da hast, und merkt sich jede Version.</div><div class="btns"><button class="btn" onclick="rzEdit(null)">Erstes Rezept anlegen</button></div></div>`;return}
 const q=FOLD(RZQ);let l=all.filter(r=>!q||FOLD(rzCurV(r).d.name+' '+rzCurV(r).d.zweck).includes(q));
 const st=l.map(r=>[r,rzStat(r)]);if(RZF==='mix')l=st.filter(x=>x[1].cls==='ok').map(x=>x[0]);
-m.innerHTML=`<div class="search"><span style="padding:0 6px 0 12px;display:flex">${ic('search','var(--sub)',18)}</span><input id="rzq" value="${esc(RZQ)}" placeholder="Rezept suchen" oninput="RZQ=this.value;rzList2()"></div>
+const nmix=all.filter(r=>rzStat(r).cls==='ok').length;m.innerHTML=`<div class="search"><span style="padding:0 6px 0 12px;display:flex">${ic('search','var(--sub)',18)}</span><input id="rzq" value="${esc(RZQ)}" placeholder="Rezept suchen" oninput="RZQ=this.value;rzList2()"></div><div class="seg"><button class="${RZF==='mix'?'':'on'}" onclick="RZF='alle';rzList()">Alle <i>${all.length}</i></button><button class="${RZF==='mix'?'on':''}" onclick="RZF='mix';rzList()">Mischbar <i>${nmix}</i></button></div>
 <div id="rzl" style="margin-top:12px"></div>`;rzList2()}
 function rzList2(){const q=FOLD(RZQ);let l=rzAll().slice().sort((a,b)=>rzCurV(b).date<rzCurV(a).date?-1:1).filter(r=>!q||FOLD(rzCurV(r).d.name+' '+rzCurV(r).d.zweck).includes(q));
 const rows=l.map(r=>[r,rzStat(r)]).filter(x=>RZF!=='mix'||x[1].cls==='ok');const box=document.getElementById('rzl');if(!box)return;

@@ -13,3 +13,5 @@ function sheetBack(){const s=SNAV.pop();if(!s){closeSheet();return}SNAVRAW=true;
 const sh=document.getElementById('sheet');if(sh){const b=sh.querySelector('.bk');if(b&&!SNAV.length)b.remove();else if(!b&&SNAV.length)sh.insertAdjacentHTML('afterbegin','<button class="bk" onclick="sheetBack()" aria-label="Zurück">'+ic('back','currentColor',22)+'</button>')}
 try{if(typeof trWalk==='function'&&LANG!=='de')trWalk(sh)}catch(e){}}
 {const dr=draw;draw=function(){const pend=SNAV.slice();dr.apply(this,arguments);SNAVPEND=pend;setTimeout(()=>{SNAVPEND=null},0)}}
+/* ---------- Rezeptbuch: Platz 2 der Leiste ist vorerst eine Baustelle ---------- */
+function rzBau(){$('#main').innerHTML=`<div class="card rz-empty"><div class="rz-t" style="margin-bottom:6px">Hier ist eine Baustelle</div><div class="s" style="font-size:.92rem;line-height:1.5">An dieser Stelle der Leiste entsteht noch eine Funktion für das Rezeptbuch.</div></div>`}

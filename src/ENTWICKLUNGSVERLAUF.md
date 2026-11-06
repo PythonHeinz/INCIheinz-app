@@ -120,3 +120,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Drucken und Export getrennt: Chargenprotokoll (Drucken, nur PDF) und Chargentabelle (Export: Excel, CSV, Text). Rezeptkarte nur PDF, Text liegt im Export.
 - Rezept teilen: Dateiname nur ASCII, Binär-Kommentar im PDF-Kopf, zusätzlich „Als Datei speichern“. PDF besteht qpdf, PyMuPDF und pypdf (strict).
 - Offen: zweiter Platz der unteren Leiste im Rezeptbuch (Mischbar entfällt als Eintrag, wird Filter in der Rezeptliste).
+
+## Rezeptbuch: Mischbar als Filter, Platz 2 Baustelle (06.11.2026)
+- Mischbar ist kein Leisteneintrag mehr, sondern Filter „Alle / Mischbar“ (mit Zählern) oben in der Rezeptliste.
+- Platz 2 der Leiste im Rezeptbuch („Bald“) zeigt vorerst „Hier ist eine Baustelle“, bis der Usability-Chat die Funktion festlegt. Test: t74.js.
+- Menüs Mehr und Einstellungen in beiden Bereichen geprüft und abgeschlossen.

@@ -726,3 +726,4 @@ _new={
 }
 for _k,_v in list(_new.items()):
     N7[_k]=_v;N7[_k+'.']=(_v[0]+'.',_v[1]+'.')
+N7.update({"Bald":("Soon","Pronto"),"Hier ist eine Baustelle":("Under construction","En construcción"),"An dieser Stelle der Leiste entsteht noch eine Funktion für das Rezeptbuch.":("A new recipe book function will appear here.","Aquí aparecerá una nueva función del recetario."),"Mischbar":("Mixable","Mezclable")})
