@@ -57,7 +57,7 @@ Außerdem: INCI-Katalog überwiegend noch „ungeprüft“; Übersetzungen EN/ES
 - **Gewünschte Katalogfelder für Rezeptfunktionen:** `dens` (Dichte), Phase/Löslichkeit (wasser-, öllöslich, dispergierbar), Funktionsklasse (z. B. Emulgator, Konservierer), Aktivgehalt bei Lösungen (z. B. Milchsäure 80 %), pH der Lösung, Schmelzpunkt, Allergenkennzeichnung, `sh` (Sicherheitshinweis, eigene Formulierung), Ersatzstoffe. Hinweis: `regeln.md` Nr. 8 schließt Dosierungen im Katalog aus.
 
 ## Katalogpflege in eigenen Chats
-`katalog.json` (Repo-Wurzel) ist die Pflegequelle (identisch mit `src/katalog_master.json`); `src/katalog_naturkosmetik.csv` ist die Tabellenform. Regeln: `src/regeln.md`. Nach Änderungen `version`/`date` erhöhen, neu bauen (`src/build.sh`; `build_netlify.py` übernimmt `katalog_master.json`), pushen. Vorher beide Katalogdateien synchron halten. Eine anderswo geführte Tabelle (Rechner/Google Sheets) muss dem Chat angehängt oder verbunden werden.
+`katalog.json` (Repo-Wurzel) ist die Pflegequelle (identisch mit `src/katalog_master.json`); `src/katalog_naturkosmetik.csv` ist veraltet (Stand 0.4) und wird nicht mehr gepflegt; einzige Pflegequelle ist die JSON-Datei. Ab Katalog 1.1.1 hat jeder Eintrag zusätzlich die (leeren) Felder `d`, `e0`, `e1`, `eq`, siehe `src/KATALOG_ERWEITERUNG.md`. Regeln: `src/regeln.md`. Nach Änderungen `version`/`date` erhöhen, neu bauen (`src/build.sh`; `build_netlify.py` übernimmt `katalog_master.json`), pushen. Vorher beide Katalogdateien synchron halten. Eine anderswo geführte Tabelle (Rechner/Google Sheets) muss dem Chat angehängt oder verbunden werden.
 
 ## Ordner auf dem Rechner (filesbyclaude / Toolsbyclaude)
 Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\Toolsbyclaude`.

@@ -170,3 +170,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Dosierung prüfen: Reihenfolge Prüfen (rot, mit Abstand in %-Punkten) → Im Bereich (grün) → Ohne Einsatzbereich. Katalogwerte werden als „Katalog-Richtwert“ gekennzeichnet.
 - Katalog-Schema: optionale Felder `d` (Dichte g/ml), `e0`/`e1` (Einsatz %), `eq` (Herkunft). `catApply`/`sheetCatUpd` vergleichen und übernehmen sie jetzt (vorher nur n,i,k,h,a,u,s,q,p, neue Felder wären stumm ignoriert worden). Leere Nutzerdichte wird aus `d` gefüllt (beim Update, beim Start und bei neuen Rohstoffen via `mk`); eigene Werte bleiben. Einsatz: eigene `dmin/dmax` vor Katalog `e0/e1`.
 - `regeln.md` Regel 8 angepasst (Ausnahme Richtwerte). Anleitung für den Katalog-Chat: `src/KATALOG_ERWEITERUNG.md` (Kopie auf dem PC in INCI-App-Projekt/). Tests t80, t81.
+
+## Katalog 1.1.1: Spalten angelegt, Export/Import
+- `katalog.json` und `src/katalog_master.json` (identisch): jeder der 1020 Einträge hat jetzt `d`, `e0`, `e1`, `eq` = `null`. Version 1.1.1. Die App ignoriert `null` (kein falsches „ergänzte Angaben“).
+- Export: wählbare Spalten „Dichte (g/ml)“, „Einsatz von/bis (%)“; Import erkennt diese Überschriften und setzt Dichte/Einsatz am Rohstoff.
+- CSV `src/katalog_naturkosmetik.csv` offiziell veraltet (UEBERGABE.md angepasst).
