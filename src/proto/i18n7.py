@@ -617,3 +617,17 @@ N7.update({
 "Daten zum Weitergeben, Auswerten oder Sichern. Eine Sicherung der ganzen App findest du unter Mehr › Einstellungen.":("Data for sharing, analysing or backing up. A backup of the whole app is under More › Settings.","Datos para compartir, analizar o guardar. La copia de seguridad de toda la app está en Más › Ajustes."),
 })
 P7.extend([(r"^(\d+) Rezepte$",r"\1 recipes",r"\1 recetas"),(r"^(\d+) Versionen insgesamt$",r"\1 versions in total",r"\1 versiones en total"),(r"^in (\d+) Rezepte?n?$",r"in \1 recipe(s)",r"en \1 receta(s)")])
+N7.update({
+"Drucken & Gestalten":("Print & design","Imprimir y diseñar"),"Etiketten":("Labels","Etiquetas"),"Rezepte & Chargen":("Recipes & batches","Recetas y lotes"),
+"Rohstoffe wählen, Vorlage wählen, drucken":("Choose raw materials, choose template, print","Elige materias primas, plantilla e imprime"),
+"Rezepte wählen, Vorlage wählen, drucken":("Choose recipes, choose template, print","Elige recetas, plantilla e imprime"),
+"Rezepte, Chargen, häufige Zutaten":("Recipes, batches, common ingredients","Recetas, lotes, ingredientes frecuentes"),
+"Artikel und Preise aus Listen":("Articles and prices from lists","Artículos y precios desde listas"),"Listen: Einkaufsliste, Bestandstabelle":("Lists: shopping list, stock table","Listas: lista de compra, tabla de existencias"),
+"Listen: Rezepte als Text, Chargentabelle":("Lists: recipes as text, batch table","Listas: recetas como texto, tabla de lotes"),
+"Rezepte sichern":("Back up recipes","Guardar recetas"),"Zum Wiederherstellen oder Teilen, mit Versionen, Chargen, Fotos":("To restore or share, with versions, batches, photos","Para restaurar o compartir, con versiones, lotes, fotos"),
+"Rezepte & Chargen drucken":("Print recipes & batches","Imprimir recetas y lotes"),
+"Testbetrieb":("Test mode","Modo de prueba"),"Katalog aktualisieren":("Update catalogue","Actualizar catálogo"),
+"Lädt den aktuellen Stoffkatalog vom Server. Im fertigen Betrieb geschieht das automatisch im Hintergrund.":("Loads the current substance catalogue from the server. In the finished app this happens automatically in the background.","Carga el catálogo actual de sustancias desde el servidor. En la app final ocurre automáticamente en segundo plano."),
+"Du wählst ein Dokument, dann die Rezepte, dann geht es zum Drucken. Jedes Dokument nutzt die Module, die du im Rezept gepflegt hast. Je mehr du pflegst, desto vollständiger wird es.":("Choose a document, then the recipes, then print. Each document uses the modules you maintained in the recipe. The more you maintain, the more complete it gets.","Elige un documento, luego las recetas y a imprimir. Cada documento usa los módulos que mantienes en la receta. Cuanto más mantienes, más completo queda."),
+"Listen zum Weitergeben oder Auswerten. Zum Wiederherstellen nutzt du „Rezepte sichern“ oder die Sicherung der ganzen App unter Einstellungen.":("Lists for sharing or analysis. To restore, use “Back up recipes” or the backup of the whole app under Settings.","Listas para compartir o analizar. Para restaurar usa «Guardar recetas» o la copia de toda la app en Ajustes."),
+})

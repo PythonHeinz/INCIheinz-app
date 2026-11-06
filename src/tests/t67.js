@@ -94,11 +94,11 @@ await T(()=>rzChgOf(R.id));chk('Chargen-Seite gefiltert',await T(()=>R.name==='c
 // Menüs
 await T(()=>tab('rez'));await T(()=>sheetMehr());
 const mr=await T(()=>document.getElementById('sheet').innerText);
-chk('Rezept-Mehr hat Import/Export/Einstellungen/App',/arbeiten/i.test(mr)&&/rezeptbücher & druck/i.test(mr)&&/statistik/i.test(mr)&&/daten/i.test(mr)&&/import/i.test(mr)&&/rezeptdaten sichern/i.test(mr)&&/voreinstellungen rezeptbuch/i.test(mr)&&/für die ganze app/i.test(mr)&&!/katalog aktualisieren/i.test(mr)&&!/chargenbuch/i.test(mr)&&!/lagerorte/i.test(mr));
+chk('Rezept-Mehr hat Import/Export/Einstellungen/App',/drucken & gestalten/i.test(mr)&&/statistik/i.test(mr)&&/daten/i.test(mr)&&/import/i.test(mr)&&/rezepte sichern/i.test(mr)&&/voreinstellungen rezeptbuch/i.test(mr)&&/für die ganze app/i.test(mr)&&!/katalog aktualisieren/i.test(mr)&&!/chargenbuch/i.test(mr)&&!/lagerorte/i.test(mr));
 await p.screenshot({path:'/tmp/t/g7.png'});
 await T(()=>tab('lager'));await T(()=>sheetMehr());
 const ml=await T(()=>document.getElementById('sheet').innerText);
-chk('Lager-Mehr hat Lager-Einstellungen+App',/lagerorte/i.test(ml)&&/katalog aktualisieren/i.test(ml)&&/voreinstellungen lager/i.test(ml)&&/für die ganze app/i.test(ml)&&/einstellungen/i.test(ml)&&!/rezeptdaten sichern/i.test(ml));
+chk('Lager-Mehr hat Lager-Einstellungen+App',/lagerorte/i.test(ml)&&/drucken & gestalten/i.test(ml)&&/etiketten/i.test(ml)&&/voreinstellungen lager/i.test(ml)&&/für die ganze app/i.test(ml)&&/einstellungen/i.test(ml)&&!/rezepte sichern/i.test(ml)&&!/katalog aktualisieren/i.test(ml));
 await T(()=>sheetAppSet());chk('Einstellungen ohne Lagerorte',await T(()=>{const t=document.getElementById('sheet').innerText;return /sprache/i.test(t)&&!/lagerorte/i.test(t)&&!/lieferanten/i.test(t)}));
 await T(()=>sheetLagerSet());chk('Lager-Einstellungen',await T(()=>/Lagerorte/.test(document.getElementById('sheet').innerText)));
 await T(()=>{document.getElementById('no').value='Keller';addOrt()});chk('Ort hinzugefügt bleibt in Lager-Einstellungen',await T(()=>S.orte.includes('Keller')&&/Lager-Einstellungen/.test(document.getElementById('sheet').innerText)));

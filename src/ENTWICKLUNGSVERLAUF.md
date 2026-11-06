@@ -97,3 +97,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Fehler behoben: `expertCard()` hatte ein überzähliges `</div>`; der Testdaten-Block landete außerhalb des Fensters und stand dauerhaft unten auf der Seite.
 - Import-Parser (`rzPre`): Trenner „|“, Phasen mitten im Satz, Zutaten per Komma (Dezimalkomma bleibt), Sätze als Schritte, „nach Bedarf“ als Zutat ohne Menge mit Hinweis.
 - Geplant, noch nicht gebaut: Werkbank-Zettel, Etikett pro Charge, Layouts des Rezeptbuchs, Einkaufszettel, Kostenblatt, Versionsvergleich (IDEEN_SPAETER.md).
+
+## Mehr-Menüs v3 (06.11.2026, nach Rückmeldung)
+- Begriffe: Sicherung der ganzen App (global, Einstellungen) · „Rezepte sichern“ (nur Rezeptbuch; Lager hat bewusst kein Pendant, dort gilt Export als Liste plus Gesamtsicherung) · Export = Listen · Drucken & Gestalten = Auswahl, Vorlage, Druckmenü. „Publikation“ wird nicht mehr als Wort verwendet.
+- Aufbau beider Menüs: Statistik (und im Lager Bestellliste) als Einzeleinträge oben, dann Drucken & Gestalten, Daten, Voreinstellungen, Für die ganze App (ein Eintrag Einstellungen).
+- „Katalog aktualisieren“ und Testdaten sind Testbetrieb: nur unter Einstellungen im Expertenmodus. Im fertigen Betrieb aktualisiert sich der Katalog im Hintergrund, der Eintrag entfällt.
+- Offen: Bestellliste im Menü ist dasselbe wie der Tab Einkauf (zu klären); Druckablauf (erst Rezepte wählen, dann Vorlage) ist noch umgekehrt umgesetzt.
