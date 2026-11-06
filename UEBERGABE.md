@@ -7,7 +7,7 @@ Privates Rohstofflager für Naturkosmetik (PWA, eine HTML-Datei, Vanilla-JS). De
 - Neue Versionen erreichen das Handy per Update-Hinweis bzw. beim zweiten App-Start.
 
 ## Stand
-Lager, Eingabe, Neu, Einkauf, Mehr, Statistik-Kacheln, Undo und Ampel-Symbole sind entwickelt (Design-Reviews je Seite offen). **Rezeptbuch v1 ist gebaut** (siehe Abschnitt „Rezeptbuch“ unten): eigener Bereich mit Register „Lager | Rezeptbuch“ im Kopf, Rezepte mit Versionen, Rechner mit Anker, Mischbarkeit, Werkbank mit Lagerabzug, Chargenbuch, INCI-Entwurf, Rezeptkarte drucken.
+Eine App mit zwei Seiten (Lager und Rezeptbuch, Register im Kopf). Aktueller Stand, Commit und offene Punkte: `STAND.md` (zusammengeführt, 06.11.2026). Mengenmodell: Gesamtmenge `i.total` ist die einzige Wahrheit, Gefäße beschreiben nur Verpackung, Nenninhalt und Lagerort. Lagerort liegt am Artikel (`i.ort`). INCI wird nur vom Nutzer als „geprüft“ bestätigt.
 
 ## Quellen & Build
 Alles liegt im Repo unter `src/`. Neuer Chat:
@@ -49,7 +49,7 @@ Außerdem: INCI-Katalog überwiegend noch „ungeprüft“; Übersetzungen EN/ES
 - **Lagerbezug:** `rzItem(z)` löst über Artikel-ID, Katalog-ID (`cid`) oder Namen auf. Ohne Lagerbezug (z. B. Wasser) zählt eine Zutat nicht als fehlend; Katalogzutat ohne Lagerartikel zählt als fehlend. ml-Artikel brauchen `dens` (Dichte), sonst „Menge unbekannt“.
 - **Rechner:** jedes Mengenfeld ist ein Anker (`rzAnch`), Gesamtmenge ebenso (`rzTot`). Rundung `S.rezStep` (Standard 0,1 g, noch ohne Einstellung in der Oberfläche).
 - **Versionen:** jedes Speichern erzeugt eine neue Version (`rzSave`/`rzDoSave`) mit Notiz und automatischer Differenz (`rzDiff`, in Gramm). Bearbeiten einer alten Version legt eine neue Version obenauf (`from`).
-- **Werkbank:** `rmFinish`/`rmDone`. Lagerabzug nur nach Bestätigung (Auswahl „abziehen“ / „nur Charge speichern“), mit Undo-Leiste (`undoOffer`). Abzug über `rzTake` (Gefäße werden mitgeführt); nicht abgezogen wird bei `unk` oder fehlender Dichte.
+- **Werkbank:** `rmFinish`/`rmDone`. Lagerabzug nur nach Bestätigung (Auswahl „abziehen“ / „nur Charge speichern“), mit Undo-Leiste (`undoOffer`). Abzug über `rzTake` (ändert nur die Gesamtmenge `i.total`; Gefäße sind rein beschreibend); nicht abgezogen wird bei `unk` oder fehlender Dichte.
 - **INCI-Entwurf:** `rzInci` sortiert nach Anteil; Warnung bei ungeprüfter oder fehlender INCI.
 - **Druck:** `rzPrint` (Rezeptkarte). Rohstoff-Sicherheitshinweise werden gedruckt, sobald der Katalog das Feld `sh` (oder ein Artikel `sh`) enthält.
 - **Eingriffe ins Grundgerüst:** `header()`, `draw()`, `back()` überschrieben bzw. umhüllt; `artikel()` hängt „Verwendet in Rezepten“ an; `restoreMerge()` umhüllt.
