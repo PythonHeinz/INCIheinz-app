@@ -20,3 +20,5 @@ function pickArtOrt(){pick('Lagerort',[['','– kein Lagerort –']].concat(S.or
 {const d1=dirty;dirty=function(){d1();const b=document.getElementById('esv2');if(b)b.disabled=false}}
 function guard22(){const b=document.getElementById('esv');if(R.edit&&b&&!b.disabled){cancelEdit();return true}return false}
 {const t0=tab;tab=function(){if(guard22())return;return t0.apply(this,arguments)};const b0=back;back=function(){if(guard22())return;return b0.apply(this,arguments)}}
+/* ---- Produktseite lesen: bekannten Lieferanten aus dem Text vorwählen ---- */
+{const p0=prodRead;prodRead=function(){const n=s=>String(s||'').toLowerCase().replace(/[^a-z0-9äöüß]/g,'');const t=n(val('pt'));const m=Object.keys(S.lief).find(l=>n(l).length>2&&t.includes(n(l)));if(m)BZPRE=m;try{return p0.apply(this,arguments)}finally{BZPRE=''}}}

@@ -74,4 +74,5 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - INCI: Eingefügter Text bleibt „ungeprüft“; Knopf „Als geprüft bestätigen“ zeigt den Text und setzt erst nach Bestätigung des Nutzers auf geprüft.
 - Lagerort am Artikel (`i.ort`, Auswahl im Bearbeiten); Anzeige, Lücken-Filter und Vollständigkeit nutzen `ortOf(i)` (Artikel-Lagerort, sonst der des ersten Gefäßes).
 - Speichern unten im Bearbeiten-Modus (feste Leiste, blendet die Tab-Leiste aus); Warnung beim Verlassen mit offenen Änderungen über `tab()` und `back()`.
-- Noch offen: Eingabe mit Basiseinheit-Umrechnung, +1 Gebinde auf der Karte (zurückgestellt), Lieferant aus Produkttext vorwählen, Kachel-Klick als Filter-Abkürzung prüfen, konfigurierbare Dashboard-Kacheln.
+- Produktseite lesen: bekannter Lieferant im Text wird vorgewählt. Test t66.js.
+- Bewusst nicht geändert: Mengen werden schon intern in Basiseinheit (g, ml) gespeichert, die Anzeige wechselt nur ab 1000 zu kg/l. Kachel / Filter in der Lager-Übersicht müssen am Bildschirm geprüft werden. Zurückgestellt: +1 Gebinde auf der Karte, konfigurierbare Dashboard-Kacheln (nach Gefäß-Entscheidung jetzt möglich, eigener Schritt).
