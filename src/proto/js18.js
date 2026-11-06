@@ -30,11 +30,11 @@ const f=FOLD(z.name);return f?(S.items.find(x=>FOLD(x.name)===f)||null):null}
 const rzName=z=>{const i=rzItem(z);return i?i.name:(z.name||'')};
 function rzInciOf(z){const i=rzItem(z);if(i)return i.inci||'';const c=z.cid&&CM[z.cid];if(c)return c.i||'';return /^(wasser|aqua|dest)/i.test(z.name||'')?'Aqua':''}
 function rzHave(z){const i=rzItem(z);if(!i)return z.cid?{k:'nein'}:{k:'frei'};if(i.unk)return {k:'unb',i};
-let g=null;if(i.kind==='w')g=i.total;else if(i.kind==='v'&&i.dens>0)g=i.total*i.dens;if(g==null)return {k:'unb',i};return {k:'ok',g,i}}
+let g=null;if(i.kind==='w')g=i.total;else if(i.kind==='v'&&i.dens>0)g=i.total*i.dens;if(g==null)return {k:'unb',i,dens:i.kind==='v'};return {k:'ok',g,i}}
 function rzCheck(d,total){const sum=rzSum(d);const rows=[];let max=Infinity;const miss=[],low=[];
 d.phasen.forEach((p,pi)=>p.z.forEach((z,zi)=>{const need=sum>0?(+z.g||0)/sum*total:0;const h=rzHave(z);let st='frei';
 if(h.k==='ok'){st=h.g<=1e-9?'fehlt':h.g+1e-9<need?'knapp':'ok';if(z.g>0)max=Math.min(max,h.g/((+z.g)/sum));if(st==='fehlt')miss.push({z,need});else if(st==='knapp')low.push({z,need,fehlt:need-h.g})}
-else if(h.k==='nein'){st='fehlt';miss.push({z,need})}else if(h.k==='unb')st='unb';
+else if(h.k==='nein'){st='fehlt';miss.push({z,need})}else if(h.k==='unb')st=h.dens?'dens':'unb';
 rows.push({z,pi,zi,need,have:h.k==='ok'?h.g:null,st,item:h.i||rzItem(z)})}));
 return {rows,sum,miss,low,max:max===Infinity?null:max,ok:!miss.length&&!low.length}}
 function rzCost(rows){let c=0,n=0;rows.forEach(x=>{const i=x.item;if(!i){if(x.z.cid)n++;return}const ch=cheapest(i);if(!ch){n++;return}let pg=ch.p/100;
@@ -72,27 +72,27 @@ function rzOpen(id,ver){stack.push(R);R={name:'rezv',id,ver:ver||0,edit:false};R
 
 /* ---------- Liste ---------- */
 function rzStat(r){const m=rzMixInfo(r);const c=m.c;
-if(c.ok)return {t:'mischbar',cls:'ok',c};const n=c.miss.length+c.low.length;return {t:'fehlt '+n,cls:'err',c}}
+if(c.ok)return c.rows.some(x=>x.st==='unb')?{t:'Menge offen',cls:'unk',c}:{t:'mischbar',cls:'ok',c};const n=c.miss.length+c.low.length;return {t:'fehlt '+n,cls:'err',c}}
 function rzList(){const m=$('#main');const all=rzAll().slice().sort((a,b)=>rzCurV(b).date<rzCurV(a).date?-1:1);
 if(!all.length){m.innerHTML=`<div class="card rz-empty"><div class="rz-t" style="margin-bottom:6px">Dein Rezeptbuch</div><div class="s" style="font-size:.92rem;line-height:1.5">Schreibe Rezepte mit Zutaten aus deinem Lager. Die App rechnet Mengen um, zeigt, ob du alles da hast, und merkt sich jede Version.</div><div class="btns"><button class="btn" onclick="rzEdit(null)">Erstes Rezept anlegen</button></div></div>`;return}
 const q=FOLD(RZQ);let l=all.filter(r=>!q||FOLD(rzCurV(r).d.name+' '+rzCurV(r).d.zweck).includes(q));
 const st=l.map(r=>[r,rzStat(r)]);if(RZF==='mix')l=st.filter(x=>x[1].cls==='ok').map(x=>x[0]);
 m.innerHTML=`<div class="search"><span style="padding:0 6px 0 12px;display:flex">${ic('search','var(--sub)',18)}</span><input id="rzq" value="${esc(RZQ)}" placeholder="Rezept suchen" oninput="RZQ=this.value;rzList2()"></div>
-<div class="tb" style="gap:6px"><button class="pill ${RZF==='alle'?'on':''}" style="width:auto;height:auto" onclick="RZF='alle';rzList()">Alle</button><button class="pill ${RZF==='mix'?'on':''}" style="width:auto;height:auto" onclick="RZF='mix';rzList()">Mischbar</button></div><div id="rzl" style="margin-top:12px"></div>`;rzList2()}
+<div id="rzl" style="margin-top:12px"></div>`;rzList2()}
 function rzList2(){const q=FOLD(RZQ);let l=rzAll().slice().sort((a,b)=>rzCurV(b).date<rzCurV(a).date?-1:1).filter(r=>!q||FOLD(rzCurV(r).d.name+' '+rzCurV(r).d.zweck).includes(q));
 const rows=l.map(r=>[r,rzStat(r)]).filter(x=>RZF!=='mix'||x[1].cls==='ok');const box=document.getElementById('rzl');if(!box)return;
 box.innerHTML=rows.length?`<div class="card">${rows.map(([r,s])=>{const v=rzCurV(r),n=rzChgAll().filter(c=>c.rez===r.id).length;
 return `<div class="row" onclick="rzOpen('${r.id}')"><div class="t"><b class="nm rz-rn">${esc(v.d.name)}</b><div class="s">Version ${v.n} · ${nf(rzSum(v.d))} g${n?` · ${n} ${n===1?'Charge':'Chargen'}`:''}</div></div><span class="rz-chip ${s.cls}">${s.t}</span></div>`}).join('')}</div>`:`<div class="s" style="padding:16px 4px">${RZF==='mix'?'Aktuell ist kein Rezept komplett mischbar.':'Nichts gefunden.'}</div>`}
 function rzMbar(){const m=$('#main');const all=rzAll().map(r=>({r,s:rzStat(r)}));
-const ok=all.filter(x=>x.s.cls==='ok'),near=all.filter(x=>x.s.cls!=='ok'&&x.s.c.miss.length+x.s.c.low.length<=2).sort((a,b)=>(a.s.c.miss.length+a.s.c.low.length)-(b.s.c.miss.length+b.s.c.low.length)),far=all.filter(x=>!ok.includes(x)&&!near.includes(x));
+const ok=all.filter(x=>x.s.cls==='ok'),unk=all.filter(x=>x.s.cls==='unk'),near=all.filter(x=>x.s.cls==='err'&&x.s.c.miss.length+x.s.c.low.length<=2).sort((a,b)=>(a.s.c.miss.length+a.s.c.low.length)-(b.s.c.miss.length+b.s.c.low.length)),far=all.filter(x=>!ok.includes(x)&&!near.includes(x)&&!unk.includes(x));
 if(!all.length){m.innerHTML=`<div class="card rz-empty"><div class="s" style="font-size:.92rem">Hier siehst du, welche Rezepte du jetzt aus deinem Lager mischen kannst. Lege zuerst ein Rezept an.</div><div class="btns"><button class="btn" onclick="rzEdit(null)">Rezept anlegen</button></div></div>`;return}
 const row=(x,sub)=>`<div class="row" onclick="rzOpen('${x.r.id}')"><div class="t"><b class="nm rz-rn">${esc(rzCurV(x.r).d.name)}</b><div class="s">${sub}</div></div>${ic('chev','var(--sub)',18)}</div>`;
 const sec=(t,l,f)=>l.length?`<div class="cap" style="margin:16px 0 8px">${t}</div><div class="card">${l.map(f).join('')}</div>`:'';
 const miss=x=>x.s.c.miss.map(a=>rzName(a.z)).concat(x.s.c.low.map(a=>rzName(a.z)));
-m.innerHTML=sec('Jetzt mischbar',ok,x=>row(x,x.s.c.max?'bis zu '+nf(Math.floor(x.s.c.max))+' g möglich':'alle Zutaten vorhanden'))+sec('Fast mischbar',near,x=>row(x,'es fehlt: '+esc(miss(x).join(', '))))+sec('Es fehlt mehr',far,x=>row(x,esc(miss(x).length+' Zutaten fehlen oder reichen nicht')))}
+m.innerHTML=sec('Jetzt mischbar',ok,x=>row(x,x.s.c.max?'bis zu '+nf(Math.floor(x.s.c.max))+' g möglich':'alle Zutaten vorhanden'))+sec('Menge im Lager offen',unk,x=>row(x,'bei einer Zutat ist keine Menge eingetragen'))+sec('Fast mischbar',near,x=>row(x,'es fehlt: '+esc(miss(x).join(', '))))+sec('Es fehlt mehr',far,x=>row(x,esc(miss(x).length+' Zutaten fehlen oder reichen nicht')))}
 
 /* ---------- Rezept ansehen mit Rechner ---------- */
-function rzBan(c){if(c.ok){const u=c.rows.filter(x=>x.st==='unb').length;return {cls:'ok',h:'Mischbar mit deinem Lager',s:(c.max!=null?'Reicht für bis zu '+nf(Math.floor(c.max))+' g.':'')+(u?` Bei ${u} Zutat${u>1?'en':''} ist die Menge unbekannt.`:'')}}
+function rzBan(c){if(c.ok){const u=c.rows.filter(x=>x.st==='unb').length,dn=c.rows.filter(x=>x.st==='dens');return {cls:u?'':'ok',h:u?'Menge im Lager offen':'Mischbar mit deinem Lager',s:[c.max!=null?'Reicht für bis zu '+nf(Math.floor(c.max))+' g.':'',u?`Bei ${u} Zutat${u>1?'en':''} ist keine Menge eingetragen.`:'',dn.length?`Dichte fehlt bei: ${dn.map(x=>esc(x.item.name)).join(', ')}. Trag sie ein, dann wird die Menge geprüft.`:''].filter(Boolean).join('</div><div>')}}
 const l=c.miss.map(a=>esc(rzName(a.z))).concat(c.low.map(a=>esc(rzName(a.z))+' (−'+rzG(a.fehlt)+' g)'));
 return {cls:'err',h:'Noch nicht mischbar',s:'Es fehlt: '+l.join(', ')+(c.max>0?'. Mit deinem Lager gehen höchstens '+nf(Math.floor(c.max))+' g.':'')}}
 function rzView(){const r=rzGet(R.id);if(!r){tab('rez');return}const cur=rzCurV(r);const vn=R.ver||cur.n;const v=rzVer(r,vn);const d=v.d;
@@ -105,7 +105,7 @@ ${vn!==cur.n?`<div class="rz-old">Das ist eine ältere Version. <button class="l
 ${v.note?`<div class="rz-note nm">${esc(v.note)}</div>`:''}
 <div class="btns"><button class="btn" onclick="rzMischStart('${r.id}',${vn})">Mischen</button><button class="btn sec" onclick="rzEdit('${r.id}',${vn})">Bearbeiten</button><button class="btn sec" onclick="stack.push(R);R={name:'verl',id:'${r.id}'};draw()">Versionen</button></div>
 <div class="rz-ban ${ban.cls}" id="rzban"><b>${ban.h}</b><div>${ban.s}</div></div>
-<div class="card rz-calc"><div style="padding:12px 14px 4px"><label class="fld" style="margin:0"><span>Gesamtmenge (g)</span><input id="rz_tot" inputmode="decimal" value="${rzIv(RC.total)}" oninput="rzTot(this.value)"></label><div class="s" style="margin-top:6px">Trage bei einer Zutat die Menge ein, die du hast. Alles andere rechnet sich danach.</div></div>
+<div class="card rz-calc"><div style="padding:12px 14px 4px"><label class="fld" style="margin:0"><span>Gesamtmenge (g)</span><input id="rz_tot" inputmode="decimal" value="${rzIv(RC.total)}" oninput="rzTot(this.value)"></label><div class="s" style="margin-top:6px">Tippe eine Menge an und ändere sie, zum Beispiel auf das, was du noch hast. Alle anderen Zutaten rechnen sich mit.</div></div>
 ${d.phasen.map((p,pi)=>`<div class="rz-ph-h">${p.typ?`<span class="rz-badge">${p.typ}</span>`:''}<span class="nm">${esc(p.name)}</span></div>${p.z.map((z,zi)=>rzCalcRow(c,pi,zi)).join('')}`).join('')}
 <div class="rz-sum" id="rzsum">${rzSumTxt(c,cost)}</div></div>
 ${c.miss.concat(c.low).some(a=>rzItem(a.z))?`<div class="btns"><button class="btn sec" onclick="rzToShop()">Fehlendes auf die Einkaufsliste</button></div>`:''}
@@ -119,10 +119,10 @@ const rzCurD=()=>{const r=rzGet(R.id);return rzVer(r,R.ver||rzCurV(r).n).d};
 function xtCopyStr(t){try{navigator.clipboard.writeText(t).then(()=>toast('Kopiert'),()=>toast('Kopieren nicht möglich'))}catch(e){toast('Kopieren nicht möglich')}}
 function rzSumTxt(c,cost){return `<div class="kv"><span>Summe</span><span>${rzG(RC.total)} g</span></div>${cost.c>0?`<div class="kv"><span>Kosten ca.</span><span>${eur(cost.c)}${RC.total>0?` · ${eur(cost.c/RC.total*100)} je 100 g`:''}</span></div>${cost.n?`<div class="s">${cost.n} Zutat${cost.n>1?'en':''} ohne Preis nicht eingerechnet.</div>`:''}`:''}`}
 function rzCalcRow(c,pi,zi){const x=c.rows.find(a=>a.pi===pi&&a.zi===zi);const z=x.z;const key=pi+'.'+zi;
-return `<div class="rz-r ${RC.anchor===key?'anc':''}" id="rzr_${pi}_${zi}"><div class="rz-n" ${x.item?`onclick="go('artikel','${x.item.id}')"`:''}><span class="dot ${rzDot(x.st)}"></span><div style="min-width:0"><b class="nm">${esc(rzName(z)||'Zutat')}</b><div class="s" id="rzs_${pi}_${zi}">${rzStTxt(x)}</div></div></div><input class="rz-a" id="rza_${pi}_${zi}" inputmode="decimal" value="${rzIv(rzR(x.need))}" oninput="rzAnch(${pi},${zi},this.value)"><span class="rz-u">g</span></div>`}
+return `<div class="rz-r ${RC.anchor===key?'anc':''}" id="rzr_${pi}_${zi}"><div class="rz-n" ${x.item?(x.st==='dens'?`onclick="rzDens('${x.item.id}','draw()')"`:`onclick="go('artikel','${x.item.id}')"`):''}><span class="dot ${rzDot(x.st)}"></span><div style="min-width:0"><b class="nm">${esc(rzName(z)||'Zutat')}</b><div class="s" id="rzs_${pi}_${zi}">${rzStTxt(x)}</div></div></div><input class="rz-a" id="rza_${pi}_${zi}" inputmode="decimal" value="${rzIv(rzR(x.need))}" oninput="rzAnch(${pi},${zi},this.value)"><span class="rz-u">g</span></div>`}
 const rzDot=st=>st==='ok'?'ok':st==='knapp'?'warn':st==='fehlt'?'err':'';
 function rzStTxt(x){if(x.st==='ok')return 'Lager: '+fmt(x.item.total,x.item.kind);if(x.st==='knapp')return `Lager: ${rzG(x.have)} g · es fehlen ${rzG(x.need-x.have)} g`;
-if(x.st==='fehlt')return x.item?'nicht vorrätig':'nicht im Lager';if(x.st==='unb')return 'Menge im Lager unbekannt';return x.z.cid?'':''}
+if(x.st==='fehlt')return x.item?'nicht vorrätig':'nicht im Lager';if(x.st==='unb')return 'Menge im Lager unbekannt';if(x.st==='dens')return 'Lager: '+fmt(x.item.total,'v')+' · Dichte fehlt, tippen zum Eintragen';return x.z.cid?'':''}
 function rzUpd(skip){const r=rzGet(RC.id);if(!r)return;const d=rzVer(r,RC.ver).d;const c=rzCheck(d,RC.total);const cost=rzCost(c.rows);
 c.rows.forEach(x=>{const k=x.pi+'_'+x.zi;const inp=document.getElementById('rza_'+k);if(inp&&('rza_'+k)!==skip)inp.value=rzIv(rzR(x.need));const s=document.getElementById('rzs_'+k);if(s)s.textContent=rzStTxt(x);
 const row=document.getElementById('rzr_'+k);if(row){const dot=row.querySelector('.dot');if(dot)dot.className='dot '+rzDot(x.st);row.classList.toggle('anc',RC.anchor===x.pi+'.'+x.zi)}});

@@ -58,3 +58,9 @@ header.h2 .hr{display:flex;align-items:center;justify-content:space-between;padd
 .rz-st{color:var(--pri);font-size:.85rem;letter-spacing:1px;flex:none}
 .rz-empty{padding:18px 16px}
 .rz-lk{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:8px}.rz-lk .lnk{padding:4px 0}
+#app.rez{font-variant-numeric:tabular-nums}
+.rz-chip.unk{background:#ECE6D6;color:#6B5D3A}.rz-ban:not(.ok):not(.err){background:#ECE6D6;color:#4F452C}
+.rz-a{background:#fff;box-shadow:inset 0 -2px 0 var(--line)}
+.rz-mt{display:flex;justify-content:flex-end;gap:4px;margin-top:6px}.rz-mt button{width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surf);display:flex;align-items:center;justify-content:center;color:var(--pri)}.rz-mt button:disabled{opacity:.35}
+.rz-ins{display:flex;justify-content:center;margin:-2px 0 4px}.rz-ins button{width:44px;height:28px;border:0;background:transparent;color:var(--sub);display:flex;align-items:center;justify-content:center}
+.rz-v summary{min-height:52px}.rz-vs{display:flex;align-items:center;gap:8px;min-width:0;flex:1}.rz-vn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1;font-size:.88rem}

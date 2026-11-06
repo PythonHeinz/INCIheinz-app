@@ -20,3 +20,20 @@ function demoRm(){const snap=JSON.stringify(S);const ids=new Set(S.rez.filter(r=
 const mine=new Set();S.rez.forEach(r=>r.vers.forEach(v=>v.d.phasen.forEach(p=>p.z.forEach(z=>z.item&&mine.add(z.item)))));
 S.items=S.items.filter(i=>!i.demo||mine.has(i.id));
 save();closeSheet();undoOffer('Testdaten entfernt',snap,JSON.stringify(S),true);tab('rez');toast('Testdaten entfernt')}
+
+/* Dichte nachtragen (aus Rezeptrechner, Werkbank, Abschluss) */
+let RZDN=null;
+function rzDens(id,after){const i=getI(id);if(!i)return;RZDN={id,after};
+openSheet(`<h2 class="nm">${esc(i.name)}</h2><div style="font-size:.92rem;line-height:1.45">Mit der Dichte rechnet die App Gramm im Rezept in Milliliter im Lager um. Du findest sie auf dem Datenblatt, bei Ölen liegt sie meist bei 0,91 bis 0,93 g/ml.</div>
+<label class="fld"><span>Dichte (g/ml)</span><input id="dn" inputmode="decimal" placeholder="z. B. 0,92" value="${i.dens>0?nf(i.dens,3):''}"></label>
+<div class="btns"><button class="btn" onclick="rzDensSave()">Speichern</button><button class="btn sec" onclick="closeSheet()">Abbrechen</button></div>`)}
+function rzDensSave(){const i=getI(RZDN.id);const n=num(val('dn'));if(!(n>0.3&&n<3)){toast('Bitte eine Dichte zwischen 0,3 und 3 eintragen');return}
+i.dens=n;i.chg=today();save();closeSheet();const a=RZDN.after;RZDN=null;toast('Dichte gespeichert');if(a)new Function(a)()}
+
+/* Mehr-Menü im Rezeptbereich */
+const sheetMehr20=sheetMehr;
+sheetMehr=function(){const app=document.getElementById('app');if(!app||!app.classList.contains('rez')){sheetMehr20();return}
+const g=(t,a)=>`<div class="cap" style="margin:12px 0 0">${t}</div>`+a.map(x=>rowH([x[0],x[1],'',x[2]])).join('');
+openSheet(g('Rezeptbuch',[['tag','Rezeptbuch drucken',"closeSheet();rzPrintBook()"],['export','Rezepte sichern (Datei)',"rzExport()"],['stat','Chargenbuch',"closeSheet();tab('chgs')"]])+g('Daten',[['import','Import',"sheetImport()"],['shield','Sicherung der ganzen App',"sheetBackup()"]])+g('App',[['gear','Einstellungen',"sheetSettings()"],['book','Anleitung',"sheetHilfe()"],['info','Info',"sheetInfo()"]]))};
+function rzExport(){closeSheet();const d={app:'INCIheinz-Rezepte',v:1,date:new Date().toISOString(),rez:(S.rez||[]).filter(r=>!r.demo),chg:(S.chg||[]).filter(c=>(S.rez||[]).some(r=>r.id===c.rez&&!r.demo))};
+if(!d.rez.length){toast('Noch keine eigenen Rezepte');return}dlFile('INCIheinz-Rezepte-'+today()+'.json',JSON.stringify(d),'application/json');toast('Rezepte gesichert')}
