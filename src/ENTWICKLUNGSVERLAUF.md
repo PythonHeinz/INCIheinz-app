@@ -185,3 +185,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Katalog 1.2.0 eingespielt (Pilot, 20 Einträge)
 - Der Katalog-Chat hatte 175c8e4 lokal auf dem PC committet; sein Push war nicht möglich (keine GitHub-Anmeldung auf dem PC-Shell). Übernahme über ein git-Bundle, Hash erhalten, geprüft: nur die Felder f/b/v/d/e0/e1/eq/bq, nur leere Felder, 1020 IDs, Längen und Bereiche ok, beide Katalogdateien identisch.
 - App neu gebaut (eingebetteter Katalog 1.2.0), Tests grün; t82 nutzt jetzt Katalogeinträge ohne echte Vorschlagswerte. Hinweis für spätere Katalog-Chats: Push von der Geräteshell geht nicht, Weg ist Bundle → App-Chat pusht.
+
+## Katalog 1.2.17 eingespielt, 1.2.18 (Korrektur)
+- Hauptlauf des Katalog-Chats (17 Commits, 1.2.1 bis 1.2.17, Hash erhalten) über ein Gesamt-Bundle vom PC übernommen und geprüft: 1034 Einträge (14 neu, K1046–K1059: Zitronensäure ×2, Natriumbenzoat ×2, Kokosbetain ×2, Natriumcocoylglutamat ×2, SCI ×3, Natriumlauroylglutamat, Olefinsulfonat, Natriumcocoylalaninat), keine ID entfernt oder geändert, nur leere Vorschlagsfelder gefüllt (520 Einträge), Längen und Bereiche ok, keine Dubletten, Duft-Kategorien unberührt.
+- 1.2.18: K0760 Azelainsäure: Wirkaussage („Aufhellend/Anti-Akne“) aus `b` entfernt, neutral formuliert. Sonst keine Heil- oder Wirkaussagen gefunden („Heilton“ = Produktname).
+- Test t83: Update von 1.1.x-Stand auf 1.2.x (14 neue Einträge, 506 ergänzte Angaben, Nutzertext bleibt).
+- Offen aus dem Katalog-Chat: Tensidklasse/WAS als App-Felder, Schüttdichte vs. Dichte, K0194 (Dublette), K0538 (Umbenennung), K0474 (INCI prüfen), Spaltenagent für Verseifungszahl/Jodzahl/Schmelzpunkt.
