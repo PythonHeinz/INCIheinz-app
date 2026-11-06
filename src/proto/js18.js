@@ -5,7 +5,7 @@
            misch (Werkbank), mbar (Mischbar), chgs (Chargenbuch), chg (Charge)
    Daten: S.rez[] (Rezepte mit Versionen), S.chg[] (Chargen)
    ===================================================================== */
-const RZP={rez:1,rezv:1,reze:1,verl:1,misch:1,mbar:1,chgs:1,chg:1};
+const RZP={rez:1,rezv:1,reze:1,verl:1,misch:1,mbar:1,chgs:1,chg:1,rzstat:1};
 let RE=null,RC={id:null,ver:0,total:0,anchor:null},RM=null,RZQ='',RZF='alle',RZ_CB=null;
 const rzAll=()=>S.rez=S.rez||[];
 const rzChgAll=()=>S.chg=S.chg||[];
@@ -69,11 +69,11 @@ return `<nav>${it('rez','Rezepte','book')}${it('mbar','Mischbar','check')}<div s
 const draw18=draw;
 draw=function(){const rz=!!RZP[R.name];$('#app').classList.toggle('rez',rz);if(!rz)return draw18.apply(this,arguments);
 const v=$('#view');closeSheet();$('#app').classList.remove('artpg');
-const sub={rez:'REZEPTBUCH',mbar:'MISCHBAR',chgs:'CHARGENBUCH'}[R.name]||'REZEPTBUCH';
+const sub={rez:'REZEPTBUCH',mbar:'MISCHBAR',chgs:'CHARGENBUCH',rzstat:'STATISTIK'}[R.name]||'REZEPTBUCH';
 const bk=!['rez','mbar','chgs'].includes(R.name)||(R.name==='chgs'&&!!R.rez);
-const nav=['reze','misch'].includes(R.name)?'':rznav(R.name==='verl'||R.name==='rezv'?'rez':R.name==='chg'?'chgs':R.name);
+const nav=['reze','misch'].includes(R.name)?'':rznav(R.name==='verl'||R.name==='rezv'||R.name==='rzstat'?'rez':R.name==='chg'?'chgs':R.name);
 v.innerHTML=header(sub,bk)+`<main id="main"></main>`+nav;
-({rez:rzList,rezv:rzView,reze:rzEd,verl:rzVerl,misch:rzMisch,mbar:rzMbar,chgs:rzChgs,chg:rzChg})[R.name]();
+({rez:rzList,rezv:rzView,reze:rzEd,verl:rzVerl,misch:rzMisch,mbar:rzMbar,chgs:rzChgs,chg:rzChg,rzstat:rzStatPage})[R.name]();
 if(R.name!=='misch')rzWake(false)};
 let RZW=null;async function rzWake(on){try{if(on&&navigator.wakeLock&&!RZW){RZW=await navigator.wakeLock.request('screen')}else if(!on&&RZW){RZW.release();RZW=null}}catch(_){RZW=null}}
 function rzOpen(id,ver){stack.push(R);R={name:'rezv',id,ver:ver||0,edit:false};RC={id:null,ver:0,total:0,anchor:null};draw()}

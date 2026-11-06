@@ -631,3 +631,13 @@ N7.update({
 "Du wählst ein Dokument, dann die Rezepte, dann geht es zum Drucken. Jedes Dokument nutzt die Module, die du im Rezept gepflegt hast. Je mehr du pflegst, desto vollständiger wird es.":("Choose a document, then the recipes, then print. Each document uses the modules you maintained in the recipe. The more you maintain, the more complete it gets.","Elige un documento, luego las recetas y a imprimir. Cada documento usa los módulos que mantienes en la receta. Cuanto más mantienes, más completo queda."),
 "Listen zum Weitergeben oder Auswerten. Zum Wiederherstellen nutzt du „Rezepte sichern“ oder die Sicherung der ganzen App unter Einstellungen.":("Lists for sharing or analysis. To restore, use “Back up recipes” or the backup of the whole app under Settings.","Listas para compartir o analizar. Para restaurar usa «Guardar recetas» o la copia de toda la app en Ajustes."),
 })
+N7.update({
+"Nach Einsatzzweck":("By purpose","Por uso"),"Noch keine Rezepte":("No recipes yet","Aún no hay recetas"),"Noch keine Charge gemischt":("No batch mixed yet","Aún no se ha mezclado ningún lote"),
+"noch ohne Bewertung":("not rated yet","sin valorar aún"),"Rezeptkategorien wie Shampoo, Creme oder Serum folgen. Bis dahin zählt der Einsatzzweck.":("Recipe categories such as shampoo, cream or serum will follow. Until then the purpose field is used.","Las categorías de receta como champú, crema o sérum llegarán. Hasta entonces se usa el uso previsto."),
+"Noch nichts zum Zurücknehmen":("Nothing to undo yet","Nada que deshacer aún"),"Letzte Änderung rückgängig":("Undo last change","Deshacer último cambio"),
+"Aus dem Feld „Einsatzzweck“ der Rezepte. Echte Kategorien folgen.":("From the “purpose” field of the recipes. Real categories will follow.","Del campo «uso» de las recetas. Las categorías reales llegarán."),
+"In wie vielen Rezepten ein Rohstoff vorkommt.":("In how many recipes a raw material appears.","En cuántas recetas aparece una materia prima."),
+"Rezepte, für die dein Lager aktuell alles hat.":("Recipes for which your stock currently has everything.","Recetas para las que tu almacén tiene todo ahora."),
+"Alle Rezepte im aktuellen Stand.":("All recipes in their current version.","Todas las recetas en su versión actual."),
+})
+P7.extend([(r"^(\d+) Versionen insgesamt$",r"\1 versions in total",r"\1 versiones en total"),(r"^(\d+) von (\d+) mit deinem Lager$",r"\1 of \2 with your stock",r"\1 de \2 con tu almacén"),(r"^(\d+) Einsatzzwecke$",r"\1 purposes",r"\1 usos"),(r"^Ø ([\d,]+) Sterne$",r"Ø \1 stars",r"Ø \1 estrellas")])

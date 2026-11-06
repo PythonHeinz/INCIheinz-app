@@ -45,3 +45,10 @@ Module heute: Ablauf-Schritte, Haltbarkeit, Hinweis/Achtung/Tipp, Abfüllung, No
 7. Versionsvergleich: Änderungen zwischen Version 1 und 2 (Diff), als Seite.
 8. Rezept-Teilen: Text oder .json für Freunde, wieder einlesbar.
 Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
+
+## Anmerkungen aus dem Menü-Test (06.11.2026)
+- Etiketten: mehrere Etikettengrößen in einem Druck (z. B. kleines Etikett für die Flasche, großes für den Karton).
+- Rezeptkategorien (Shampoo, Duschgel, Creme, Massageöl, Serum, Deo …) als Feld am Rezept, pflegbar in den Voreinstellungen; Basis für die Statistik „Rezepte je Kategorie“. Bis dahin zählt der Einsatzzweck.
+- Rezeptbuch-Statistik weiter ausbauen (Kosten, Verbrauch, Bewertungen).
+- Anleitung später um das Rezeptbuch ergänzen.
+- Standard-Ablauf: Reihenfolge der Schritte änderbar machen (offen, nach Klärung).

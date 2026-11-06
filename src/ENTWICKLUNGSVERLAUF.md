@@ -103,3 +103,4 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Aufbau beider Menüs: Statistik (und im Lager Bestellliste) als Einzeleinträge oben, dann Drucken & Gestalten, Daten, Voreinstellungen, Für die ganze App (ein Eintrag Einstellungen).
 - „Katalog aktualisieren“ und Testdaten sind Testbetrieb: nur unter Einstellungen im Expertenmodus. Im fertigen Betrieb aktualisiert sich der Katalog im Hintergrund, der Eintrag entfällt.
 - Offen: Bestellliste im Menü ist dasselbe wie der Tab Einkauf (zu klären); Druckablauf (erst Rezepte wählen, dann Vorlage) ist noch umgekehrt umgesetzt.
+- Menü-Test 06.11. (Stand v3.1): Überschrift „Arbeiten“ in beiden Menüs; „Letzte Änderung rückgängig“ immer sichtbar (ausgegraut ohne Änderung); Rezeptbuch-Statistik als eigene Seite mit Kacheln (Rezepte, Mischbar, Chargen, Einsatzzweck, häufigste Zutaten) wie im Lager. Rezeptkategorien offen (IDEEN_SPAETER.md).
