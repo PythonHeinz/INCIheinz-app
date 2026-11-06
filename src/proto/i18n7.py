@@ -699,3 +699,19 @@ N7.update({
 "Listen zum Weitergeben oder Auswerten. Zum Weitergeben ganzer Rezepte nutzt du „Rezepte teilen“ oder die Sicherung der ganzen App unter Einstellungen.":("Lists for sharing or analysis. To pass on whole recipes use “Share recipes” or the backup of the whole app under Settings.","Listas para compartir o analizar. Para pasar recetas completas usa «Compartir recetas» o la copia de toda la app en Ajustes."),
 "alles, was du im Rezeptbuch gepflegt hast.":("everything you maintained in the recipe book.","todo lo que has mantenido en el recetario."),
 })
+N7.update({
+"Rezept teilen":("Share recipe","Compartir receta"),
+"Ein fertiges Rezept als schönes PDF verschicken":("Send a finished recipe as a nicely designed PDF","Enviar una receta terminada como PDF bien diseñado"),
+"Dein Rezept als gestaltetes PDF, zum Zeigen oder Verschicken, zum Beispiel per Messenger oder E-Mail.":("Your recipe as a designed PDF, to show or send, for example by messenger or email.","Tu receta como PDF diseñado, para mostrar o enviar, por ejemplo por mensajería o correo."),
+"Welches Rezept?":("Which recipe?","¿Qué receta?"),
+"Als PDF teilen":("Share as PDF","Compartir como PDF"),
+"Lege zuerst ein Rezept an, dann kannst du es hier teilen.":("Create a recipe first, then you can share it here.","Crea primero una receta y luego podrás compartirla aquí."),
+"Bitte ein Rezept wählen":("Please choose a recipe","Elige una receta"),
+"PDF erstellt":("PDF created","PDF creado"),
+"PDF konnte nicht erstellt werden":("The PDF could not be created","No se pudo crear el PDF"),
+"Rezeptdaten (.json)":("Recipe data (.json)","Datos de recetas (.json)"),
+"Ausgewählte Rezepte mit allen Versionen als Datei, zum Übertragen auf ein anderes Gerät. Die Sicherung der ganzen App liegt unter Einstellungen":("Selected recipes with all versions as a file, to transfer to another device. The backup of the whole app is under Settings","Recetas seleccionadas con todas las versiones como archivo, para pasar a otro dispositivo. La copia de seguridad de toda la app está en Ajustes"),
+"Listen und Dateien zum Auswerten oder Übertragen. Ein fertiges Rezept zum Zeigen oder Verschicken findest du unter „Rezept teilen“.":("Lists and files for analysis or transfer. To show or send a finished recipe, use “Share recipe”.","Listas y archivos para analizar o transferir. Para mostrar o enviar una receta terminada, usa «Compartir receta»."),
+"Seite":("Page","Página"),"privates Rezeptbuch":("private recipe book","recetario privado"),"Gesamtmenge":("Total amount","Cantidad total"),"Summe":("Total","Total"),
+"Zubereitung":("Preparation","Preparación"),"Hinweise":("Notes","Notas"),"Version":("Version","Versión"),"Eckdaten":("Key data","Datos clave"),"Ablauf und Hinweise":("Steps and notes","Pasos y notas"),
+})

@@ -7,7 +7,7 @@ const txt=()=>p.evaluate(()=>document.getElementById('sheet')?document.getElemen
 await T(()=>{tab('lager');sheetMehr()});let t=await txt();
 chk('Lager: kein Bestellliste/Arbeiten',!/bestellliste/i.test(t)&&!/^arbeiten/im.test(t));chk('Lager: Statistik zuerst',/^\s*statistik/i.test(t));
 await T(()=>{closeSheet();tab('rez');sheetMehr()});t=await txt();
-chk('Rezept: kein Arbeiten, Statistik zuerst',!/^arbeiten/im.test(t)&&/^\s*statistik/i.test(t));chk('Rezepte teilen',/rezepte teilen/i.test(t)&&!/rezepte sichern/i.test(t));chk('Module & Ablauf',/module & ablauf/i.test(t));
+chk('Rezept: kein Arbeiten, Statistik zuerst',!/^arbeiten/im.test(t)&&/^\s*statistik/i.test(t));chk('Rezepte teilen',/rezept teilen/i.test(t)&&!/rezepte sichern/i.test(t));chk('Module & Ablauf',/module & ablauf/i.test(t));
 await T(()=>sheetRzSet());t=await txt();chk('Rundung nicht in Rezept-Voreinst.',!/rundung/i.test(t));
 chk('Modul-Icons',await p.evaluate(()=>document.querySelectorAll('#sheet label.chk svg').length)>=5);
 // Ablauf umsortieren per Griff

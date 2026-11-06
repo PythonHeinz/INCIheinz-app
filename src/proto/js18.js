@@ -124,7 +124,7 @@ ${inci.un.length||inci.no.length?`<div class="hint" style="margin-top:8px">${inc
 <div class="hint" style="margin-top:8px">Sortiert nach Anteil, größter zuerst. Prüfe vor dem Verkauf selbst, was für dein Produkt gilt.</div><div class="btns"><button class="btn sec" onclick="xtCopyStr(rzInci(rzCurD()).text)">${ic('copy','currentColor',18)} Kopieren</button></div></div></details>
 ${meta?`<details class="acc"><summary>Eckdaten</summary><div class="in">${meta}</div></details>`:''}
 ${d.mod.length?`<details class="acc"><summary>Ablauf und Hinweise <small>${d.mod.length}</small></summary><div class="in">${d.mod.map((x,n)=>`<div class="rz-mv"><div class="rz-mvh">${x.t==='schritt'?`<span class="rz-badge">${d.mod.slice(0,n+1).filter(y=>y.t==='schritt').length}</span>`:''}<b class="nm">${esc(x.titel||RZMT[x.t][0])}</b>${x.t!=='schritt'?`<span class="s"> · ${RZMT[x.t][0]}</span>`:''}</div>${x.text?`<div class="nm" style="white-space:pre-wrap;font-size:.92rem">${esc(x.text)}</div>`:''}</div>`).join('')}</div></details>`:''}
-<div class="btns"><button class="btn sec" onclick="rzPrint('${r.id}',${vn})">Rezeptkarte drucken</button></div>`}
+<div class="btns"><button class="btn sec" onclick="rzPrint('${r.id}',${vn})">Rezeptkarte drucken</button><button class="btn sec" onclick="sheetRzShare('${r.id}')">Rezept teilen</button></div>`}
 const rzUnitOn=d=>RC.unit==='ml'&&rzVolOk(d);
 const rzTotShow=d=>{const s=rzSum(d)||1;return rzUnitOn(d)?RC.total/s*rzVolBase(d):RC.total};
 function rzUnit(u){RC.unit=u;rzView()}

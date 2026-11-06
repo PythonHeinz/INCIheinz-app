@@ -43,7 +43,7 @@ Module heute: Ablauf-Schritte, Haltbarkeit, Hinweis/Achtung/Tipp, Abfüllung, No
 5. Zutatenliste/Einkaufszettel für geplante Rezepte (Lager abgeglichen, fehlende Rohstoffe).
 6. Kostenblatt: Kosten pro Charge und pro 100 g aus Einkaufspreisen.
 7. Versionsvergleich: Änderungen zwischen Version 1 und 2 (Diff), als Seite.
-8. Rezept-Teilen: Text oder .json für Freunde, wieder einlesbar.
+8. Rezept-Teilen: als PDF umgesetzt (js24); Text und .json liegen unter Export.
 Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
 
 ## Anmerkungen aus dem Menü-Test (06.11.2026)
@@ -52,3 +52,12 @@ Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
 - Rezeptbuch-Statistik weiter ausbauen (Kosten, Verbrauch, Bewertungen).
 - Anleitung später um das Rezeptbuch ergänzen.
 - Standard-Ablauf: Reihenfolge der Schritte änderbar machen (offen, nach Klärung).
+
+## Redaktionssystem für Rezeptpublikationen (Idee, 06.11.2026)
+- Module steuern die Formatierung in der Publikation, der Ablauf gibt die Dokumentstruktur vor. Zusammen ergibt das ein kleines Redaktionssystem: Grundkonfiguration (Voreinstellungen) + Rezeptinhalt = Publikation für Druck und Gestaltung.
+- Pro Rezept eine Live-Vorschau des entstehenden Layouts, während Module und Ablauf angeordnet werden.
+- Offen: Wo wird der Ablauf pro Rezept platziert und angepasst (im Rezept selbst oder nur in den Voreinstellungen)?
+- „Rezept teilen“ (fertiges PDF, erledigt) soll später dieselbe Layout-Grundlage nutzen wie Rezeptkarte und Rezeptbuch.
+
+## Statistik als Dashboard (Idee)
+- In beiden Bereichen später frei anordenbare Dashboard-Widgets statt fester Kacheln.

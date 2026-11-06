@@ -108,3 +108,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Etiketten (Lager): mehrere Größen in einem Druck (Mehrfachauswahl, Stück je Rohstoff und Größe, je Größe ein eigener Bogen mit Seitenumbruch, Vorschau je Größe). Code am Ende von `js23.js`, Test `t70.js`. Noch offen: Etiketten für Gefäße/Kartons mit eigenem Inhalt (Menge, Datum), Etikettenvorlagen für Bogenpapier (Avery-Raster).
 - Etiketten: Haken „Alle Größen platzsparend auf einem Bogen“ (Standard an, größte zuerst, zum Ausschneiden); ohne Haken je Größe ein Bogen. Optimale Platzierung für Raster-Etikettenpapier noch offen.
 - Lager-Daten freigegeben (Import, Export). „Bestellliste“ heißt überall „Einkaufsliste“ (Menü Einkauf, Export, Texte). Einstellungsfenster bleiben nach einer Änderung offen (Genauigkeit, Sprache), beim Schließen steht die Ausgangsseite da. Sprachtest `t71.js` sucht deutsche Reste in EN/ES (leer).
+
+## Rezept teilen als PDF, Zurück-Fix (06.11.2026)
+- Zurück aus Export-Unterfenstern führt zur Liste, aus der man kam (Merker RZMODE: Drucken oder Daten).
+- „Rezept teilen“ (Daten): ein Rezept wählen, Foto/Eckdaten/Ablauf/INCI-Entwurf an- oder abwählen, echte PDF-Datei (A4, eigener kleiner PDF-Schreiber in js24.js, Foto als Banner, Zutaten mit Anteilen, Zubereitung, Hinweise, Fußzeile mit Seitenzahl), Weitergabe über das Teilen-Menü des Geräts, sonst Download. Auch als Button auf der Rezeptseite. PDF-Beschriftungen folgen der App-Sprache.
+- Rezeptdaten (.json) liegen jetzt im Export (Daten), Import liest sie weiterhin.
+- Idee Redaktionssystem/Live-Vorschau in IDEEN_SPAETER.md notiert. Test: t72.js.
