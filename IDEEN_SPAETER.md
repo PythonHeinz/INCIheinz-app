@@ -33,3 +33,15 @@ Hinweis: Nur Lager- und Rezeptdaten, keine Wirkversprechen.
 - Titelseite mit eigenem Namen/Logo, Inhaltsverzeichnis, Seitenzahlen, Auswahl einzelner Rezepte.
 - Hinweis im Export, welche Module für ein schönes Ergebnis gepflegt sein sollten.
 - Gestaltung insgesamt erst am Ende. Keine Wirk- oder Gesundheitsversprechen.
+
+## Publikationsformen (Entwurf 06.11.2026, nach Modulen)
+Module heute: Ablauf-Schritte, Haltbarkeit, Hinweis/Achtung/Tipp, Abfüllung, Notiz, INCI (aus Zutaten), Foto, Chargen (Soll/Ist, Bewertung).
+1. Rezeptkarte (A6/A5, eine Seite): Foto, Eckdaten, Phasen mit Mengen, Ablauf. Variante „Werkbank-Zettel“: große Schrift, Kästchen zum Abhaken, Platz für Ist-Gewichte.
+2. Rezeptbuch (mehrere Rezepte): Titelseite, Inhaltsverzeichnis, Layouts Klassisch / Karteikarten / Magazin / Minimal.
+3. Etikett-Vorlage pro Charge: Produktname, Zweck, Inhalt (g/ml), INCI-Liste, Chargennummer, Mindesthaltbarkeit oder PAO, Vorsichtshinweise, Gebrauch. Datenquelle: INCI, Haltbarkeit, Hinweis, Abfüllung, Charge. Nur Hilfsmittel, keine Rechtsberatung.
+4. Chargenprotokoll (Herstellprotokoll): Datum, Chargennummer, Soll/Ist je Zutat, Abweichungen, Ausbeute, Bewertung, Unterschrift/Notizen. Als PDF zum Ausdrucken und als Excel.
+5. Zutatenliste/Einkaufszettel für geplante Rezepte (Lager abgeglichen, fehlende Rohstoffe).
+6. Kostenblatt: Kosten pro Charge und pro 100 g aus Einkaufspreisen.
+7. Versionsvergleich: Änderungen zwischen Version 1 und 2 (Diff), als Seite.
+8. Rezept-Teilen: Text oder .json für Freunde, wieder einlesbar.
+Keine Wirk- oder Gesundheitsversprechen in Vorlagen.
