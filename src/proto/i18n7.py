@@ -832,3 +832,27 @@ N7.update({"Wert oder Spanne (zum Beispiel 185–200). Der Rechner nimmt bei ein
 "Eigene Werte haben Vorrang vor dem Katalog.":("Your own values take precedence over the catalog.","Tus propios valores tienen prioridad sobre el catálogo."),
 "· eigener Wert":("· own value","· valor propio"),"· berechnet":("· calculated","· calculado"),
 "z. B. 185–200":("e.g. 185–200","p. ej. 185–200"),"z. B. 0,135":("e.g. 0.135","p. ej. 0,135"),"z. B. 95–105":("e.g. 95–105","p. ej. 95–105"),"z. B. 61–66 °C":("e.g. 61–66 °C","p. ej. 61–66 °C")})
+N7.update({
+"Sicherheit":("Safety","Seguridad"),
+"Lauge ist ätzend. Schutzbrille, Handschuhe und lange Ärmel tragen. Immer die Lauge ins Wasser geben, nie umgekehrt, und nur in einem gut belüfteten Raum arbeiten. Das Ergebnis ist eine Rechenhilfe; die Verseifungszahlen sind Richtwerte und schwanken je Charge.":("Lye is caustic. Wear goggles, gloves and long sleeves. Always add the lye to the water, never the other way round, and work only in a well-ventilated room. The result is a calculation aid; saponification values are guide values and vary from batch to batch.","La lejía es cáustica. Usa gafas, guantes y mangas largas. Añade siempre la lejía al agua, nunca al revés, y trabaja solo en un lugar bien ventilado. El resultado es una ayuda de cálculo; los índices de saponificación son valores orientativos y varían según el lote."),
+"Öle und Fette":("Oils and fats","Aceites y grasas"),"+ Öl oder Fett hinzufügen":("+ Add oil or fat","+ Añadir aceite o grasa"),
+"NaOH (feste Seife)":("NaOH (bar soap)","NaOH (jabón sólido)"),"KOH (weiche Seife)":("KOH (soft soap)","KOH (jabón blando)"),
+"Laugenunterschuss (%)":("Lye discount (%)","Descuento de lejía (%)"),"Flüssigkeit (% der Fettmenge)":("Liquid (% of fat weight)","Líquido (% del peso de grasa)"),
+"KOH-Reinheit (%)":("KOH purity (%)","Pureza del KOH (%)"),"Duft (% der Fettmenge)":("Fragrance (% of fat weight)","Fragancia (% del peso de grasa)"),
+"Laugenunterschuss: Anteil, um den die Lauge unter der vollständigen Verseifung bleibt (früher „Überfettung“). Das Grundrezept im Buch von Neumann nutzt 10 %, 33 % Flüssigkeit und 3 % Duft. KOH wird meist nur mit etwa 90 % Reinheit geliefert.":("Lye discount: the share by which the lye stays below full saponification (formerly called “superfatting”). The basic recipe in Neumann’s book uses 10 %, 33 % liquid and 3 % fragrance. KOH is usually only supplied at about 90 % purity.","Descuento de lejía: la parte en que la lejía queda por debajo de la saponificación completa (antes „sobreengrasado“). La receta básica del libro de Neumann usa 10 %, 33 % de líquido y 3 % de fragancia. El KOH suele suministrarse solo con una pureza de aprox. 90 %."),
+"Noch keine Öle gewählt.":("No oils chosen yet.","Aún no hay aceites elegidos."),
+"Trage Mengen ein, dann erscheint das Ergebnis.":("Enter amounts and the result will appear.","Introduce cantidades y aparecerá el resultado."),
+"Ergebnis":("Result","Resultado"),"Fettmenge gesamt":("Total fat weight","Peso total de grasa"),"Flüssigkeit (Wasser)":("Liquid (water)","Líquido (agua)"),"Duft":("Fragrance","Fragancia"),
+"Zitronensäure oder andere Säuren nicht als Fett eingeben, sie verbrauchen zusätzlich Lauge.":("Do not enter citric acid or other acids as fat; they use up additional lye.","No introduzcas ácido cítrico u otros ácidos como grasa; consumen lejía adicional."),
+"Öl oder Fett wählen":("Choose oil or fat","Elegir aceite o grasa"),"Keine Verseifungszahl, bitte am Artikel eintragen":("No saponification value, please add it on the item","Sin índice de saponificación, añádelo en el artículo"),
+"Nichts gefunden.":("Nothing found.","No se encontró nada."),"Verseifungszahl":("Saponification value","Índice de saponificación"),"eigener Wert":("own value","valor propio"),"Katalog":("Catalog","Catálogo"),
+"Öle und Fette":("Oils and fats","Aceites y grasas"),
+"Öle, Laugenunterschuss, NaOH oder KOH und Flüssigkeit":("Oils, lye discount, NaOH or KOH and liquid","Aceites, descuento de lejía, NaOH o KOH y líquido"),
+})
+P7.extend([
+(r"^NaOH-Bedarf ([\d,]+) g/g(?: \(Mitte der Spanne\))? · (eigener Wert|Katalog)$",r"NaOH need \1 g/g · \2",r"Necesidad de NaOH \1 g/g · \2"),
+(r"^Verseifungszahl (\d+) mg KOH/g(?: \(Mitte der Spanne\))? · (eigener Wert|Katalog)$",r"Saponification value \1 mg KOH/g · \2",r"Índice de saponificación \1 mg KOH/g · \2"),
+(r"^Laugenkonzentration (\d+) % · Laugenunterschuss (\d+) %\. Bei vollständiger Verseifung wären es ([\d,]+) g (NaOH|KOH)\.$",r"Lye concentration \1 % · lye discount \2 %. With full saponification it would be \3 g \4.",r"Concentración de lejía \1 % · descuento \2 %. Con saponificación completa serían \3 g de \4."),
+(r"^Fette in Prozent der Fettmenge: (.*)$",r"Fats as percent of fat weight: \1",r"Grasas en porcentaje del peso de grasa: \1"),
+(r"^NaOH-Bedarf ([\d,]+) g/g · (eigener Wert|Katalog)$",r"NaOH need \1 g/g · \2",r"Necesidad de NaOH \1 g/g · \2"),
+])

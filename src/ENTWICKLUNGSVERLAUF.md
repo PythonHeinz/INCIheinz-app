@@ -204,3 +204,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Am Rohstoff eigene Felder `sapk`, `sapn`, `iod`, `smp` (Text, Wert oder Spanne). Bearbeiten: Block „Fettkennzahlen“ für Pflanzenöl, Butter & Wachs, Ester & Emollient, Seifenrohstoff und überall, wo Werte vorhanden sind; Platzhalter zeigt den Katalogwert, leer = Katalog. Eigener Wert hat Vorrang (Live-Fallback wie bei `einsatzOf`).
 - `fettOf(i)` liefert die wirksamen Werte mit Herkunft (`own`/`cat`/`calc`); NaOH wird aus eigener Verseifungszahl × 0,7130/1000 berechnet, wenn kein eigener NaOH-Wert steht. `fettNum(text)` liefert den Zahlenwert (Mitte einer Spanne). Der künftige Seifenrechner muss genau diese Funktionen nutzen, damit Artikelseite und Rechner dieselben Werte zeigen.
 - Export um vier Spalten erweitert (wirksame Werte); Import liest sie noch nicht. Test t86.
+
+## Rechner Kaltverseifung (sei), erste Fassung
+- Tool `sei` (js28): Öle/Fette aus dem Lager wählen (Artikel mit Fettkennzahlen), Gramm je Fett, NaOH oder KOH, Laugenunterschuss (Standard 8 %), Flüssigkeit in % der Fettmenge (33 %), KOH-Reinheit (90 %), Duft (3 %). Ausgabe: Lauge, Wasser, Duft, Laugenkonzentration, Menge bei vollständiger Verseifung, Fettanteile in %.
+- Rechnet mit `fettOf`/`fettNum`, also exakt mit den Werten der Artikelseite (eigener Wert vor Katalog; Mitte der Spanne; NaOH = KOH × 0,7130/1000). Formel nach Neumann „Seifen sieden“: Σ(g × NaOH-Zahl) × (1 − Unterschuss). Grundrezept 4 × 125 g, 10 % → 66,7 g NaOH (Test t87). KOH: Verseifungszahl/1000, geteilt durch Reinheit.
+- Sicherheitshinweis (Lauge ätzend) oben; Hinweis, Säuren nicht als Fett einzugeben. Keine Heil- oder Hautaussagen.
+- Noch offen: Übernahme als Rezept-Entwurf (`uebern`), Fettsäuremuster/Seifeneigenschaften, Mischverseifung NaOH+KOH, Wasser als Laugenkonzentration statt Fettanteil, Speichern der Ansätze.
