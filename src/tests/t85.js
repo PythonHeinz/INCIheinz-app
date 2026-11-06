@@ -13,7 +13,7 @@ let t=await p.evaluate(()=>{const w=document.getElementById('warnbox');return w?
 chk('Warnbox sichtbar',t&&/Anhang III Nr\. 60/.test(t.t)&&/rgb\(251, 233, 231\)/.test(t.bg));
 await p.evaluate(id=>{go('artikel',id);R.edit=false;draw()},ids[1]);await W();
 t=await p.evaluate(()=>{const f=document.getElementById('fettbox');return {f:f&&f.innerText,w:!!document.getElementById('warnbox')}});console.log(JSON.stringify(t));
-chk('Fettkennzahlen',t.f&&/Verseifungszahl/.test(t.f)&&/185–200/.test(t.f)&&/0,132–0,143/.test(t.f)&&/Jodzahl/.test(t.f));chk('keine Warnbox bei Öl',!t.w);
+chk('Fettkennzahlen',t.f&&/Verseifungszahl/.test(t.f)&&/185–200/.test(t.f)&&/0,136/.test(t.f)&&/Jodzahl/.test(t.f));chk('keine Warnbox bei Öl',!t.w);
 await p.evaluate(()=>{LANG='en';draw()});await W();
 t=await p.evaluate(()=>document.getElementById('fettbox').innerText);chk('EN',/Saponification value/.test(t));
 await p.evaluate(()=>{LANG='de'});
