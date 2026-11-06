@@ -260,3 +260,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Neu: K1075 Sonnenblumenöl (High Oleic) mit den Neumann-Werten aus dem Notebook (NaOH 0,1355, KOH 189,7, Jod 89–93, Schmelzpunkt -5 °C, RZF 22–30, Härte 85, weiß bis cremeweiß, bis 100 %) und K1076 Distelöl (High Oleic) ohne Zahlen (Werte stehen aus). Das bestehende Sonnenblumenöl und Distelöl bleiben die linolsäurereichen Sorten.
 - Katalog 1050 Einträge. Tests t83/t85 auf 1050 bzw. 31 und 17 neue Einträge angepasst.
 - Regel für weitere Sortenöle: ölsäure- und linolsäurereiche Sorten haben stark verschiedene Jodzahl, RZF und Härte und bekommen eigene Artikel (Kandidaten: Raps/Canola High Oleic, Erdnuss, Färberdistel).
+
+## Rechner: alle Platzhalter mit Funktion (js29.js, noch nicht vom Nutzer getestet)
+- Neu angelegt und funktionsfähig: Alkohol verdünnen (Vol.-%, Mengen in ml und g), Tropfen und Gramm (Tropfengröße und Dichte, auch Tropfen für Ziel-%), Emulgatorrechner (Wasserphase, Fettphase, Emulgator bezogen auf die Fettphase), Kalkulation (Rezept wählen, Rohstoffkosten über `rzCheck`/`rzCost`, Gefäß, Etikett, Aufschlag), Tensidrechner (WAS: Ziel-WAS, Tensidanteile, WAS-Gehalt je Tensid am Artikel als `i.was`), Spreitwert-Check (Spreitwert je Öl am Artikel als `i.spr`, Grenzen niedrig/mittel/hoch anpassbar, weil sie je Quelle verschieden sind).
+- Zusätzlich neu: HLB-Mischung (zwei Emulgatoren auf Ziel-HLB), Preisvergleich (je 100 g und kg), Haltbarkeit berechnen (Herstelldatum plus Monate, Monatsende wird beachtet). Gruppe „Später“ heißt jetzt „Öle und Pflege“.
+- Technik: kleines Gerüst `RCX[tool]` mit `def`, `f` (Felder), `pre`, `hint`, `r()`; `rzBau`, `rchOpen` und `rchRes` sind in js29 umhüllt. Die Felder `i.was` und `i.spr` stehen noch nicht auf der Artikelseite und im Export; Katalogfelder für WAS und Spreitwert fehlen weiterhin (Daten fehlen).
+- Tests t90 (13 Prüfungen), t91 (Prüfung auf deutsche Reste in EN).
+- Offen: Änderungswünsche für das Menü Einstellungen kamen als Audio (60 Minuten), die Datei ließ sich hier nicht transkribieren; Nutzer liefert den Inhalt als Text.
