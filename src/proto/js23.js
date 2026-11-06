@@ -289,7 +289,7 @@ return `<div class="s" style="margin-bottom:6px">Getrennt einstellbar: im Lager 
 <div class="s" style="margin-top:6px">Mit einer Küchenwaage wählst du 1 g oder 0,5 g, mit einer Feinwaage 0,01 g.</div>`}
 
 /* ---------- Etiketten: mehrere Größen in einem Druck ---------- */
-LB.sizes={M:1};LB.cnt={S:1,M:1,L:1};
+LB.sizes={M:1};LB.cnt={S:1,M:1,L:1};LB.mix=true;
 const LBSZ={S:'Klein 38×21',M:'Mittel 48×25',L:'Groß 63×38'};
 const lbSel=()=>Object.keys(LBSZ).filter(k=>LB.sizes[k]);
 function lbSizeTog(k){if(LB.sizes[k]){if(lbSel().length>1)delete LB.sizes[k]}else LB.sizes[k]=1;lbRender()}
@@ -301,8 +301,9 @@ openSheet(`<h2>Etiketten</h2><div class="cap" style="margin:6px 0">Größen</div
 <div class="cap" style="margin:12px 0 4px">Rohstoffe wählen</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px"><button class="pill" onclick="lbAll(1)">Alle</button><button class="pill" onclick="lbAll(0)">Keine</button><button class="pill" onclick="lbNew()">Noch nicht gedruckt</button></div>
 <div id="lbl" style="max-height:34vh;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:4px 12px"></div>
 <label class="chk"><input type="checkbox" ${LB.mark?'checked':''} onchange="LB.mark=this.checked"> Danach als gedruckt markieren</label>
+<label class="chk"><input type="checkbox" ${LB.mix?'checked':''} onchange="LB.mix=this.checked"> Alle Größen platzsparend auf einem Bogen (zum Ausschneiden)</label>
 <div class="btns"><button class="btn" id="lbgo" onclick="lbPrint()">Drucken</button></div>
-<div class="hint">Der Druckdialog deines Geräts öffnet sich. Wähle dort „Tatsächliche Größe“ bzw. 100 %, damit die Etiketten maßgetreu bleiben. Jede Größe beginnt auf einem neuen Bogen, damit du das passende Etikettenpapier einlegen kannst.</div>`);lbRender()}
+<div class="hint">Der Druckdialog deines Geräts öffnet sich. Wähle dort „Tatsächliche Größe“ bzw. 100 %, damit die Etiketten maßgetreu bleiben. Ohne Haken beginnt jede Größe auf einem neuen Bogen, damit du das passende Etikettenpapier einlegen kannst.</div>`);lbRender()}
 lbRender=function(){
 $('#lbs').innerHTML=`<div style="display:flex;gap:8px;flex-wrap:wrap">${Object.keys(LBSZ).map(k=>`<button class="pill" style="${LB.sizes[k]?'background:var(--pri);color:#fff;border-color:var(--pri)':''}" aria-pressed="${!!LB.sizes[k]}" onclick="lbSizeTog('${k}')">${LB.sizes[k]?'✓ ':''}${LBSZ[k]} mm</button>`).join('')}</div>
 ${lbSel().length>1||LB.cnt[lbSel()[0]]>1||1?lbSel().map(k=>`<div style="display:flex;align-items:center;gap:10px;margin-top:8px"><span style="flex:1;font-size:.9rem">${LBSZ[k]} mm · Stück je Rohstoff</span><button class="pill" style="width:40px;height:40px" onclick="lbCnt('${k}',-1)" aria-label="weniger">−</button><b id="lbc_${k}" style="min-width:22px;text-align:center">${LB.cnt[k]}</b><button class="pill" style="width:40px;height:40px" onclick="lbCnt('${k}',1)" aria-label="mehr">+</button></div>`).join(''):''}`;
@@ -313,6 +314,6 @@ $('#lbp').innerHTML=first?`<div class="s" style="margin-bottom:4px">Vorschau</di
 const n=l.length*lbSel().reduce((a,k)=>a+(LB.cnt[k]||1),0);$('#lbgo').textContent=n?`${n} ${n===1?'Etikett':'Etiketten'} drucken`:'Drucken'};
 lbPrint=function(){const l=S.items.filter(i=>LB.sel[i.id]);if(!l.length){toast('Bitte Rohstoffe auswählen');return}
 const ks=lbSel();let p=document.getElementById('prt');if(p)p.remove();p=document.createElement('div');p.id='prt';
-p.innerHTML=ks.map((k,n)=>`<div class="lsheet" style="${n<ks.length-1?'break-after:page;page-break-after:always':''}">${l.map(i=>Array(LB.cnt[k]||1).fill(labelHtml(i,k)).join('')).join('')}</div>`).join('');document.body.appendChild(p);
+if(LB.mix&&ks.length>1){const o=['L','M','S'].filter(k=>LB.sizes[k]);p.innerHTML=`<div class="lsheet">${o.map(k=>l.map(i=>Array(LB.cnt[k]||1).fill(labelHtml(i,k)).join('')).join('')).join('')}</div>`}else p.innerHTML=ks.map((k,n)=>`<div class="lsheet" style="${n<ks.length-1?'break-after:page;page-break-after:always':''}">${l.map(i=>Array(LB.cnt[k]||1).fill(labelHtml(i,k)).join('')).join('')}</div>`).join('');document.body.appendChild(p);
 const done=()=>{window.removeEventListener('afterprint',done);const e=document.getElementById('prt');if(e)e.remove();if(LB.mark){l.forEach(i=>i.gedr=today());save();if(document.getElementById('lbl'))lbRender()}};
 window.addEventListener('afterprint',done);setTimeout(()=>window.print(),80)};
