@@ -255,3 +255,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Katalog 1.4.4: Notebook-Block 76–108
 - Damit ist die Liste von 111 Rohstoffen zurück. Eingetragen (Buchwerte, Stufe 2): Rizinusöl (KOH 176–187, Jod 82–90), Rosenwachs (NaOH 0,021, Jod 13, Schmelzpunkt 60 °C, RZF 0), Sacha-Inchi (Jod 192–199), Sanddorn Fruchtfleisch (Jod 60–70), Sanddornkern (KOH 185–200, Jod 160), Sesam (Jod 103–118), Sheaöl (KOH 180–200, Jod 65–90), Sojawachs (Schaum Rasierseife), Straußenfett (Schaum), Tamanu (Einsatz 10 %), Walnuss (Jod 141–155).
 - Nicht übernommen: Sonnenblumenöl (Notebook nennt Werte nur für high oleic, der Katalogeintrag ist das normale Öl), Gruppenwerte (Schwarzkümmel, Weizenkeim RZF „> 130“, Härte „weich“/„hart“ als Text), „nicht im Notebook“ und „–“ (u. a. Hydriertes Rizinusöl, Rosenkernöl, Salbutter, Stearylalkohol, Tigernuss, Tomatenkern, Tsubaki, Ucuuba, Wassermelonenkern). Vorhandene Werte bleiben, wenn sie enger sind als die Käser-Spanne.
+
+## Katalog 1.4.5: High-Oleic-Sorten als eigene Artikel
+- Neu: K1075 Sonnenblumenöl (High Oleic) mit den Neumann-Werten aus dem Notebook (NaOH 0,1355, KOH 189,7, Jod 89–93, Schmelzpunkt -5 °C, RZF 22–30, Härte 85, weiß bis cremeweiß, bis 100 %) und K1076 Distelöl (High Oleic) ohne Zahlen (Werte stehen aus). Das bestehende Sonnenblumenöl und Distelöl bleiben die linolsäurereichen Sorten.
+- Katalog 1050 Einträge. Tests t83/t85 auf 1050 bzw. 31 und 17 neue Einträge angepasst.
+- Regel für weitere Sortenöle: ölsäure- und linolsäurereiche Sorten haben stark verschiedene Jodzahl, RZF und Härte und bekommen eigene Artikel (Kandidaten: Raps/Canola High Oleic, Erdnuss, Färberdistel).
