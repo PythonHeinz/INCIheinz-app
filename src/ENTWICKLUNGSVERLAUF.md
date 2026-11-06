@@ -146,3 +146,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Rückweg bei Rezeptbezug: „In Rezept übernehmen“ erzeugt einen vorbefüllten Entwurf im Editor, kein stilles Ändern.
 - Reihenfolge zum Befüllen: Rezept umrechnen, Tensidrechner, Kaltverseifung, Emulgator, Dosierung, Analyse, Kalkulation, Alkohol, Tropfen.
 - Quellen für Tensid und Seife: olionatura.de Tensidplanungsrechner und naturseife.com Seifenrechner, als Vorlagen vom Nutzer genannt. Lizenz vor dem Bau klären, die Umsetzung erfolgt mit eigenem Code und eigenen Daten (Verseifungszahlen aus neutralen Quellen).
+
+## Rechner „Rezept umrechnen"
+- Erster funktionierender Rezeptrechner: Rezept aus Liste wählen (Suche), dann Zielmenge oder Gefäße (Anzahl × Füllmenge, Verlustzuschlag Standard 10 %).
+- Ergebnis: Ansatz, Faktor, Mengen je Phase (vorher/neu).
+- Aktionen: Mit dieser Menge mischen · Als neues Rezept übernehmen · Als neue Version übernehmen (öffnet Entwurf im Editor, gespeichert wird nur über „Speichern").
+- Test t78 (9 Checks), Regression t67–t77 grün.
