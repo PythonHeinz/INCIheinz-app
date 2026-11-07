@@ -126,7 +126,7 @@ Text-, Foto- und Dateiimport mit Bestätigung: Rezept-Import als Text/Foto/json 
 5. **Zuordnung zu Artikeln:** zuerst lokale Ähnlichkeitssuche (Name, INCI, Synonyme, Tags, Katalog). Die KI wählt nur aus den Kandidaten oder meldet „keiner passt“, nie freie Namen. Statusampel je Zeile: sicher / bitte prüfen / nicht gefunden. Bei „nicht gefunden“ wählt der Nutzer: Lagerartikel, Katalogartikel anlegen oder ohne Lagerbezug (z. B. Wasser).
 6. **Einheiten:** Prozent, Gramm, ml, Löffel, „Teile“ rechnet die App um (ml nur mit Dichte); Unklares wird markiert, nicht geraten.
 7. **Prüfer** (Abschnitt 2.6): Summe, Phasen, Dosierung, fehlende Konservierung als Hinweis.
-8. **Vorschau, Entwurf, Speichern** nach dem gemeinsamen Muster (2.7). Das Originalfoto kann als Rezeptfoto behalten werden; Vermerk „aus Foto/Handschrift erfasst“.
+8. **Vorschau, Entwurf, Speichern** nach dem gemeinsamen Muster (2.7). **Das Originalfoto wird nicht gespeichert** und nach der Übernahme oder dem Verwerfen gelöscht (Beschluss 07.11.2026); es gibt dafür in der ersten Version keine Option. Am Rezept bleibt nur der Vermerk „aus Foto/Handschrift erfasst“.
 
 ### 3.4 Module und Sicherheitshinweise
 Arbeitsschritte, Hinweise (Achtung/Tipp/Sicherheit), Haltbarkeit und Abfüllung werden als Module vorgeschlagen. Die KI übernimmt Hinweise aus der Vorlage, **ergänzt aber keine eigenen Wirk- oder Gesundheitsaussagen**. Sicherheitshinweise, die die App von sich aus ergänzt (z. B. bei Lauge), kommen aus festen App-Texten, nicht von der KI.
@@ -143,7 +143,8 @@ Testsatz aus etwa zehn Beispielen (verschiedene Handschriften, Bildschirmfotos, 
 
 ### 3.8 Hinweise und offene Fragen
 - Gedacht ist die private Nutzung für den eigenen Bestand; die Hilfe sagt das knapp, ohne Rechtsberatung.
-- Offen: Originalfoto standardmäßig mitspeichern? Mehrseitige Rezepte (mehrere Fotos in einer Anfrage)? Umgang mit Rezepten, die Zutaten ohne Menge nennen („etwas Öl“)?
+- Beschlossen (07.11.2026): Originalfotos werden nicht dauerhaft gespeichert. Erst nach einer Store-Portierung (mehr Speicherplatz) wird neu entschieden.
+- Offen: Mehrseitige Rezepte (mehrere Fotos in einer Anfrage)? Umgang mit Rezepten, die Zutaten ohne Menge nennen („etwas Öl“)?
 - Für die Erfassung des Bestands (180 Zutaten, morgen) ist A nicht nötig; dort reicht der vorhandene Import.
 
 ### 3.9 Teilschritte
@@ -172,7 +173,7 @@ Die Beschreibung ist **implementierungsneutral** formuliert, damit sie nach eine
 ### 4.3 Pflege und Prüfung
 - Teilweise **automatisch aus dem Code** erzeugt (Skript im Repo): Tab-Listen, Rechner-Hub (`RCHT`), Spalten (`COLS`), Lückenfilter (`GAPS`), Sortierungen (`SORTS`), Schlagwörter (`TAGS_BASE`), Einstellungsliste. Die erklärenden Texte sind von Hand geschrieben.
 - **Build-Prüfung:** Taucht ein Rechner, eine Spalte oder ein Menüeintrag im Code auf, der in der Landkarte fehlt, warnt der Build.
-- **Neue Arbeitsregel** (zur Aufnahme in `UEBERGABE.md`, wenn du zustimmst): Wer eine Ansicht, ein Menü oder ein Datenfeld ändert, pflegt die Landkarte im selben Commit.
+- **Neue Arbeitsregel (beschlossen 07.11.2026, in `UEBERGABE.md` aufgenommen):** Wer eine Ansicht, ein Menü oder ein Datenfeld ändert, dokumentiert das im selben Commit in der Landkarte.
 
 ### 4.4 Wie der Guide antwortet
 1. **R0:** Volltextsuche in der Landkarte (ohne KI) als Hilfe-Suche; liefert Treffer mit Sprungknopf.
@@ -394,10 +395,10 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 | 2 | Bewertungsformular je Charge vor dem Start der Erfassung (5.5) | offen |
 | 3 | KI-Testfassung: Branch plus Unterordner `ki/` oder eigenes Repo (8.3) | offen |
 | 10 | Rückfallstand als Branch `ohne-ki` oder von Hand angelegter Tag/Release (8.1) | offen |
-| 4 | Originalfoto beim Rezeptimport standardmäßig behalten (3.8) | offen |
+| 4 | Originalfoto beim Rezeptimport: nicht speichern, danach löschen (3.3, 3.8) | beschlossen 07.11.2026 |
 | 5 | Seifenarten zuerst (6.10) | offen |
 | 6 | Chatverlauf speichern oder nur Sitzung (6.10) | offen |
-| 7 | Arbeitsregel „Landkarte im selben Commit pflegen“ in `UEBERGABE.md` (4.3) | offen |
+| 7 | Arbeitsregel „Landkarte im selben Commit pflegen“ in `UEBERGABE.md` (4.3) | beschlossen 07.11.2026, aufgenommen |
 | 8 | Reihenfolge 9.1 so in Ordnung | offen |
 | 9 | Anbieter und Modell für den Test (Gemini; Modellname vor dem Bau prüfen) | offen |
 
@@ -411,4 +412,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026: Konzept in Abschnitten begonnen; Kommentar zu Abschnitt 1 eingearbeitet (1.7).
 - 07.11.2026: Landkarte `APP_LANDKARTE.md` als Erstentwurf aus der laufenden App erzeugt (Lücken in Abschnitt 10 der Landkarte).
 - 07.11.2026: Rückfallstand: Tag `ohne-ki-2026-11-07` auf Commit 788a9d5 lokal angelegt, Push des Tags abgelehnt (403). Ersatz offen (Branch `ohne-ki` oder Tag/Release von Hand auf GitHub).
+- 07.11.2026, Entwickler: Originalfoto beim Import wird nicht gespeichert, sondern danach gelöscht; erst nach Store-Portierung neu entscheiden. Arbeitsregel „Ansicht, Menü oder Datenfeld ändern heißt Landkarte im selben Commit pflegen“ bestätigt und in `UEBERGABE.md` aufgenommen (Entscheidungen 4 und 7).
 - Finales Go: offen.

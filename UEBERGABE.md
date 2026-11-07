@@ -81,6 +81,7 @@ Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\T
 - Ein Modul ändert bestehende Seiten nur über deklarierte Stellen: neuer Tab, neuer Menüeintrag, neue Datenfelder. Alles andere ist ein Eingriff ins Grundgerüst und wird in `STAND.md` unter „Berührt Grundgerüst“ gemeldet.
 - Neue Daten eines Moduls müssen in Sicherung/Wiederherstellung, Import/Export (falls sinnvoll) und Statistik berücksichtigt werden; neue Texte in `i18n7.py` (EN/ES).
 - Designprinzipien aus `ENTWICKLUNGSVERLAUF.md` einhalten; keine Wirk-/Gesundheitsversprechen.
+- **Landkarte pflegen (verbindlich, beschlossen 07.11.2026):** Wer eine Ansicht, ein Menü oder ein Datenfeld ändert, dokumentiert das im selben Commit in `src/APP_LANDKARTE.md` (Pfad, Zweck, Elemente, Datenfelder; implementierungsneutral). Die Landkarte ist die Grundlage für den späteren KI-Guide (`src/KI_KONZEPT.md`).
 
 **Ende:**
 1. `INCI-App-Projekt/STAND.md`: Modulstatus (fertig / offen / nächster Schritt), letzter Commit, Datum, Abschnitt „Berührt Grundgerüst“.
@@ -99,4 +100,4 @@ Aus einem externen Bericht (Video-Auswertung) übernommen: Mischbar-Logik (Menge
 Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionierung: jedes Speichern = neue Version), Bottom-Bar auf 3 Tabs, Anker-Schloss (Anker-Rechner existiert, Mengenfelder nur sichtbarer gemacht). Die Charge-Notiz war entgegen dem Bericht schon editierbar; eingewogene Mengen bleiben bewusst gesperrt. Test: src/tests/t62.js.
 
 ## Regeln für Änderungen (Mehrere Chats)
-Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Arbeit“ lesen; bei Eintrag unter 24 Stunden oder berührtem Fremdmodul den Nutzer fragen. Eigene Zeile in „Aktive Arbeit“ eintragen und sofort committen. Nach der Änderung: ENTWICKLUNGSVERLAUF.md, STAND.md (Zeile entfernen, Nächste Aufgaben anpassen), UEBERGABE.md, INDEX.md pflegen, pushen, im Projektordner `git pull`. Nur ein Chat baut gleichzeitig; Katalogdateien nie parallel ändern.
+Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Arbeit“ lesen; bei Eintrag unter 24 Stunden oder berührtem Fremdmodul den Nutzer fragen. Eigene Zeile in „Aktive Arbeit“ eintragen und sofort committen. Nach der Änderung: `src/APP_LANDKARTE.md` (bei geänderter Ansicht, Menü oder Datenfeld), ENTWICKLUNGSVERLAUF.md, STAND.md (Zeile entfernen, Nächste Aufgaben anpassen), UEBERGABE.md, INDEX.md pflegen, pushen, im Projektordner `git pull`. Nur ein Chat baut gleichzeitig; Katalogdateien nie parallel ändern.
