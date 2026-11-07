@@ -368,3 +368,15 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - kiRaw: opts.max erlaubt größere Eingaben (Katalogliste ca. 25000 Zeichen).
 - Test t112 (Zuordnung, erfundene ID, Übersetzung, Sprachwechsel DE/EN/ES, Speichern, Fehlerfall). Regression t83 bis t111 ohne Fehler.
 - Offen: Übersetzung bestehender Rezepte beim Sprachwechsel (Angebot "Rezepte übersetzen"), Chat-Vorschläge und Rezeptkarte/PDF-Druck in der Fremdsprache prüfen, Aufräumen alter S.tm-Einträge.
+
+## Übersetzungsmanagement nach Redakteurskonzept (07.11.2026)
+- Konzept von Andreas: Zielsprache = Muttersprache (Systemsprache), alles Fremde wird mit Priorität dorthin übersetzt; Originalsprache wird gekennzeichnet und ist die Quelle; andere Sprachen sind intern gepflegte Fremdsprachen; Lücken im Translation Memory bleiben möglich (selbst eintragen oder KI); Katalogbegriffe sind gesperrte Terminologie.
+- Umgesetzt (proto/js42.js neu geschrieben, proto/js43.js neu): S.mut (Zielsprache, sonst navigator.language, nur de/en/es), mutL(), recSrc(d)=d.lang||Zielsprache. Import: KI erkennt die Sprache (ISO-Code), Schritt 1 Katalog-Zuordnung per ID (eigene Anfrage), Schritt 2 Übersetzung nur in die Zielsprache (Häkchen "Auch in alle anderen Sprachen übersetzen" im Importblatt). Ist die Quelle die Zielsprache, wird nicht übersetzt. d.lang wird gespeichert und in der Rezeptansicht als "Originalsprache" angezeigt.
+- Translation Memory S.tm {Original:{src,de,en,es,st:{lang:'ki'|'hand'}}}: Einträge ohne st gelten als 'ki'. tmSet/tmMerge/tmSt. Anzeige über die Sprachschicht (tmGet in patch4.py), Lücken zeigen das Original.
+- Blatt "Übersetzungen" am Rezept (vierter Knopf in der Aktionsleiste): Original (schreibgeschützt) und Zieltext je freiem Text, Sprachwahl, "Meine Sprache ändern", Speichern (von Hand = 'hand'), "Leere mit KI übersetzen" (nur Lücken, 'ki', Handeinträge bleiben).
+- Sammelfunktion Mehr › Rezepte übersetzen (Rezeptbuch, KI an): Zielsprachen wählen, zählt Rezepte mit Lücken, eine KI-Anfrage je Rezept, Fortschritt, Abbruch, Stopp bei Limit.
+- Terminologie: Zutaten mit Katalogtreffer werden nie von der KI übersetzt (kommen aus dem App-Wörterbuch); rzGlossar gibt sie als feste Begriffe an die KI. rzTexts sammelt nur freie Texte und lässt App-Texte (Wörterbuch) aus.
+- Prüfer kiTrTexts/trOk: höchstens 900 Zeichen, ohne < >, ohne neue Wirkaussagen.
+- Landkarte: App-Guide schnitt alles ab "## 9." weg, damit auch die Nachträge. Jetzt werden nur Abschnitt 9 und 10 entfernt (js34.js kiMap); neuer Abschnitt "4a. KI-Funktionen" mit allen Funktionen und Menüwegen.
+- Test t112 (Zuordnung, erfundene ID, Zielsprache, Lücken, Handeintrag, KI-Füllung, Sammelfunktion, Limit, Quelle=Zielsprache). Regression t83 bis t111 ohne Fehler.
+- Offen: Rezeptkarte/PDF/Teilen in der Fremdsprache, Übersetzung neuer Artikeldaten (Begriffe als deutsche Vorschläge), Zielsprache in den Einstellungen, Aufräumen alter S.tm-Einträge, Chat-Vorschläge.

@@ -162,6 +162,20 @@ Pfad: `Mehr › Einstellungen` (Liste; jeder Eintrag öffnet eine eigene Seite, 
 
 ---
 
+## 4a. KI-Funktionen (nur wenn die KI freigeschaltet ist)
+Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigenen Schlüssel eintragen, „Schlüssel prüfen“. Schlüssel entfernen schaltet alle KI-Funktionen aus (die lokale Texterkennung bleibt). Ohne Freischaltung sind die folgenden Einträge nicht sichtbar. Die KI macht nur Vorschläge: Du siehst jedes Ergebnis in einer Vorschau und bestätigst selbst, gerechnet wird von der App.
+- **App-Guide:** `Mehr › KI › App-Guide`. Frage eintippen, Antwort lesen. Gesendet werden nur Frage und App-Beschreibung, keine Lager- oder Rezeptdaten.
+- **Rezept-Chat:** `Mehr › Rezept-Chat`. Rezepte im Gespräch planen mit Lager und Katalog. Die App rechnet (Seifenrechner, Summen), die KI macht Vorschläge als Karten: Seifenrechnung, Rezeptvorschlag („Als Entwurf öffnen“), Einkaufsliste („Auf die Einkaufsliste“). „Neuer Chat“ beginnt neu. Unter jeder Antwort: „Als Regel merken“.
+- **Meine Regeln:** `Mehr › Einstellungen › KI-Funktionen › Meine Regeln`. Eigene Regeln für den Rezept-Chat (höchstens 30). Sie stehen unter den festen App-Regeln.
+- **Rezept importieren mit KI:** `Rezeptbuch › Mehr › Rezepte importieren`. Ganzen Text einer Webseite einfügen und „Mit KI genauer lesen“, oder „Foto mit KI lesen“ / „Aus Galerie mit KI (bis 5)“ für Fotos, Screenshots und Handschrift. Die KI zieht Name, Phasen, Zutaten, Mengen, Schritte und Hinweise heraus, ordnet Zutaten dem Katalog zu und übersetzt Fremdsprachiges. Vorschau, dann „Im Editor öffnen“, gespeichert wird von dir.
+- **Übersetzungen am Rezept:** In der Rezeptansicht steht unter der Version „Originalsprache“ (bei KI-Import). Der Knopf „Übersetzen“ in der Aktionsleiste öffnet „Übersetzungen“: Original und Übersetzung je Text, Sprache wählen, von Hand eintragen oder „Leere mit KI übersetzen“. Fehlt eine Übersetzung, zeigt die App den Originaltext. `Rezeptbuch › Mehr › Rezepte übersetzen` ergänzt fehlende Übersetzungen für alle Rezepte (eine KI-Anfrage je Rezept). „Meine Sprache (Zielsprache)“ ist die Sprache, in die Fremdes übersetzt wird (Standard: Systemsprache).
+- **Artikel aus Produktseite oder Datenblatt:** `Lager › Eingabe › Produktseite lesen` (oder am Artikel „Aus Produktseite übernehmen“). Text einfügen und „Mit KI“, oder „Foto mit KI lesen“ / „Screenshots mit KI (bis 5)“. Gelesen werden Name, INCI, Artikelnummer, Form, EAN, Preise, bei Datenblättern auch Dichte, Verseifungszahl, NaOH-Bedarf, Jodzahl, Schmelzpunkt und weitere technische Angaben (kommen in die Notiz). Vorschau mit Haken je Wert.
+- **Rechnung einlesen:** `Mehr › Rechnung einlesen`. Rechnungstext oder Fotos (bis 5, lokale Texterkennung) mit Datum, Lieferant und Positionen; Name, Adresse und Konto bleiben auf dem Gerät. Preise werden mit dem Rechnungsdatum eingetragen, der Bestand wird nicht gebucht.
+- **Auffälligkeiten erklären:** `Statistik › Kachel „Auffälligkeiten“ › Mit KI erklären`. Die App findet Auffälligkeiten (Einwaage, Zutatentausch, Bewertungstrend, Preissprung, Lieferantenwechsel, abgelaufen); die KI formuliert Erklärungen und Rückfragen nur zu diesen Tabellenzeilen.
+- **Testsatz:** Im Expertenmodus unter Testbetrieb „KI-Testsatz laden/entfernen“ (Beispieldaten für Bewertungen, Preise, Auffälligkeiten).
+
+---
+
 ## 5. Formate
 | Vorgang | Format | Hinweis |
 |---|---|---|
