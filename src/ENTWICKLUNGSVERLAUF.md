@@ -427,3 +427,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - js46.js (neu, letzte Datei): `sheetRzKi`/`RZKIMODE` (KI-Fenster zeigt nur KI; klassisches Fenster mit „Mit KI“-Zeile unten), Lager-Import um „Artikel mit KI erfassen“, `starterRez`/`freshData`/`freshAsk`/`freshGo`, `seed` überschrieben (leer; Test-Browser behält altes Lager), Hilfekapitel.
 - js45.js: `rzNew` mit drei Wegen, Karte auf Rezepte-Seite (`#rzkibn`). js36/js42: KI-Zusätze nur bei `RZKIMODE`. js20: `demoLoad/demoRm` verknüpfen/lösen Beispielrezepte (`bsp`).
 - Test t120. Hinweis: Die 27 Beispielrezepte sind eigene, ungeprüfte Testrezepte, keine Rezepte von Heike Käser.
+
+## Editor-Hinweis zur Textsprache (07.11.2026)
+- js46.js: `rzEd`-Wrapper zeigt im Editor einen Hinweis (`#rzedlang`), wenn die Rezepttexte nicht in der Zielsprache vorliegen, aber Übersetzungen existieren. „Übersetzung übernehmen“ (`rzEdAdoptAsk/Go`) nutzt `trAdoptGo` und öffnet den Editor neu. Test t121. Hinweistext ist nur Deutsch (dynamische Sprachnamen).
