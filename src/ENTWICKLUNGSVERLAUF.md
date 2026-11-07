@@ -303,3 +303,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Daten additiv und optional: c.k={kons,duft,aus,haut}, c.bew=[{id,date,stars,k,note}]. Erstbewertung c.stars/c.note unverändert; Export und Statistik (js23.js) unverändert.
 - Tests: t101 ok, t83 bis t100 ohne Fehler.
 - Offen: Filter "noch nicht nachbewertet" (nur Idee).
+
+
+## KI Stufen 3 bis 5: Testsatz, Dienst-Schicht, App-Guide (07.11.2026)
+- Neu: src/testdaten/gen_ki.py (erzeugt proto/testdaten_ki.js), proto/js33.js (kiCall, kiOn, Einstellungen KI-Funktionen, KI-Testsatz laden/entfernen), proto/js34.js (App-Guide, Mehr-Eintrag nur bei freigeschalteter KI), Zeile in js30.js (Einstellungsliste), patch7.py, i18n7.py, build.sh (erzeugt wissen/app-landkarte.md), Tests t102 (neu), t92 (erwartete Liste um KI-Funktionen ergänzt).
+- Schlüssel und Modell liegen in eigenen localStorage-Einträgen (inciheinz-ki-key, inciheinz-ki-cfg), nicht in S, nicht in der Sicherung. Ohne Schlüssel kein Netzwerkaufruf (getestet: 0 Aufrufe).
+- Offen: Modellname gemini-3.8-flash gegen die echte API prüfen (aus der Entwicklungsumgebung nicht erreichbar, beim ersten Prüfen mit deinem Schlüssel zeigt sich das). Nächste Stufe: C R0 Auffälligkeiten, danach A Erfassen.

@@ -6,7 +6,7 @@ return (`<h2>Einstellungen</h2><div class="s" style="margin-bottom:8px">Diese Ei
 +rowH(['shield','Sichern und zurücknehmen','Sicherung der ganzen App, letzte Änderung rückgängig',"sheetSetSich()"])
 +rowH(['refresh','Katalog',(S.catmeta&&S.catmeta.version?'Katalog '+esc(S.catmeta.version):'Grundkatalog der App')+' · '+CAT.length+' Einträge',"sheetCatUpd()"])
 +rowH(['cube','Mengeneinstellungen','Genauigkeit der Mengen',"sheetSetMengen()"])
-+rowH(['book','Hilfe','Anleitung und Info',"sheetSetHilfe()"])
++rowH(['book','Hilfe','Anleitung und Info',"sheetSetHilfe()"])+kiRow()
 +rowH(['gear','Expertenmodus',S.expert?'An':'Aus',"sheetSetExp()"])
 +(S.expert?rowH(['flask','Testbetrieb','Testdaten laden und entfernen',"sheetSetTest()"]):''))};
 sheetAppSet=function(){SETCTX='app';openSheet(setMain())};

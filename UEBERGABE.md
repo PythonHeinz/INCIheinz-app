@@ -104,3 +104,6 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 
 
 - Charge: optionale Felder `c.k` (Kriterien 1 bis 5: kons, duft, aus, haut) und `c.bew[]` (Nachbewertungen {id,date,stars,k,note}), angelegt in js32.js. Liste zeigt die Sterne der jüngsten Nachbewertung.
+
+
+- KI: Aufrufe nur über `kiCall()` (js33.js), das ohne geprüften Schlüssel 'aus' wirft. Schlüssel/Modell nie in S. Wissensdateien liegen in `wissen/` (aus dem Build erzeugt, nicht von Hand ändern). Testsatz-Chargen tragen `demo:'ki'`, Testpreise `demo:1`; beim Entfernen werden sie wieder gelöscht.

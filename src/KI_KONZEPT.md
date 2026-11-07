@@ -498,3 +498,11 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - Umsetzungsreihenfolge §9.1 bestätigt. Alle nicht kommentierten Vorschläge, die Chat-Anhang-Vorschläge, Chargen-Notiz, Einkaufs-Chat und die Kontextkomprimierung sind freigegeben.
 - Bewertungsformular in der Charge ist gebaut (js32.js; KI-Dateien heißen deshalb js33/js34). Kriterien: Konsistenz, Duft, Aussehen, Hautgefühl. Filter "noch nicht nachbewertet" bleibt Idee.
 - Finales Go: offen.
+
+## Nachtrag 07.11.2026 (Entscheidungen und Umsetzung Stufen 3 bis 5)
+- Kein Branch `ki`: KI-Funktionen werden auf main in derselben App entwickelt. Der Branch `ohne-ki` bleibt nur das Archiv der Version ohne KI (für eine App ohne KI für die Freundin).
+- Freischaltung: Mehr › Einstellungen › KI-Funktionen, immer sichtbar. Schlüssel eintragen, "Schlüssel prüfen"; nach erfolgreicher Prüfung ist die KI an. Schlüssel entfernen = KI sofort aus (keine KI, auch keine lokale, nur Texterkennung).
+- Modell: Standard `gemini-3.8-flash` (im Menü änderbar). Die Prüfung ruft das Modell einmal auf; "nicht gefunden" meldet einen falschen Modellnamen.
+- Wissensbasis: stark komprimierte Textdateien aus den Fachbüchern, auf dem Server der App abgelegt (Ordner `wissen/`). Der Nutzer kann keine eigenen Quellen hinzufügen. Erste Datei: `wissen/app-landkarte.md` (wird beim Build aus APP_LANDKARTE.md erzeugt, ohne Abschnitt 9).
+- Gebaut: Stufe 3 KI-Testsatz (`src/testdaten/gen_ki.py` → `testdaten_ki.js`, 55 Chargen, Nachbewertungen, Preisverläufe, fünf Muster W1 bis W5, laden/entfernen im Testbetrieb), Stufe 4 Dienst-Schicht (`js33.js`), Stufe 5 App-Guide (`js34.js`).
+- Filter "noch nicht nachbewertet": bleibt für die letzte Ausbaustufe.

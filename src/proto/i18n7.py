@@ -992,3 +992,36 @@ P7.append((r"^Gewählt \((\d+) von 8\)$","Selected (\\1 of 8)","Elegidas (\\1 de
 
 N7.update({"Bewertung":("Rating","Valoración"),"Kriterien":("Criteria","Criterios"),"Konsistenz":("Consistency","Consistencia"),"Duft":("Scent","Aroma"),"Aussehen":("Appearance","Aspecto"),"Hautgefühl":("Skin feel","Sensación en la piel"),"Nachbewertungen":("Follow-up ratings","Valoraciones posteriores"),"Nachbewertung hinzufügen":("Add follow-up rating","Añadir valoración posterior"),"Nachbewertung":("Follow-up rating","Valoración posterior"),"Wie wirkt das Ergebnis nach einiger Zeit?":("How does the result look after some time?","¿Cómo se ve el resultado pasado un tiempo?"),"Wie war das Ergebnis im Einzelnen? Alle Angaben sind freiwillig.":("How was the result in detail? All entries are optional.","¿Cómo fue el resultado en detalle? Todos los datos son opcionales."),"Gesamt":("Overall","General"),"Nachbewertung gespeichert":("Follow-up rating saved","Valoración posterior guardada"),"Entfernen":("Remove","Quitar")})
 P7.append((r"^(\d+) Nachbewertung(?:en)?$","\\1 follow-up rating(s)","\\1 valoración(es) posterior(es)"))
+
+N7.update({
+"KI-Funktionen":("AI functions","Funciones de IA"),"An":("On","Activada"),"Aus":("Off","Desactivada"),
+"Die KI hilft beim Bedienen der App und später beim Erfassen und Auswerten. Sie ist nur an, wenn ein geprüfter Schlüssel hinterlegt ist. Ohne Schlüssel läuft die App wie bisher, nur mit Texterkennung.":("The AI helps with using the app and, later, with capturing and analysing data. It is only on when a verified key is stored. Without a key the app works as before, with text recognition only.","La IA ayuda a usar la app y, más adelante, a registrar y analizar datos. Solo está activada si hay una clave verificada. Sin clave la app funciona como antes, solo con reconocimiento de texto."),
+"KI ist freigeschaltet":("AI is enabled","La IA está activada"),"KI ist aus":("AI is off","La IA está desactivada"),
+"Hinterlege einen Schlüssel und prüfe ihn.":("Store a key and check it.","Guarda una clave y compruébala."),
+"Modell":("Model","Modelo"),"Schlüssel (API-Key)":("Key (API key)","Clave (API key)"),
+"Schlüssel prüfen":("Check key","Comprobar clave"),"Prüfe …":("Checking …","Comprobando …"),"Schlüssel entfernen":("Remove key","Quitar clave"),
+"Bitte einen Schlüssel eintragen.":("Please enter a key.","Introduce una clave."),
+"Schlüssel geprüft, KI ist freigeschaltet.":("Key verified, AI is enabled.","Clave verificada, la IA está activada."),
+"Schlüssel entfernt, KI ist aus.":("Key removed, AI is off.","Clave quitada, la IA está desactivada."),
+"Der Schlüssel bleibt nur auf diesem Gerät und ist nicht in der Sicherung. Bei einer Frage an die KI gehen der Fragetext und nur die dafür nötigen Angaben an Google. Beim App-Guide sind das deine Frage und die Beschreibung der App, keine Lager- oder Rezeptdaten. Wenn du den Schlüssel entfernst, ist die KI sofort aus.":("The key stays on this device only and is not part of the backup. When you ask the AI, the question text and only the details needed for it go to Google. For the app guide these are your question and the description of the app, no stock or recipe data. If you remove the key, the AI is off immediately.","La clave solo se queda en este dispositivo y no está en la copia de seguridad. Al preguntar a la IA se envían a Google el texto de la pregunta y solo los datos necesarios. En la guía de la app son tu pregunta y la descripción de la app, sin datos de almacén ni recetas. Si quitas la clave, la IA se apaga de inmediato."),
+"Der Schlüssel wurde nicht akzeptiert.":("The key was not accepted.","La clave no fue aceptada."),
+"Das Modell wurde nicht gefunden. Prüfe den Modellnamen.":("The model was not found. Check the model name.","No se encontró el modelo. Revisa el nombre."),
+"Das Limit ist erreicht. Versuche es später noch einmal.":("The limit has been reached. Try again later.","Se alcanzó el límite. Inténtalo más tarde."),
+"Der Dienst antwortet gerade nicht.":("The service is not responding right now.","El servicio no responde ahora."),
+"Es kam keine Antwort.":("No answer came back.","No hubo respuesta."),
+"Zeitüberschreitung. Bist du online?":("Timed out. Are you online?","Tiempo agotado. ¿Estás en línea?"),
+"Keine Verbindung. Bist du online?":("No connection. Are you online?","Sin conexión. ¿Estás en línea?"),
+"Die Anfrage ist zu lang.":("The request is too long.","La consulta es demasiado larga."),
+"Es ging etwas schief.":("Something went wrong.","Algo salió mal."),
+"KI":("AI","IA"),"App-Guide":("App guide","Guía de la app"),"Fragen zur Bedienung":("Questions about using the app","Preguntas sobre el uso"),
+"Frage, wie etwas in der App geht. Es wird nur deine Frage mit der Beschreibung der App gesendet, keine Lager- oder Rezeptdaten. Antworten einer KI können falsch sein. Maßgeblich ist die Anleitung.":("Ask how something works in the app. Only your question with the description of the app is sent, no stock or recipe data. AI answers can be wrong. The manual is authoritative.","Pregunta cómo se hace algo en la app. Solo se envía tu pregunta con la descripción de la app, sin datos de almacén ni recetas. Las respuestas de una IA pueden ser erróneas. Lo que vale es el manual."),
+"Deine Frage":("Your question","Tu pregunta"),"Fragen":("Ask","Preguntar"),"Denke nach …":("Thinking …","Pensando …"),
+"Die Beschreibung der App ist gerade nicht erreichbar. Bist du online?":("The description of the app is not reachable right now. Are you online?","La descripción de la app no está disponible ahora. ¿Estás en línea?"),
+"KI-Testsatz laden":("Load AI test set","Cargar conjunto de prueba de IA"),"KI-Testsatz entfernen":("Remove AI test set","Quitar conjunto de prueba de IA"),
+"KI-Testsatz ist schon geladen":("AI test set is already loaded","El conjunto de prueba de IA ya está cargado"),
+"KI-Testsatz: etwa 55 Chargen mit Nachbewertungen und Preisverläufe, mit eingebauten Auffälligkeiten zum Prüfen der Auswertung.":("AI test set: about 55 batches with follow-up ratings and price histories, with built-in anomalies for testing the analysis.","Conjunto de prueba de IA: unos 55 lotes con valoraciones posteriores e historiales de precios, con anomalías incluidas para probar el análisis.")
+})
+P7.append((r"^ Geladen: (\d+) Chargen\.$"," Loaded: \\1 batches."," Cargados: \\1 lotes."))
+P7.append((r"^(\d+) Chargen, (\d+) Preise geladen$","\\1 batches, \\2 prices loaded","\\1 lotes, \\2 precios cargados"))
+P7.append((r"^Modell: (.+)$","Model: \\1","Modelo: \\1"))
+P7.append((r"^An · (.+)$","On · \\1","Activada · \\1"))

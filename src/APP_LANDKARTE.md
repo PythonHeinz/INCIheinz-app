@@ -235,3 +235,7 @@ Detailansichten und Unterdialoge, die der Erstentwurf nicht durchlaufen hat: Cha
 
 ## Nachtrag: Bewertung in der Charge (07.11.2026)
 Die Chargenansicht hat unter den Notizen den Block "Bewertung" (aufklappbar): vier Kriterien (Konsistenz, Duft, Aussehen, Hautgefühl) je 1 bis 5 Punkte, eine Liste der Nachbewertungen und "Nachbewertung hinzufügen" (Datum, Sterne, Kriterien, Notiz). Die Chargenliste zeigt die Sterne der jüngsten Nachbewertung, sonst die Erstbewertung. Daten: c.k, c.bew[].
+
+
+## Nachtrag: KI-Funktionen (07.11.2026)
+Mehr › Einstellungen › KI-Funktionen: Modell und Schlüssel eintragen, "Schlüssel prüfen", "Schlüssel entfernen". Ist die KI freigeschaltet, erscheint im Mehr-Menü unter "KI" der Eintrag "App-Guide" (Frage eintippen, Antwort lesen; gesendet werden nur Frage und App-Beschreibung). Im Expertenmodus unter Testbetrieb gibt es zusätzlich "KI-Testsatz laden/entfernen".

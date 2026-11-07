@@ -13,3 +13,6 @@ cp "$H"/proto/*.* /home/claude/work/proto/
 cd /home/claude/work/proto
 python3 patch7.py && python3 patch6.py && python3 patch4.py && python3 build_netlify.py
 node --check chk.js && echo "Build OK -> /mnt/user-data/outputs/netlify/"
+
+# Wissensdatei für den App-Guide: immer aus der Landkarte erzeugen
+mkdir -p "$H/../wissen" && cp "$H/APP_LANDKARTE.md" "$H/../wissen/app-landkarte.md"
