@@ -400,3 +400,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Übersetzung als Arbeitstext übernehmen (07.11.2026)
 - Übersetzungsblatt: Knopf „Als Arbeitstext übernehmen“ (trAdoptAsk/trAdoptGo in js43.js). Erzeugt eine neue Version, in der Name, Zweck, Phasennamen, freie Zutaten und Ablauftexte in der gewählten Sprache stehen (d.lang = diese Sprache, d.olang = bisherige Originalsprache). Die alte Version bleibt. Das Original wandert als Quelle in den Übersetzungsspeicher (Schlüssel = neuer Text, Eintrag in der Originalsprache, Status „von dir“), so erscheint es bei App-Sprache = Original. Texte ohne Übersetzung bleiben im Original. Rezeptansicht und Blatt zeigen „Originalsprache“ aus d.olang.
 - Test t115. Offen: einzelne Übersetzungen als „geprüft“ bestätigen; Mischsprachen in KI-Feldern Name/Zweck prüfen.
+
+## Rechnung: Positionen ohne Lagerartikel, Alle auswählen (07.11.2026)
+- invPrev: Positionen ohne Lagerartikel mit Preis und Packungsgröße sind anhakbar („wird als neuer Rohstoff mit Bestand 0 angelegt“); Kontrollkästchen „Alle Positionen auswählen“ (invAll). invCommit legt per invNewItem fehlende Rohstoffe an (Name ohne Größenangabe, Katalogtreffer wenn möglich, Bestand 0, unk=true, Notiz „Aus Rechnung angelegt“) und trägt den Preis mit Rechnungsdatum in den Verlauf ein. Positionen ohne Größe oder Preis (Rabatt) bleiben gesperrt.
+- Test t116. Offen: Zubehör (Gläser, Spender) wird wie Rohstoff angelegt, bis es eine Artikelart dafür gibt.
