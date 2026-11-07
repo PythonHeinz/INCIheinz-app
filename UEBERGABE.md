@@ -123,3 +123,6 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 - Dokumentsprache (js44.js): DOCL + withLang; PDF-Texte laufen über TT in T/pdfWrap, HTML-Druck über DOMParser+trWalk. Im Script nie das Literal '</body>' schreiben. Artikel-KI: kiProdSys() statt KI_PROD_SYS verwenden (Ausgabesprache = S.mut), name_original → Notiz.
 
 - Auslieferzustand (js46): `seed()` liefert in echten Browsern ein leeres Lager mit 27 Beispielrezepten (`bsp`, keine Käser-Rezepte, ungeprüft). Playwright (navigator.webdriver) bekommt das alte Beispiellager, damit die Tests t83–t119 laufen; localStorage `inciheinz-fresh` erzwingt den Auslieferzustand (t120). KI-Fenster im Rezeptbuch nur über `sheetRzKi()`; `sheetRzImport()` ohne Argument ist das klassische Fenster.
+
+- Import-Bestätigung (js47): Marker `z.imp/p.imp/m.imp` leben nur im Editor-Entwurf (`RE.d`) und werden in `rzClean` entfernt; neue Wege, die Entwürfe aus Importen öffnen, rufen `rzMarkImp(d)` vor dem Öffnen auf. Zutatenzeilen (Phase und Kopfliste) öffnen dasselbe Menü `rzZMenu`; Schnellanlage `rzRawMake` (nur Name, `unk=true`). Neue sichtbare Texte stehen am Ende von `i18n7.py`.
+
