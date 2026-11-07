@@ -26,7 +26,7 @@ const TT=s=>{try{return typeof trStr==='function'?trStr(s):s}catch(e){return s}}
 function rzPdf(id,vn,o){o=Object.assign({foto:1,eck:1,ablauf:1,inci:1},o||{});const r=rzGet(id);const v=rzVer(r,vn||rzCurV(r).n);const d=v.d;const sum=rzSum(d)||1;
 const M=54,CW=487,TOP=54,BOT=788;const pages=[];const imgs=[];let c='',y=TOP;
 const col=a=>a.join(' ');
-const T=(x,yy,s,sz,b,cl,al)=>{if(s===''||s==null)return;let xx=x;if(al==='r')xx=x-pdfW(s,sz,b);c+='BT /'+(b?'F2':'F1')+' '+sz+' Tf '+col(cl||PDFX.K)+' rg '+xx.toFixed(2)+' '+(842-yy).toFixed(2)+' Td '+pdfHex(s)+' Tj ET\n'};
+const T=(x,yy,s,sz,b,cl,al)=>{if(s===''||s==null)return;if(DOCL)s=TT(String(s));let xx=x;if(al==='r')xx=x-pdfW(s,sz,b);c+='BT /'+(b?'F2':'F1')+' '+sz+' Tf '+col(cl||PDFX.K)+' rg '+xx.toFixed(2)+' '+(842-yy).toFixed(2)+' Td '+pdfHex(s)+' Tj ET\n'};
 const LN=(x1,yy,x2,cl,w)=>{c+=col(cl||PDFX.L)+' RG '+(w||0.5)+' w '+x1+' '+(842-yy)+' m '+x2+' '+(842-yy)+' l S\n'};
 const newPage=()=>{if(c)pages.push(c);c='';y=TOP};
 const need=h=>{if(y+h>BOT)newPage()};

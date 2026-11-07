@@ -176,6 +176,9 @@ Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigene
 
 ---
 
+- Dokumentsprache: Beim Drucken (Rezeptkarte, Rezeptbuch), Rezept als Text und Rezept teilen gibt es „Sprache des Dokuments“ (Deutsch, English, Español, Standard Sprache der App). Fehlende Übersetzungen erscheinen im Original.
+- Zielsprache: Mehr › Einstellungen › „Meine Sprache (Zielsprache)“. In diese Sprache übersetzt die KI beim Rezeptimport und bei „Übersetzen“, und in ihr schreibt sie Namen und Freitexte bei Artikeldaten. Der Originalname bleibt in der Notiz.
+
 ## 5. Formate
 | Vorgang | Format | Hinweis |
 |---|---|---|

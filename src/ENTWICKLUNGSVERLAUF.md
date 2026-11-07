@@ -380,3 +380,11 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Landkarte: App-Guide schnitt alles ab "## 9." weg, damit auch die Nachträge. Jetzt werden nur Abschnitt 9 und 10 entfernt (js34.js kiMap); neuer Abschnitt "4a. KI-Funktionen" mit allen Funktionen und Menüwegen.
 - Test t112 (Zuordnung, erfundene ID, Zielsprache, Lücken, Handeintrag, KI-Füllung, Sammelfunktion, Limit, Quelle=Zielsprache). Regression t83 bis t111 ohne Fehler.
 - Offen: Rezeptkarte/PDF/Teilen in der Fremdsprache, Übersetzung neuer Artikeldaten (Begriffe als deutsche Vorschläge), Zielsprache in den Einstellungen, Aufräumen alter S.tm-Einträge, Chat-Vorschläge.
+
+
+## Dokumentsprache und Artikelbegriffe (07.11.2026)
+- Neu: src/proto/js44.js. Druck (Karte, Rezeptbuch), Textexport und Teilen als PDF haben eine Wahl „Sprache des Dokuments“ (Standard: Sprache der App; Deutsch, English, Español). Mechanik: globales DOCL, withLang(l,fn) schaltet LANG zeitweise um. HTML-Druck wird per DOMParser und trWalk übersetzt (Übersetzungsspeicher zuerst, dann Wörterbuch), PDF über TT in T und pdfWrap, Text über eine Datenkopie des Rezepts (docData) plus Beschriftungen. Lücken zeigen den Originaltext. Rezeptdaten werden nie verändert (Test prüft das).
+- Zielsprache jetzt global: Mehr › Einstellungen › „Meine Sprache (Zielsprache)“ (S.mut).
+- Artikeldaten per KI (Produktseite, Foto, Screenshots, Datenblatt): kiProdSys() hängt die Ausgabesprache (Zielsprache) an; name und Freitexte in sonstige in der Zielsprache, name_original wörtlich. Beim Übernehmen steht der Originalname in der Notiz („Originalname: …“), sofern der Name übernommen wurde. INCI, Zahlen, CAS, H-Sätze bleiben unverändert.
+- Fix: im Script darf kein Literal '</body>' stehen (beendet das Script), deshalb '</bo'+'dy>'.
+- Tests: t113 (Dokumentsprache: ES/DE/Original, Daten unverändert, PDF, Auswahl im Blatt), t114 (Zielsprache-Einstellung, Ausgabesprache im Prompt, Originalname). Offen: Zahlen-/Datumsformat je Dokumentsprache, Rechnungspositionen, Vorlagen-Überarbeitung (kommt später).

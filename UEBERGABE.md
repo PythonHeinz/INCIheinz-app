@@ -119,3 +119,5 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 - Datenblatt-Werte (prodExt): neue Artikelfelder nur über PX in js41.js und prodExt in js37.js ergänzen; Werte nie ohne Haken in der Vorschau übernehmen.
 - Übersetzungsspeicher S.tm: Fremdsprachige KI-Importe liegen im Original in den Rezeptdaten, Anzeige in der App-Sprache über tmGet in der Sprachschicht (patch4.py). Neue Anzeigewege müssen Text als Textknoten rendern, sonst greift die Übersetzung nicht (zum Beispiel Druckfenster).
 - Übersetzungen: freie Rezepttexte bleiben im Original, Anzeige in anderen Sprachen kommt aus S.tm. Neue Anzeigen/Exporte müssen Texte aus d.* über den Textknoten-Weg (tmGet) oder direkt über tmGet(text) ausgeben. d.lang = Originalsprache, S.mut = Zielsprache.
+
+- Dokumentsprache (js44.js): DOCL + withLang; PDF-Texte laufen über TT in T/pdfWrap, HTML-Druck über DOMParser+trWalk. Im Script nie das Literal '</body>' schreiben. Artikel-KI: kiProdSys() statt KI_PROD_SYS verwenden (Ausgabesprache = S.mut), name_original → Notiz.
