@@ -309,3 +309,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Neu: src/testdaten/gen_ki.py (erzeugt proto/testdaten_ki.js), proto/js33.js (kiCall, kiOn, Einstellungen KI-Funktionen, KI-Testsatz laden/entfernen), proto/js34.js (App-Guide, Mehr-Eintrag nur bei freigeschalteter KI), Zeile in js30.js (Einstellungsliste), patch7.py, i18n7.py, build.sh (erzeugt wissen/app-landkarte.md), Tests t102 (neu), t92 (erwartete Liste um KI-Funktionen ergänzt).
 - Schlüssel und Modell liegen in eigenen localStorage-Einträgen (inciheinz-ki-key, inciheinz-ki-cfg), nicht in S, nicht in der Sicherung. Ohne Schlüssel kein Netzwerkaufruf (getestet: 0 Aufrufe).
 - Offen: Modellname gemini-3.8-flash gegen die echte API prüfen (aus der Entwicklungsumgebung nicht erreichbar, beim ersten Prüfen mit deinem Schlüssel zeigt sich das). Nächste Stufe: C R0 Auffälligkeiten, danach A Erfassen.
+
+
+## Stufe 6 Auffälligkeiten und Modellauswahl (07.11.2026)
+- Neu: proto/js35.js (ausData, sheetAus, Kachel über Wrapper um stat()), Test t103 (prüft W1 bis W5 des Testsatzes, Toleranz, leere Daten, EN), Modell-Chips und Antwortzeit in js33.js, EN/ES in i18n7.py.
+- Daten werden nur gelesen. S.ausTol (Toleranz) ist ein neues optionales Feld.
+- Hinweis: In einer frischen App liegen Beispielrohstoffe mit Preisen; sie erzeugen eigene Hinweise (Lieferantenwechsel). Der Test leert deshalb vorher.
+- Offen: nächste Stufe A Erfassen (A1/A2 Rezepte aus Text, dann Foto/Handschrift).

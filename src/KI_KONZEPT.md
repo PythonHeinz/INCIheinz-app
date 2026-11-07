@@ -506,3 +506,6 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - Wissensbasis: stark komprimierte Textdateien aus den Fachbüchern, auf dem Server der App abgelegt (Ordner `wissen/`). Der Nutzer kann keine eigenen Quellen hinzufügen. Erste Datei: `wissen/app-landkarte.md` (wird beim Build aus APP_LANDKARTE.md erzeugt, ohne Abschnitt 9).
 - Gebaut: Stufe 3 KI-Testsatz (`src/testdaten/gen_ki.py` → `testdaten_ki.js`, 55 Chargen, Nachbewertungen, Preisverläufe, fünf Muster W1 bis W5, laden/entfernen im Testbetrieb), Stufe 4 Dienst-Schicht (`js33.js`), Stufe 5 App-Guide (`js34.js`).
 - Filter "noch nicht nachbewertet": bleibt für die letzte Ausbaustufe.
+
+- Stufe 6 gebaut (07.11.2026): "Auffälligkeiten" (R0) als Kachel in der Statistik und Tabelle je Rezept, `proto/js35.js`. Regeln: Einwaage-Abweichung (Toleranz einstellbar, Standard 1 g), Zutatentausch mit Bewertung davor/danach, Bewertungstrend, Preissprung (ab 20 %), Lieferantenwechsel (ab 10 %), abgelaufene Ware, "zu wenig Chargen" (unter 3). Alle fünf Muster des Testsatzes werden gefunden, ohne falsche Treffer.
+- Modellauswahl im Menü KI-Funktionen: Vorschläge 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite plus eigener Name; nach dem Prüfen wird die Antwortzeit gezeigt (zum Vergleich von Modellen und Kosten).

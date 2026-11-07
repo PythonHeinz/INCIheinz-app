@@ -107,3 +107,6 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 
 
 - KI: Aufrufe nur über `kiCall()` (js33.js), das ohne geprüften Schlüssel 'aus' wirft. Schlüssel/Modell nie in S. Wissensdateien liegen in `wissen/` (aus dem Build erzeugt, nicht von Hand ändern). Testsatz-Chargen tragen `demo:'ki'`, Testpreise `demo:1`; beim Entfernen werden sie wieder gelöscht.
+
+
+- Auffälligkeiten: `ausData()` in js35.js ist rein lesend und die Grundlage, die die KI später nur erklärt. Neue Regeln dort ergänzen und in t103 absichern. Optionales Feld `S.ausTol` (Toleranz Einwaage in g).

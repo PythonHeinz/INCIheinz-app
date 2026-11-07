@@ -1025,3 +1025,32 @@ P7.append((r"^ Geladen: (\d+) Chargen\.$"," Loaded: \\1 batches."," Cargados: \\
 P7.append((r"^(\d+) Chargen, (\d+) Preise geladen$","\\1 batches, \\2 prices loaded","\\1 lotes, \\2 precios cargados"))
 P7.append((r"^Modell: (.+)$","Model: \\1","Modelo: \\1"))
 P7.append((r"^An · (.+)$","On · \\1","Activada · \\1"))
+
+N7.update({"Tippe ein Modell an oder trage einen eigenen Namen ein. Nach dem Prüfen siehst du die Antwortzeit, so kannst du Modelle vergleichen.":("Tap a model or enter your own name. After checking you see the response time, so you can compare models.","Toca un modelo o escribe un nombre propio. Tras comprobar verás el tiempo de respuesta para comparar modelos.")})
+P7.append((r"^Schlüssel geprüft, KI ist freigeschaltet\. Antwortzeit (.+) s\.$","Key verified, AI is enabled. Response time \\1 s.","Clave verificada, la IA está activada. Tiempo de respuesta \\1 s."))
+
+N7.update({"Auffälligkeiten":("Anomalies","Anomalías"),"Keine gefunden":("None found","Ninguna"),
+"Alles wird auf diesem Gerät berechnet. Das sind Hinweise zum Nachsehen, kein Urteil und kein Beweis für Ursachen.":("Everything is calculated on this device. These are pointers to look at, not a verdict and not proof of causes.","Todo se calcula en este dispositivo. Son indicaciones para revisar, no un veredicto ni una prueba de causas."),
+"Toleranz bei der Einwaage (g)":("Weighing tolerance (g)","Tolerancia al pesar (g)"),
+"Keine Auffälligkeiten gefunden":("No anomalies found","No se encontraron anomalías"),
+"Dafür braucht die App Chargen mit Bewertung und Preise mit Datum.":("For this the app needs batches with ratings and prices with dates.","Para ello la app necesita lotes con valoración y precios con fecha."),
+"Preise und Lieferanten":("Prices and suppliers","Precios y proveedores"),"Bestand":("Stock","Existencias"),
+"Zeitlich zusammen, kein Beweis für die Ursache.":("Happened at the same time, no proof of the cause.","Coinciden en el tiempo, no prueba la causa.")})
+for _p,_e,_s in [
+(r"^Einwaage weicht ab: (.+)$","Weighed amount differs: \\1","El peso difiere: \\1"),
+(r"^Soll (.+) g, Ist (.+) g · (.+)$","Target \\1 g, actual \\2 g · \\3","Objetivo \\1 g, real \\2 g · \\3"),
+(r"^Zutatentausch in Version (\d+): (.+) statt (.+)$","Ingredient swap in version \\1: \\2 instead of \\3","Cambio de ingrediente en la versión \\1: \\2 en lugar de \\3"),
+(r"^Zutat neu in Version (\d+): (.+)$","Ingredient added in version \\1: \\2","Ingrediente nuevo en la versión \\1: \\2"),
+(r"^Zutat entfernt in Version (\d+): (.+)$","Ingredient removed in version \\1: \\2","Ingrediente quitado en la versión \\1: \\2"),
+(r"^Davor ø (.+) ★ \((\d+) Chargen\), danach ø (.+) ★ \((\d+) Chargen\)$","Before avg \\1 ★ (\\2 batches), after avg \\3 ★ (\\4 batches)","Antes ø \\1 ★ (\\2 lotes), después ø \\3 ★ (\\4 lotes)"),
+(r"^Bewertung sinkt: (.+)$","Rating is falling: \\1","La valoración baja: \\1"),
+(r"^Letzte 3 Chargen ø (.+) ★, davor ø (.+) ★$","Last 3 batches avg \\1 ★, before avg \\2 ★","Últimos 3 lotes ø \\1 ★, antes ø \\2 ★"),
+(r"^Zu wenig Chargen: (.+)$","Too few batches: \\1","Muy pocos lotes: \\1"),
+(r"^Erst (\d+) (?:Charge|Chargen)\. Ab 3 Chargen sind Aussagen möglich\.$","Only \\1 batch(es) so far. From 3 batches statements are possible.","Solo \\1 lote(s). Desde 3 lotes se pueden hacer afirmaciones."),
+(r"^Lieferantenwechsel (.+)$","Supplier change \\1","Cambio de proveedor \\1"),
+(r"^Neu bei (.+): (.+) je 100 g/ml, vorher bei (.+): (.+)$","Now at \\1: \\2 per 100 g/ml, before at \\3: \\4","Ahora en \\1: \\2 por 100 g/ml, antes en \\3: \\4"),
+(r"^Preissprung (.+): (.+)$","Price jump \\1: \\2","Subida de precio \\1: \\2"),
+(r"^(.+): (.+) je 100 g/ml, vorher (.+)$","\\1: \\2 per 100 g/ml, before \\3","\\1: \\2 por 100 g/ml, antes \\3"),
+(r"^(.+) ist abgelaufen$","\\1 has expired","\\1 está caducado"),
+(r"^MHD (.+)$","Best before \\1","Caducidad \\1")]:
+    P7.append((_p,_e,_s))

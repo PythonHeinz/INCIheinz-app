@@ -2,6 +2,7 @@
    Regeln: Ohne geprüften Schlüssel gibt es keine KI und keinen Netzwerkaufruf. Der Schlüssel liegt in einem eigenen
    localStorage-Eintrag, nie in S und nie in der Sicherung. Die KI schreibt nichts in die Daten. */
 const KI_KEY='inciheinz-ki-key',KI_CFG='inciheinz-ki-cfg',KI_MODEL='gemini-3.8-flash',KI_MAXIN=60000;
+const KI_MODELS=[['gemini-3.8-flash','3.8 Flash'],['gemini-3.6-flash','3.6 Flash'],['gemini-3.5-flash-lite','3.5 Flash-Lite']];
 let KI_BUSY=false,KI_MSG='';
 const kiLs=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}};
 const kiCfg=()=>{try{return JSON.parse(kiLs(KI_CFG)||'{}')}catch(e){return {}}};
@@ -25,6 +26,8 @@ function sheetKI(){const on=kiOn();const has=!!kiLs(KI_KEY);
 setSub('KI-Funktionen',`<div class="s" style="margin-bottom:10px;line-height:1.5">Die KI hilft beim Bedienen der App und später beim Erfassen und Auswerten. Sie ist nur an, wenn ein geprüfter Schlüssel hinterlegt ist. Ohne Schlüssel läuft die App wie bisher, nur mit Texterkennung.</div>
 <div class="card" style="padding:12px 14px;margin-bottom:12px"><b>${on?'KI ist freigeschaltet':'KI ist aus'}</b><div class="s">${on?'Modell: '+esc(kiModel()):'Hinterlege einen Schlüssel und prüfe ihn.'}</div></div>
 <label class="fld"><span>Modell</span><input id="kimodel" value="${esc(kiModel())}" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 8px">${KI_MODELS.map(m=>`<button class="pill" onclick="document.getElementById('kimodel').value='${m[0]}'">${m[1]}</button>`).join('')}</div>
+<div class="s" style="margin-bottom:6px">Tippe ein Modell an oder trage einen eigenen Namen ein. Nach dem Prüfen siehst du die Antwortzeit, so kannst du Modelle vergleichen.</div>
 <label class="fld"><span>Schlüssel (API-Key)</span><input id="kikey" type="password" placeholder="${has?'Schlüssel gespeichert, neu eingeben zum Ersetzen':'Schlüssel einfügen'}" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
 <div id="kimsg" class="s" style="min-height:1.3em;margin:6px 0">${esc(KI_MSG)}</div>
 <div class="btns"><button class="btn" id="kibtn" onclick="kiCheckBtn()">Schlüssel prüfen</button>${has?'<button class="btn sec" onclick="kiRemove()">Schlüssel entfernen</button>':''}</div>
@@ -32,7 +35,7 @@ setSub('KI-Funktionen',`<div class="s" style="margin-bottom:10px;line-height:1.5
 async function kiCheckBtn(){if(KI_BUSY)return;const m=document.getElementById('kimodel'),k=document.getElementById('kikey');const model=((m&&m.value)||KI_MODEL).trim()||KI_MODEL;const key=((k&&k.value)||'').trim()||kiLs(KI_KEY)||'';
 if(!key){KI_MSG='Bitte einen Schlüssel eintragen.';sheetKI();return}
 KI_BUSY=true;const b=document.getElementById('kibtn');if(b){b.disabled=true;b.textContent='Prüfe …'}
-try{const t=await kiRaw(key,model,'Antworte nur mit dem Wort ok.','Test');kiLs(KI_KEY,key);kiLs(KI_CFG,JSON.stringify({model,ok:true,checked:today()}));KI_MSG='Schlüssel geprüft, KI ist freigeschaltet.'}
+try{const t0=Date.now();await kiRaw(key,model,'Antworte nur mit dem Wort ok.','Test');const sec=((Date.now()-t0)/1000).toFixed(1).replace('.',',');kiLs(KI_KEY,key);kiLs(KI_CFG,JSON.stringify({model,ok:true,checked:today()}));KI_MSG='Schlüssel geprüft, KI ist freigeschaltet. Antwortzeit '+sec+' s.'}
 catch(e){kiLs(KI_CFG,JSON.stringify({model,ok:false}));KI_MSG=kiErrText(e)}
 KI_BUSY=false;setNavFix();sheetKI()}
 function kiRemove(){kiLs(KI_KEY,null);kiLs(KI_CFG,null);KI_MSG='Schlüssel entfernt, KI ist aus.';setNavFix();sheetKI()}
