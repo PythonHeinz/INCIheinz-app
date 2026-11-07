@@ -20,7 +20,7 @@ Alles, was die App mit Filtern und Regeln schon kann, bleibt Regelwerk: „Habe 
 | A Erfassen | Handschriftliche Rezepte, Fotos, Texte und Tabellen werden zu Rezept (Phasen, Schritte, Hinweise) und werden Lagerartikeln zugeordnet | größter Hebel, weil Datenpflege der Engpass ist |
 | B App-Guide | Die KI kennt die Landkarte der App und erklärt, wo etwas zu finden ist und welche Formate gehen | Einstieg, Anleitung, weniger Rückfragen |
 | C Auswerten | Muster und Abweichungen in Chargen, Versionen, Preisen und Bewertungen erkennen und erklären | setzt gepflegte Daten voraus |
-| D Rezept-Chat | Rezepte per Chat oder Sprache entwickeln, nur aus Lagerbestand, vom Rechner geprüft | Endausbau |
+| D Rezept-Chat | Rezepte per Chat oder Sprache entwickeln, mit Lager- und Katalogartikeln, vom Rechner geprüft; Mischbarkeit nach Bestand | Endausbau |
 
 ### 1.4 Grundsätze (verbindlich für alle KI-Funktionen)
 1. **Regeln vor KI.** Erst Filter, Regelwerk und lokale Suche, dann KI. KI-Aufruf nur, wenn die Regeln nicht reichen.
@@ -93,7 +93,7 @@ Je Funktion baut ein Kontext-Builder ein schlankes JSON aus `S` und dem Katalog.
 
 ### 2.5 Werkzeuge (Function Calling)
 Es gibt **keine schreibenden Werkzeuge**. Die KI darf nur:
-- **Lesen/Rechnen lassen** (die App führt aus und gibt das Ergebnis zurück): `lager_suche`, `artikel_details`, `rezept_lesen`, `chargen_lesen`, `rechne_dosierung`, `rechne_emulgator`, `rechne_seife` (Kaltverseifung), `summen_check`.
+- **Lesen/Rechnen lassen** (die App führt aus und gibt das Ergebnis zurück): `lager_suche`, `katalog_suche`, `artikel_details`, `rezept_lesen`, `chargen_lesen`, `rechne_dosierung`, `rechne_emulgator`, `rechne_seife` (Kaltverseifung), `summen_check`.
 - **Vorschläge abgeben** (landen nur in der Vorschau): `vorschlag_rezept` (Struktur wie Rezeptmodell `d`: Phasen, Zutaten mit ID und Gramm, Module), `vorschlag_artikelwert` (Artikel-ID, Feld, Wert, Quelle, Begründung).
 Die Schleife (KI ruft Rechner, Rechner antwortet, KI korrigiert) ist auf wenige Runden begrenzt.
 
@@ -265,12 +265,12 @@ Die Auswertung läuft auch bei roter/gelber Dashboard-Anzeige, nennt aber die L�
 ## 6. Funktion D: Rezept-Chat (Rezepte entwickeln)
 
 ### 6.1 Ziel
-Der Nutzer beschreibt per Text oder Diktat, was er herstellen will („feste Seife, besonders schaumig, 500 g“, „leichte Gesichtscreme, 100 g“). Die App liefert einen **berechneten Rezeptentwurf aus dem eigenen Lager**, den er prüft und als neues Rezept speichert.
+Der Nutzer beschreibt per Text oder Diktat, was er herstellen will („feste Seife, besonders schaumig, 500 g“, „leichte Gesichtscreme, 100 g“). Die App liefert einen **berechneten Rezeptentwurf aus Lager und Katalog**, den er prüft und als neues Rezept speichert.
 
 ### 6.2 Ablauf
 1. Wunsch (Produktart, Menge, gewünschte Eigenschaften der Rezeptur wie schaumig, weiß, mild, fest).
 2. Kurze Rückfragen der KI, nur wenn nötig.
-3. KI wählt Zutaten aus dem Kandidatenpaket (Lager, Bestand > 0, Mischbarkeit) und schlägt Anteile vor.
+3. KI wählt Zutaten aus dem Kandidatenpaket (Lagerartikel und Katalogartikel, siehe 6.6) und schlägt Anteile vor.
 4. **Rechner prüft** über die Werkzeuge (2.5); Fehler und Warnungen gehen zurück an die KI, die korrigiert (wenige Runden).
 5. Prüfer (2.6), Vorschau (2.7), **Entwurf im Editor**, Speichern als **neues Rezept**, Version 1, Vermerk „KI-Entwurf, nicht geprüft“.
 6. Was vom Chat gespeichert wird, regelt 6.12: allgemeine Chats sind Wegwerf-Chats, ein Rezept-Chat hängt als Markdown-Datei am entstandenen Rezept.
@@ -293,12 +293,18 @@ Harte Regeln im Code:
 ### 6.5 Kosmetik (Emulsion, Öl, Tensid und andere)
 Phasen und Mengen aus dem Rezeptmodell; Emulgatoranteil über Emulgator-/HLB-Rechner; Dosierung gegen Einsatzbereiche; Hinweis, wenn eine wasserhaltige Rezeptur keine Konservierung enthält (Regel, kein Sicherheitsversprechen); Ablaufmodule aus den vorhandenen Standard-Abläufen der App, von der KI angepasst, ohne neue Sicherheits- oder Wirkaussagen.
 
-### 6.6 Nur aus dem Lager
-Standard: Zutaten aus dem Lager (Bestand > 0, Mischbarkeit wie in der Rezeptansicht). **Der Chat kann auf jeden Fall auch fehlende Zutaten vorschlagen** (Beschluss 07.11.2026): Zutaten, die die KI kennt und die zum Gelingen beitragen, aber nicht im Lager sind.
-- Sie sind deutlich als **„nicht im Lager“** markiert und mit Begründung versehen.
-- Ist die Zutat im Katalog, wird sie über die Katalog-ID verknüpft; sonst steht sie als Freitext „ohne Katalogbezug“ (Ausnahme von Grundsatz 5, sichtbar gekennzeichnet).
-- Im Entwurf zählen sie als „fehlt“ (das Rezept ist dann nicht mischbar).
-- Sie lassen sich über 6.11 auf die Einkaufsliste setzen. Nie still.
+### 6.6 Lager und Katalog: Planen mit allen Artikeln, Mischbarkeit nach Bestand (Beschluss 07.11.2026)
+Zwei getrennte Fragen:
+- **Planen/Rechnen:** Beim Entwerfen eines neuen Rezepts ist es **egal, ob ein Rohstoff im Lager ist**. Es muss mit allen Artikeln des Katalogs gerechnet werden können, auch mit „fiktiven“ Artikeln, die nur im Katalog stehen.
+- **Mischbar:** Ob das Rezept jetzt gemischt werden kann, beurteilt allein der **Bestand**, wie in der Rezeptansicht.
+Umsetzung:
+1. **Fiktive Artikel:** Aus einem Katalogeintrag wird bei Bedarf ein Artikel im Speicher gebaut (wie beim Anlegen aus dem Katalog), ohne ihn im Lager zu speichern. Werte (Verseifungszahl, Härte, WAS, Einsatzbereich, Dichte) kommen aus dem Katalog; Werte am Lagerartikel haben Vorrang. Ein Rezept verknüpft Katalogzutaten schon heute über die Katalog-ID; sie zählen dann als „fehlt“.
+2. **Werkzeuge:** `rechne_*` und `summen_check` nehmen Lager-ID oder Katalog-ID an; `katalog_suche` ergänzt `lager_suche`. Der Prüfer behandelt beide gleich und zeigt je Zeile „im Lager“ oder „nur Katalog“.
+3. **Kandidaten vorfiltern (R0):** Der Katalog (über 1000 Einträge) geht nie vollständig in eine Anfrage. Lokal werden nach Produktart, Funktion, Phase und vorhandenen Werten einige Dutzend bis wenige Hundert Kandidaten gewählt; Lagerartikel stehen vorn und werden bevorzugt.
+4. **Der Entwurf zeigt den Bestand:** „mischbar“ oder „nicht mischbar“ mit der Liste der fehlenden Zutaten; die KI darf Zutaten außerhalb des Lagers vorschlagen, wenn sie zum Gelingen beitragen, mit Begründung (Beschluss 07.11.2026, oben).
+5. **Einkaufsliste:** Fehlende Zutaten lassen sich über 6.11 auf die Einkaufsliste setzen. Nie still.
+6. **Katalogwerte sind Vorschläge:** Rechnungen mit Katalogwerten tragen den Hinweis „Katalogwert, nicht bestätigt“ (bei Seife siehe 6.13, Punkt 6).
+7. **Optional:** Wer nur mit dem Bestand planen will, schaltet im Chat „nur Lager“ ein.
 
 ### 6.7 Wissensbasis (RAG) und Recherche
 - **Inhalt:** eigene, komprimierte Wissenskarten aus der Fachliteratur und eigene Regeln, z. B. `{id, thema, aussage, quelle (Buch, Seite), status geprüft/ungeprüft, stichworte}`. **Nur eigene Zusammenfassungen, Zahlen und Regeln, keine Buchabschnitte** (Urheberrecht).
@@ -347,6 +353,7 @@ Die App bietet schon Funktionen (Kaltverseifung, Tensidrechner, Dosierungsprüfu
 7. **Nutzen über den Chat hinaus:** Dieselbe Bereitschaftsprüfung speist die Qualitätsanzeige im Dashboard und den App-Guide (Funktion B: „Warum kann ich das noch nicht?“).
 
 ### Kommentare zu Abschnitt 6
+- 07.11.2026, Entwickler: Mischbarkeit nur nach Bestand; beim Erstellen neuer Rezepte darf der Bestand keine Rolle spielen, es muss mit allen fiktiven Artikeln aus dem Katalog gerechnet werden können. → 6.6 neu gefasst.
 - 07.11.2026, Entwickler: Die Seifenthematik soll der Rezept-Chat klären. Sobald ihm Werte vorliegen, kann er Funktionen ausführen, die die App schon bietet; fehlen Werte, soll er darauf hinweisen und helfen, wie und woher man sie bekommt. → eingearbeitet in 6.13; Entscheidung 5 damit erledigt.
 - 07.11.2026, Entwickler: Fehlende Zutaten sollen im Chat auf jeden Fall vorschlagbar sein (6.6); Einkaufslisten aus dem Chat mit Artikel, Menge und Lieferant (6.11); Rezept-Chats hängen als Markdown am Rezept, kein Fortsetzen; allgemeine Chats sind Wegwerf-Chats; keine Chats an Artikel (6.12). → eingearbeitet.
 
@@ -478,4 +485,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026, Entwickler: Bewertungsformular je Charge gewünscht (Nachbewertung Wochen später, mehrere Einträge); fehlende Zutaten im Chat vorschlagbar; Einkaufsliste aus dem Chat; Rechnungen digital und rückwirkend mit Rechnungsdatum; Rezept-Chat als Markdown am Rezept, allgemeine Chats Wegwerf, keine Chats an Artikel. Eingearbeitet in 3.10, 5.5, 6.6, 6.11, 6.12.
 - 07.11.2026, Entwickler: Vertrauensstufen für KI-Werte festgelegt (KI höchstens Stufe 1, Übernahme durch den Nutzer Stufe 2, Bestätigung Stufe 3 als Siegel; verifiziert erst nach Prüfung und Bestätigung durch den Nutzer) → 1.7. Branch `ohne-ki` als Rückfallstand angelegt (Commit 788a9d5); es wird zunächst auf main weitergearbeitet, ein KI-Branch mit eigener Datenbank folgt, sobald KI-Code entsteht → 8.1, 8.3.
 - 07.11.2026, Entwickler: Seifenart wird nicht vorab festgelegt; der Rezept-Chat prüft die Datenlage, weist auf fehlende Werte hin und hilft bei Beschaffung (6.13).
+- 07.11.2026, Entwickler: Mischbarkeit wird nach Bestand beurteilt; beim Erstellen neuer Rezepte spielt der Bestand keine Rolle, es muss mit allen fiktiven Katalogartikeln gerechnet werden können → 6.6 neu gefasst (auch 2.5, 6.2, 1.3).
 - Finales Go: offen.
