@@ -110,3 +110,6 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 
 
 - Auffälligkeiten: `ausData()` in js35.js ist rein lesend und die Grundlage, die die KI später nur erklärt. Neue Regeln dort ergänzen und in t103 absichern. Optionales Feld `S.ausTol` (Toleranz Einwaage in g).
+
+
+- Rechnungen: Preise gehen als `bezug` mit `datum` = Rechnungsdatum und `src` in den Preisverlauf, der Bestand bleibt unberührt. Erfasste Rechnungen stehen in `S.inv` (Doppelerkennung). Vor jedem Senden an die KI läuft `kiFilter` (js37.js); neue Sendewege müssen ihn benutzen und dem Nutzer den Text zeigen.

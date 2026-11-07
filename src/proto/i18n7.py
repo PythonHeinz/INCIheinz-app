@@ -1073,3 +1073,30 @@ for _p,_e,_s in [
 N7.update({"Foto mit KI lesen":("Read photo with AI","Leer foto con IA"),"Aus Galerie mit KI":("From gallery with AI","De la galería con IA"),"Die KI liest das Foto …":("The AI is reading the photo …","La IA está leyendo la foto …"),
 "Das Foto wird verkleinert an den KI-Anbieter gesendet und nicht gespeichert.":("The photo is sent to the AI provider in reduced size and is not stored.","La foto se envía reducida al proveedor de IA y no se guarda."),
 "Aus Foto/Handschrift erfasst, bitte prüfen.":("Captured from photo/handwriting, please check.","Registrado desde foto/escritura a mano, por favor revisa.")})
+
+N7.update({"Das wird gesendet":("This is being sent","Esto se enviará"),"Geprüft wird nur dieser Text. Er geht an den KI-Anbieter.":("Only this text is checked. It goes to the AI provider.","Solo se revisa este texto. Se envía al proveedor de IA."),
+"An KI senden":("Send to AI","Enviar a la IA"),"Es ist kein Text zum Senden da.":("There is no text to send.","No hay texto para enviar."),
+"Zeilen mit Adresse, Konto, Telefon, Mail und Kundendaten sind entfernt. Du kannst den Text noch ändern.":("Lines with address, account, phone, mail and customer data are removed. You can still edit the text.","Se eliminaron las líneas con dirección, cuenta, teléfono, correo y datos de cliente. Aún puedes editar el texto."),
+"Bitte zuerst den Text der Produktseite einfügen.":("Please paste the text of the product page first.","Pega primero el texto de la página del producto."),
+"Rechnung einlesen":("Read invoice","Leer factura"),"Preise mit Rechnungsdatum eintragen":("Enter prices with the invoice date","Introducir precios con la fecha de la factura"),
+"Trage Preise aus einer Rechnung mit dem Rechnungsdatum in den Preisverlauf ein, auch von älteren Rechnungen. Der Bestand ändert sich dabei nicht. Füge den Rechnungstext ein oder lies ein Foto lokal mit der Texterkennung. Vor dem Senden siehst du, was an die KI geht.":("Enter prices from an invoice into the price history with the invoice date, including older invoices. Stock does not change. Paste the invoice text or read a photo locally with text recognition. Before sending you see what goes to the AI.","Introduce precios de una factura en el historial con la fecha de la factura, también de facturas antiguas. Las existencias no cambian. Pega el texto de la factura o lee una foto localmente con reconocimiento de texto. Antes de enviar ves qué se envía a la IA."),
+"Rechnungstext":("Invoice text","Texto de la factura"),"Oder Textdatei öffnen":("Or open a text file","O abrir un archivo de texto"),
+"Bitte zuerst den Rechnungstext einfügen oder ein Foto lesen lassen.":("Please paste the invoice text first or have a photo read.","Pega primero el texto de la factura o lee una foto."),
+"Name, Adresse, Konto und Kundendaten bleiben auf deinem Gerät. Geprüft werden nur Positionen, Preise, Datum, Lieferant und Rechnungsnummer.":("Name, address, account and customer data stay on your device. Only items, prices, date, supplier and invoice number are checked.","Nombre, dirección, cuenta y datos de cliente se quedan en tu dispositivo. Solo se revisan posiciones, precios, fecha, proveedor y número de factura."),
+"Diese Rechnung wurde schon eingelesen. Wähle „Trotzdem eintragen“, wenn du sie noch einmal eintragen willst.":("This invoice has already been read. Choose “Enter anyway” if you want to enter it again.","Esta factura ya se leyó. Elige «Introducir de todos modos» si quieres introducirla otra vez."),
+"Trotzdem eintragen":("Enter anyway","Introducir de todos modos"),"ändern":("change","cambiar"),
+"Nicht auf Artikelpreise umgelegt":("Not spread over item prices","No repartido en los precios de artículos"),
+"Der Bestand wird nicht verändert. Positionen ohne Lagerartikel werden nicht eingetragen.":("Stock is not changed. Items without a stock article are not entered.","Las existencias no cambian. Las posiciones sin artículo de almacén no se introducen."),
+"Preise eintragen":("Enter prices","Introducir precios"),
+"Ohne Rechnungsdatum kann kein Preis eingetragen werden.":("Without an invoice date no price can be entered.","Sin fecha de factura no se puede introducir ningún precio."),
+"Diese Rechnung ist schon erfasst.":("This invoice has already been recorded.","Esta factura ya está registrada."),
+"Es ist keine Position zum Eintragen gewählt.":("No item is selected for entry.","No hay ninguna posición seleccionada."),
+"Im Bild wurde kein Text erkannt.":("No text was recognised in the image.","No se reconoció texto en la imagen."),
+"nicht im Lager":("not in stock list","no está en el almacén"),"sicher":("certain","seguro"),"bitte prüfen":("please check","por favor revisa"),
+"Einheit passt nicht zum Rohstoff":("Unit does not match the raw material","La unidad no coincide con la materia prima")})
+for _p,_e,_s in [
+(r"^(\d+) von (\d+) Zeilen werden gesendet\. Zeilen mit Adresse, Konto, Telefon, Mail und Kundendaten sind entfernt\. Du kannst den Text noch ändern\.$","\\1 of \\2 lines are sent. Lines with address, account, phone, mail and customer data are removed. You can still edit the text.","Se envían \\1 de \\2 líneas. Se eliminaron las líneas con dirección, cuenta, teléfono, correo y datos de cliente. Aún puedes editar el texto."),
+(r"^Versandkosten: (.+) · Rabatt: (.+)$","Shipping: \\1 · Discount: \\2","Envío: \\1 · Descuento: \\2"),
+(r"^(\d+) Preise? eingetragen$","\\1 price(s) entered","\\1 precio(s) introducido(s)"),
+(r"^Rechnungsdatum fehlt oder ist unplausibel$","Invoice date missing or implausible","Falta la fecha de la factura o no es plausible")]:
+    P7.append((_p,_e,_s))

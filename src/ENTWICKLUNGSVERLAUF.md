@@ -323,3 +323,12 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Im Rezept-Import erscheinen "Mit KI genauer lesen", "Foto mit KI lesen", "Aus Galerie mit KI", nur bei freigeschalteter KI. Gesendet wird nur der Rezepttext bzw. das verkleinerte Foto (max. 1600 px), das Foto liegt nur im Arbeitsspeicher und wird danach verworfen.
 - Zutaten ordnet die App lokal zu (rziMatch, wie bisher). Der Prüfer verwirft Aussagen mit Wirk- oder Gesundheitsversprechen, markiert unklare Einheiten (TL, EL, Teile), ml ohne Dichte, Prozent ohne Ausbeute und eine abweichende Summe. Ergebnis immer erst in der Vorschau, dann Editor, dann Speichern. Am Rezept steht der Hinweis "Aus Text mit KI erfasst" bzw. "Aus Foto/Handschrift erfasst".
 - Offen: Qualität mit dem echten Modell prüfen (erst nach "Schlüssel prüfen").
+
+
+## KI A3, A4 und EAN: Produktseite, Rechnungen (07.11.2026)
+- Neu: proto/js37.js, Test t105 (simulierte KI-Antwort), EN/ES in i18n7.py.
+- EAN aus Rohtext (ohne KI): eanOk (Prüfziffer, 8/12/13 Stellen), eanFind; parseProduct übernimmt eine eindeutige 13-stellige EAN auch ohne Stichwort. Die Vorfilterung behält Zeilen mit EAN.
+- Lokale Vorfilterung kiFilter: entfernt Zeilen mit IBAN, Konto, Telefon, Mail, Web, Kundennummer, Adresse (PLZ Ort, Straße Nr.), Steuer- und Firmenangaben; bei Rechnungen bleiben nur Zeilen mit Ziffern oder Schlüsselwörtern und die ersten zwei Zeilen (Lieferantenname). Der Nutzer sieht den zu sendenden Text vor dem Senden und kann ihn ändern.
+- A3: "Mit KI genauer lesen" in "Aus Produktseite übernehmen", Ergebnis läuft durch die vorhandene Vorschau (prodPrev/prodApply). INCI bleibt "ungeprüft".
+- A4: Mehr › Rechnung einlesen (nur bei KI): Text einfügen, Textdatei oder Foto lokal per OCR. Preise werden mit dem Rechnungsdatum als Bezug eingetragen (Feld src "aus Rechnung ... vom ..."). Bestand wird nicht verändert (Option "Bestand buchen" ist bewusst noch nicht gebaut). Versand und Rabatt werden getrennt gezeigt. Doppelte Rechnungen (Lieferant, Nummer, Datum) werden erkannt (neues optionales Feld S.inv). Positionen ohne Lagerartikel oder mit nicht passender Einheit werden nicht vorausgewählt.
+- Offen: Qualität mit dem echten Modell prüfen; PDF-Text direkt lesen (bisher Text kopieren oder Foto/Screenshot per OCR); "Bestand buchen" für aktuelle Lieferungen.
