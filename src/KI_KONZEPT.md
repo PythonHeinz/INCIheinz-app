@@ -326,7 +326,7 @@ Vor jeder Änderung wird der heutige, getestete Stand eingefroren:
 - Offline-Kopie im Projektordner: `INCI-App-Projekt/archiv/ohne-ki-2026-11-07/` mit gebautem Stand und Commit-Nummer,
 - Zeile in `STAND.md` und `INDEX.md`.
 Dieser Stand wird nie überschrieben und ist jederzeit als Notbremse nutzbar.
-**Status 07.11.2026:** Tag und Offline-Kopie angelegt (siehe Beschlussprotokoll); GitHub-Release steht noch aus.
+**Status 07.11.2026:** Der Stand ist Commit 788a9d5 (main, vor diesem Konzept). Der Tag `ohne-ki-2026-11-07` existiert nur lokal, das Hochladen von Tags wurde von der Umgebung abgelehnt (HTTP 403). Als Ersatz bietet sich ein Branch `ohne-ki` auf 788a9d5 oder ein von Hand auf GitHub angelegter Tag/Release an. Entscheidung offen; bis dahin ist 788a9d5 in der Historie von main jederzeit auffindbar.
 
 ### 8.2 Warum nicht einfach auf main weiterarbeiten
 GitHub Pages liefert main aus, die installierten PWAs (deine und die deiner Freundin) holen sich Updates selbst. Jeder Push erreicht damit sofort den **echten Test**. Außerdem liegen alle Daten in einer Datenbank pro Adresse (`inciheinz-proto`); eine zweite Fassung unter derselben Adresse würde dieselben Echtdaten verwenden.
@@ -393,6 +393,7 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 | 1 | Benennung der Stufen für bestätigte KI-Werte (1.7) | offen |
 | 2 | Bewertungsformular je Charge vor dem Start der Erfassung (5.5) | offen |
 | 3 | KI-Testfassung: Branch plus Unterordner `ki/` oder eigenes Repo (8.3) | offen |
+| 10 | Rückfallstand als Branch `ohne-ki` oder von Hand angelegter Tag/Release (8.1) | offen |
 | 4 | Originalfoto beim Rezeptimport standardmäßig behalten (3.8) | offen |
 | 5 | Seifenarten zuerst (6.10) | offen |
 | 6 | Chatverlauf speichern oder nur Sitzung (6.10) | offen |
@@ -409,5 +410,5 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und Beschluss ein. Nach dem finalen „Go“ steht hier die Freigabe mit Datum.
 - 07.11.2026: Konzept in Abschnitten begonnen; Kommentar zu Abschnitt 1 eingearbeitet (1.7).
 - 07.11.2026: Landkarte `APP_LANDKARTE.md` als Erstentwurf aus der laufenden App erzeugt (Lücken in Abschnitt 10 der Landkarte).
-- 07.11.2026: Rückfallstand `ohne-ki-2026-11-07` auf Commit 788a9d5 als Tag angelegt (auf Wunsch des Entwicklers, Versionierung).
+- 07.11.2026: Rückfallstand: Tag `ohne-ki-2026-11-07` auf Commit 788a9d5 lokal angelegt, Push des Tags abgelehnt (403). Ersatz offen (Branch `ohne-ki` oder Tag/Release von Hand auf GitHub).
 - Finales Go: offen.
