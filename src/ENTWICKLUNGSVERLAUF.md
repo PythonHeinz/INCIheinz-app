@@ -396,3 +396,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Zahlen und Datum je Dokumentsprache (07.11.2026)
 - rzCardHtml und rzTextOf laufen bei gesetztem DOCL unter withLang, dadurch folgen Dezimal- und Tausendertrennzeichen und Datum (nf, dde, rzIv) der Dokumentsprache. patch4.py: dde nutzt jetzt LOC statt fest de-DE (wirkt auch in der App-Oberfläche je Sprache). Textexport übersetzt die Zeile „Version n · Datum“.
+
+## Übersetzung als Arbeitstext übernehmen (07.11.2026)
+- Übersetzungsblatt: Knopf „Als Arbeitstext übernehmen“ (trAdoptAsk/trAdoptGo in js43.js). Erzeugt eine neue Version, in der Name, Zweck, Phasennamen, freie Zutaten und Ablauftexte in der gewählten Sprache stehen (d.lang = diese Sprache, d.olang = bisherige Originalsprache). Die alte Version bleibt. Das Original wandert als Quelle in den Übersetzungsspeicher (Schlüssel = neuer Text, Eintrag in der Originalsprache, Status „von dir“), so erscheint es bei App-Sprache = Original. Texte ohne Übersetzung bleiben im Original. Rezeptansicht und Blatt zeigen „Originalsprache“ aus d.olang.
+- Test t115. Offen: einzelne Übersetzungen als „geprüft“ bestätigen; Mischsprachen in KI-Feldern Name/Zweck prüfen.

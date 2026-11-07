@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,300));const r={};S.items=[];S.rez=[];S.chg=[];S.mut='de';S.expert=true;
+S.tm={'Heated water phase':{src:'en',de:'Erhitzte Wasserphase',st:{de:'ki'}},'Stir until uniform.':{src:'en',de:'Bis zur Gleichmäßigkeit rühren.',st:{de:'ki'}},'Body Lotion':{src:'en',de:'Bodylotion',st:{de:'ki'}}};
+const d={name:'Body Lotion KI erfasst',lang:'en',zweck:'Body Lotion',ph:'',ergibt:100,zeit:'',grad:'',phasen:[{id:'p',typ:'',name:'Heated water phase',z:[{id:'z1',name:'free thing',g:10}]}],mod:[{t:'schritt',titel:'',text:'Stir until uniform.'},{t:'hinweis',titel:'',text:'Untranslated note'}]};
+S.rez.push({id:'r1',created:new Date().toISOString(),vers:[{n:1,date:new Date().toISOString(),note:'',diff:[],d,from:0,st:''}]});
+sheetRzTr('r1','de');await W();r.btn=/Als Arbeitstext übernehmen/.test(document.getElementById('sheet').innerText);
+trAdoptAsk();await W();r.ask=/2 von|3 von|4 von/.test(document.getElementById('sheet').innerText)&&document.getElementById('sheet').innerText.split('\n').filter(x=>/Texten haben/.test(x))[0];
+trAdoptGo();await W();const rez=rzGet('r1');r.nv=rez.vers.length;const v=rzCurV(rez).d;r.d=JSON.stringify({name:v.name,lang:v.lang,olang:v.olang,zweck:v.zweck,ph:v.phasen[0].name,s:v.mod[0].text,n:v.mod[1].text});r.old=rez.vers[0].d.phasen[0].name+'|'+rez.vers[0].d.lang;
+rzOpen('r1');await W();r.view=/Originalsprache:\s*Englisch/i.test(document.getElementById('main').innerText);
+setLang('en');await W();r.en=document.getElementById('main').innerText.includes('Heated water phase');setLang('de');await W();
+sheetRzTr('r1','en');await W();r.enTab=/Originalsprache:\s*Englisch/i.test(document.getElementById('sheet').innerText);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();
