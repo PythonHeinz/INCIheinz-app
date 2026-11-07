@@ -316,3 +316,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Daten werden nur gelesen. S.ausTol (Toleranz) ist ein neues optionales Feld.
 - Hinweis: In einer frischen App liegen Beispielrohstoffe mit Preisen; sie erzeugen eigene Hinweise (Lieferantenwechsel). Der Test leert deshalb vorher.
 - Offen: nächste Stufe A Erfassen (A1/A2 Rezepte aus Text, dann Foto/Handschrift).
+
+
+## KI A1 und A2: Rezept aus Text, Foto und Handschrift (07.11.2026)
+- Neu: proto/js36.js (kiRezCheck als Prüfer, rzKiRun, rzKiPhotoRun), kiJson und Optionen json/image in js33.js, Test t104 mit simulierter KI-Antwort.
+- Im Rezept-Import erscheinen "Mit KI genauer lesen", "Foto mit KI lesen", "Aus Galerie mit KI", nur bei freigeschalteter KI. Gesendet wird nur der Rezepttext bzw. das verkleinerte Foto (max. 1600 px), das Foto liegt nur im Arbeitsspeicher und wird danach verworfen.
+- Zutaten ordnet die App lokal zu (rziMatch, wie bisher). Der Prüfer verwirft Aussagen mit Wirk- oder Gesundheitsversprechen, markiert unklare Einheiten (TL, EL, Teile), ml ohne Dichte, Prozent ohne Ausbeute und eine abweichende Summe. Ergebnis immer erst in der Vorschau, dann Editor, dann Speichern. Am Rezept steht der Hinweis "Aus Text mit KI erfasst" bzw. "Aus Foto/Handschrift erfasst".
+- Offen: Qualität mit dem echten Modell prüfen (erst nach "Schlüssel prüfen").

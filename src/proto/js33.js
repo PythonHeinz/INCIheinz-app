@@ -9,17 +9,18 @@ const kiCfg=()=>{try{return JSON.parse(kiLs(KI_CFG)||'{}')}catch(e){return {}}};
 const kiModel=()=>(kiCfg().model||KI_MODEL);
 const kiOn=()=>!!(kiLs(KI_KEY)&&kiCfg().ok);
 function kiErr(code,status){const e=new Error(code);e.status=status;return e}
-async function kiRaw(key,model,system,user){
-if(window.KI_MOCK)return window.KI_MOCK(system,user,model);
-if(String(system).length+String(user).length>KI_MAXIN)throw kiErr('zu-lang');
+async function kiRaw(key,model,system,user,opts){
+if(window.KI_MOCK)return window.KI_MOCK(system,user,model,opts);
+if(String(system).length+String(user).length>KI_MAXIN||(opts&&opts.image&&opts.image.data.length>6e6))throw kiErr('zu-lang');
 const ac=new AbortController();const to=setTimeout(()=>ac.abort(),40000);
-try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:user}]}]})});
+try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(Object.assign({systemInstruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:user}].concat(opts&&opts.image?[{inlineData:{mimeType:opts.image.mime,data:opts.image.data}}]:[])}]},opts&&opts.json?{generationConfig:{responseMimeType:'application/json'}}:{}))});
 if(!r.ok)throw kiErr(r.status===400||r.status===403?'key':r.status===404?'modell':r.status===429?'limit':'dienst',r.status);
 const j=await r.json();const p=((j.candidates||[])[0]||{}).content;const t=((p&&p.parts)||[]).map(x=>x.text||'').join('').trim();if(!t)throw kiErr('leer');return t}
 catch(e){if(e.name==='AbortError')throw kiErr('zeit');if(e.message&&e.status)throw e;throw kiErr('netz')}finally{clearTimeout(to)}}
 /* Einziger Weg zur KI. Wirft 'aus', wenn KI nicht freigeschaltet ist. */
-async function kiCall(system,user){if(!kiOn())throw kiErr('aus');return kiRaw(kiLs(KI_KEY),kiModel(),system,user)}
-const kiErrText=e=>({aus:'KI ist ausgeschaltet.',key:'Der Schlüssel wurde nicht akzeptiert.',modell:'Das Modell wurde nicht gefunden. Prüfe den Modellnamen.',limit:'Das Limit ist erreicht. Versuche es später noch einmal.',dienst:'Der Dienst antwortet gerade nicht.',leer:'Es kam keine Antwort.',zeit:'Zeitüberschreitung. Bist du online?',netz:'Keine Verbindung. Bist du online?','zu-lang':'Die Anfrage ist zu lang.'}[e&&e.message]||'Es ging etwas schief.');
+async function kiCall(system,user,opts){if(!kiOn())throw kiErr('aus');return kiRaw(kiLs(KI_KEY),kiModel(),system,user,opts)}
+function kiJson(t){let s=String(t||'').trim().replace(/^```(?:json)?/i,'').replace(/```$/,'').trim();try{return JSON.parse(s)}catch(e){const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a){try{return JSON.parse(s.slice(a,b+1))}catch(e2){}}}throw kiErr('format')}
+const kiErrText=e=>({aus:'KI ist ausgeschaltet.',key:'Der Schlüssel wurde nicht akzeptiert.',modell:'Das Modell wurde nicht gefunden. Prüfe den Modellnamen.',limit:'Das Limit ist erreicht. Versuche es später noch einmal.',dienst:'Der Dienst antwortet gerade nicht.',leer:'Es kam keine Antwort.',zeit:'Zeitüberschreitung. Bist du online?',netz:'Keine Verbindung. Bist du online?','zu-lang':'Die Anfrage ist zu lang.',format:'Die Antwort der KI war nicht lesbar. Versuche es noch einmal.',pruef:'Die Antwort der KI passt nicht zu einem Rezept. Es wurde nichts übernommen.'}[e&&e.message]||'Es ging etwas schief.');
 function rowKI(){return rowH(['flask','KI-Funktionen',kiOn()?'An · '+esc(kiModel()):'Aus',"sheetKI()"])}
 function kiRow(){return rowKI()}
 function sheetKI(){const on=kiOn();const has=!!kiLs(KI_KEY);

@@ -1054,3 +1054,22 @@ for _p,_e,_s in [
 (r"^(.+) ist abgelaufen$","\\1 has expired","\\1 está caducado"),
 (r"^MHD (.+)$","Best before \\1","Caducidad \\1")]:
     P7.append((_p,_e,_s))
+
+N7.update({"Mit KI genauer lesen":("Read more precisely with AI","Leer con más precisión con IA"),"Die KI liest …":("The AI is reading …","La IA está leyendo …"),
+"Der Text geht dafür an den KI-Anbieter. Du siehst vorher eine Vorschau.":("For this the text goes to the AI provider. You see a preview first.","Para ello el texto se envía al proveedor de IA. Antes ves una vista previa."),
+"Von der KI vorgeschlagen, noch nicht geprüft. Prüfe Zutaten und Mengen, bevor du speicherst.":("Suggested by the AI, not yet checked. Check ingredients and amounts before you save.","Propuesto por la IA, aún sin revisar. Revisa ingredientes y cantidades antes de guardar."),
+"Aus Text mit KI erfasst, bitte prüfen.":("Captured from text with AI, please check.","Registrado desde texto con IA, por favor revisa."),
+"Der Text ist zu lang (mehr als 8000 Zeichen). Teile ihn auf.":("The text is too long (more than 8000 characters). Split it up.","El texto es demasiado largo (más de 8000 caracteres). Divídelo."),
+"Die Antwort der KI war nicht lesbar. Versuche es noch einmal.":("The AI's answer was not readable. Try again.","La respuesta de la IA no era legible. Inténtalo de nuevo."),
+"Die Antwort der KI passt nicht zu einem Rezept. Es wurde nichts übernommen.":("The AI's answer does not fit a recipe. Nothing was adopted.","La respuesta de la IA no encaja con una receta. No se aceptó nada.")})
+for _p,_e,_s in [
+(r"^(.+): Menge fehlt$","\\1: amount missing","\\1: falta la cantidad"),
+(r"^(.+): Menge unklar \((.+)\)$","\\1: amount unclear (\\2)","\\1: cantidad poco clara (\\2)"),
+(r"^(.+): Prozent auf 100 g bezogen$","\\1: percent based on 100 g","\\1: porcentaje sobre 100 g"),
+(r"^Summe der Zutaten \((.+) g\) weicht von der Ausbeute \((.+) g\) ab$","Sum of ingredients (\\1 g) differs from the yield (\\2 g)","La suma de ingredientes (\\1 g) difiere del rendimiento (\\2 g)"),
+(r"^Aussage ohne Beleg entfernt: (.+)$","Unsupported claim removed: \\1","Afirmación sin prueba eliminada: \\1")]:
+    P7.append((_p,_e,_s))
+
+N7.update({"Foto mit KI lesen":("Read photo with AI","Leer foto con IA"),"Aus Galerie mit KI":("From gallery with AI","De la galería con IA"),"Die KI liest das Foto …":("The AI is reading the photo …","La IA está leyendo la foto …"),
+"Das Foto wird verkleinert an den KI-Anbieter gesendet und nicht gespeichert.":("The photo is sent to the AI provider in reduced size and is not stored.","La foto se envía reducida al proveedor de IA y no se guarda."),
+"Aus Foto/Handschrift erfasst, bitte prüfen.":("Captured from photo/handwriting, please check.","Registrado desde foto/escritura a mano, por favor revisa.")})
