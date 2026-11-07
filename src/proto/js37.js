@@ -34,7 +34,7 @@ Regeln: Zahlen und INCI-Bezeichnungen wörtlich übernehmen, nichts erfinden, ni
 let KI_SEND=null;
 function kiSendStep(title,hint,f,onSend,onBack){KI_SEND={onSend};openSheet(`<h2>${title}</h2><div class="s" style="margin-bottom:6px;line-height:1.5">${hint}</div><div class="s" style="margin-bottom:6px">${f.kept} von ${f.total} Zeilen werden gesendet. Zeilen mit Adresse, Konto, Telefon, Mail und Kundendaten sind entfernt. Du kannst den Text noch ändern.</div><textarea id="kisend" rows="9" style="width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;font-size:.82rem">${esc(f.text)}</textarea><div class="err" id="er"></div><div class="btns"><button class="btn" id="kisb" onclick="kiSendGo()">An KI senden</button><button class="btn sec" onclick="${onBack}">Zurück</button></div>`)}
 async function kiSendGo(){if(!KI_SEND||KI_BUSY)return;const t=val('kisend').trim();const e=document.getElementById('er');if(!t){if(e)e.textContent='Es ist kein Text zum Senden da.';return}
-KI_BUSY=true;const b=document.getElementById('kisb');if(b){b.disabled=true;b.textContent='Die KI liest …'}
+KI_BUSY=true;const b=document.getElementById('kisb');if(b){b.disabled=true;b.textContent='Die KI liest … (bis 30 s)'}
 try{await KI_SEND.onSend(t);KI_BUSY=false}catch(x){KI_BUSY=false;const e2=document.getElementById('er');if(e2)e2.textContent=kiErrText(x);const b2=document.getElementById('kisb');if(b2){b2.disabled=false;b2.textContent='An KI senden'}}}
 (function(){const o=sheetProduct;sheetProduct=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(!s)return;s.insertAdjacentHTML('beforeend',`<div class="btns" style="margin-top:8px"><button class="btn sec" onclick="prodKiStep()">Mit KI genauer lesen</button></div>`)}})();
 function prodKiStep(){const t=val('pt');if(!t.trim()){const e=document.getElementById('er');if(e)e.textContent='Bitte zuerst den Text der Produktseite einfügen.';return}const f=kiFilter(t,'prod');
@@ -79,7 +79,7 @@ const lief=r.lief||'Rechnung';const snap=JSON.stringify(S);let n=0;INV.rows.forE
 it.bezug.push({id:uid(),lief,nr:'',preis:x.p.preis,menge:x.p.m,kind:x.p.kind,datum:r.datum,src:'aus Rechnung'+(r.nr?' '+r.nr:'')+' vom '+r.datum});n++});
 if(!n){$('#er').textContent='Es ist keine Position zum Eintragen gewählt.';return}
 (S.inv=S.inv||[]).push({lief:r.lief,nr:r.nr,datum:r.datum,versand:r.versand,rabatt:r.rabatt,n,added:today()});adoptLief();save();closeSheet();undoOffer('Preise aus Rechnung',snap,JSON.stringify(S),true);toast(n+(n===1?' Preis eingetragen':' Preise eingetragen'))}
-(function(){const o=sheetMehr;sheetMehr=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(s)s.insertAdjacentHTML('beforeend',rowH(['import','Rechnung einlesen','Preise mit Rechnungsdatum eintragen',"sheetInv()"]))}})();
+(function(){const o=sheetMehr;sheetMehr=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(s)s.insertAdjacentHTML('beforeend',rowH(['import','Rezept importieren','Aus Webseite, Text oder Foto',"sheetRzImport()"])+rowH(['import','Rechnung importieren','Preise mit Rechnungsdatum eintragen',"sheetInv()"]))}})();
 
 function invAll(on){document.querySelectorAll('[id^=inv_]').forEach(e=>{if(!e.disabled)e.checked=on})}
 function invNewItem(p){const nm=String(p.bez||'').replace(/[,;]?\s*\d+(?:[.,]\d+)?\s*(?:ml|g|kg|l|liter|stück|stk)\b.*$/i,'').replace(/\s+/g,' ').trim()||String(p.bez||'').trim();if(!nm)return null;

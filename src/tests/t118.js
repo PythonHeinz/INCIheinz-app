@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,350));const r={};S.expert=true;
+localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));
+sheetMehr();await W();let t=document.getElementById('sheet').innerText;r.lagerKI=[/Rezept importieren/.test(t),/Rechnung importieren/.test(t),/Rezept-Chat/.test(t)];
+closeSheet();sheetImport();await W();r.lagerImport=/Rechnung importieren/.test(document.getElementById('sheet').innerText);
+closeSheet();tab('rez');await W();sheetMehr();await W();t=document.getElementById('sheet').innerText;r.rezKI=[/Rezept importieren/.test(t),/Rechnung importieren/.test(t),/Rezepte übersetzen/.test(t)];
+closeSheet();tab('lager');await W();sheetRzImport('Testrezept\nZutaten\n10 g Olivenöl');await W();r.imp=/Rezept/i.test(document.getElementById('sheet').innerText);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

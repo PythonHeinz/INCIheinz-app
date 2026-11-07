@@ -30,7 +30,7 @@ return {d,warn,ing,lang:/^[a-z]{2}$/.test(String(o.sprache||'').toLowerCase())?S
 let KI_RZ_BUSY=false;
 async function rzKiRun(){if(KI_RZ_BUSY)return;const t=val('rzit');const e=document.getElementById('er');if(!t.trim()){if(e)e.textContent='Bitte zuerst Text einfügen oder ein Foto lesen lassen.';return}
 if(t.length>40000){if(e){e.textContent='Der Text ist zu lang (mehr als 40000 Zeichen). Kopiere nur den Teil mit dem Rezept.';e.scrollIntoView({block:'center'})}return}
-KI_RZ_BUSY=true;const b=document.getElementById('rzkib');if(b){b.disabled=true;b.textContent='Die KI liest …'}if(e)e.textContent='';
+KI_RZ_BUSY=true;const b=document.getElementById('rzkib');if(b){b.disabled=true;b.textContent='Die KI liest … (bis 30 s)'}if(e)e.textContent='';
 try{const raw=await kiCall(KI_RZ_SYS+' Der Text kann von einer Webseite kopiert sein und Menüs, Werbung, Kommentare oder Cookie-Hinweise enthalten. Lies nur das eine Rezept heraus und ignoriere den Rest.','<text>\n'+t+'\n</text>',{json:true});const r=kiRezCheck(kiJson(raw));r.ki=true;await rzKiLok(r);RZIM=r;KI_RZ_BUSY=false;rzImportPrev(t)}
 catch(x){KI_RZ_BUSY=false;const e2=document.getElementById('er');if(e2){e2.textContent=kiErrText(x);e2.scrollIntoView({block:'center'})}const b2=document.getElementById('rzkib');if(b2){b2.disabled=false;b2.textContent='Mit KI genauer lesen'}}}
 (function(){const o=sheetRzImport;sheetRzImport=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(!s)return;

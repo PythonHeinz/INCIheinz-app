@@ -408,3 +408,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Orientierung in Fenstern (07.11.2026)
 - Zurück-Pfeil (.bk) steht auf Höhe des Titels, der Titel rückt ein (CSS in js44.js). Herunterziehen löst kein Neuladen mehr aus (overscroll-behavior). Tippen neben ein Fenster mit Eingaben (Textfelder mit Inhalt) schließt es nicht mehr, Hinweis „Zum Schließen nutze das X“. Texte in Rezeptimport (rzit), Rechnung (invt) und Produktseite (pt) werden als Entwurf bis eine Stunde im Gerät gehalten und beim nächsten Öffnen wiederhergestellt; Löschen bei X, Übernahme, Speichern. Test t117.
 - Offen: einheitliche Fensterkopfzeile (Pfeil, Titel, X) für alle Blätter; Android-Zurück-Geste schließt weiterhin das Fenster.
+
+## KI-Menü und Import-Zugänge (07.11.2026)
+- Mehr › KI (Lager und Rezeptbuch): App-Guide, Rezept importieren, Rechnung importieren, Rezept-Chat (im Rezeptbuch zusätzlich Rezepte übersetzen). Lager › Import hat zusätzlich „Mit KI › Rechnung importieren“; Rezeptbuch › Import bleibt der Rezeptimport. Test t118.
+- KI-Meldungen bei Zeitüberschreitung/Verbindungsabbruch raten zum Bleiben in der App (wechselt man die App, bricht der Browser die Anfrage ab); Schaltfläche zeigt „Die KI liest … (bis 30 s)“.
