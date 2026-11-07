@@ -1061,7 +1061,7 @@ N7.update({"Mit KI genauer lesen":("Read more precisely with AI","Leer con más 
 "Aus Text mit KI erfasst, bitte prüfen.":("Captured from text with AI, please check.","Registrado desde texto con IA, por favor revisa."),
 "Der Text ist zu lang (mehr als 8000 Zeichen). Teile ihn auf.":("The text is too long (more than 8000 characters). Split it up.","El texto es demasiado largo (más de 8000 caracteres). Divídelo."),
 "Die Antwort der KI war nicht lesbar. Versuche es noch einmal.":("The AI's answer was not readable. Try again.","La respuesta de la IA no era legible. Inténtalo de nuevo."),
-"Die Antwort der KI passt nicht zu einem Rezept. Es wurde nichts übernommen.":("The AI's answer does not fit a recipe. Nothing was adopted.","La respuesta de la IA no encaja con una receta. No se aceptó nada.")})
+"Die Antwort der KI passt nicht zur Aufgabe. Es wurde nichts übernommen.":("The AI's answer does not fit the task. Nothing was adopted.","La respuesta de la IA no encaja con la tarea. No se aceptó nada.")})
 for _p,_e,_s in [
 (r"^(.+): Menge fehlt$","\\1: amount missing","\\1: falta la cantidad"),
 (r"^(.+): Menge unklar \((.+)\)$","\\1: amount unclear (\\2)","\\1: cantidad poco clara (\\2)"),
@@ -1099,4 +1099,11 @@ for _p,_e,_s in [
 (r"^Versandkosten: (.+) · Rabatt: (.+)$","Shipping: \\1 · Discount: \\2","Envío: \\1 · Descuento: \\2"),
 (r"^(\d+) Preise? eingetragen$","\\1 price(s) entered","\\1 precio(s) introducido(s)"),
 (r"^Rechnungsdatum fehlt oder ist unplausibel$","Invoice date missing or implausible","Falta la fecha de la factura o no es plausible")]:
+    P7.append((_p,_e,_s))
+
+N7.update({"Mit KI erklären":("Explain with AI","Explicar con IA"),"Die KI liest die Tabelle …":("The AI is reading the table …","La IA está leyendo la tabla …"),"Neu erklären lassen":("Explain again","Explicar de nuevo"),
+"Von der KI formuliert, nicht geprüft":("Worded by the AI, not checked","Redactado por la IA, sin revisar"),"Rückfragen":("Follow-up questions","Preguntas"),"Mögliche Erklärungen":("Possible explanations","Posibles explicaciones"),
+"Gesendet werden nur die Hinweise dieser Tabelle (Rezeptnamen, Rohstoffnamen, Zahlen), keine Adressen oder Kontodaten.":("Only the entries of this table are sent (recipe names, raw material names, numbers), no addresses or account data.","Solo se envían las indicaciones de esta tabla (nombres de recetas, materias primas, cifras), sin direcciones ni datos bancarios.")})
+for _p,_e,_s in [(r"^Beleg: (.+)$","Evidence: \\1","Prueba: \\1"),(r"^Nachsehen: (.+)$","Check: \\1","Revisar: \\1"),
+(r"^(\d+) Aussagen? ohne Bezug zur Tabelle verworfen\.$","\\1 statement(s) without reference to the table discarded.","\\1 afirmación(es) sin relación con la tabla descartada(s).")]:
     P7.append((_p,_e,_s))

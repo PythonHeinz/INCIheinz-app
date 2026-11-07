@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250));const r={};
+S.expert=true;S.items=[];S.rez=[];S.chg=[];demoLoad();await W();demoKiLoad();await W();
+sheetAus();await W();r.btnOff=!!document.getElementById('auskib');
+localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));
+sheetAus();await W();r.btnOn=!!document.getElementById('auskib');
+let sent='';window.KI_MOCK=async(s,u)=>{sent=u;return JSON.stringify({zusammenfassung:[{ref:['F1'],text:'Die Handcreme wurde nach Version 2 schlechter bewertet.'},{ref:['F99'],text:'Erfundener Bezug'}],fragen:[{ref:['F1'],text:'Welche Charge war die letzte gute?'}],hypothesen:[{ref:['F1'],text:'Das neue Betain könnte die Textur verändert haben.',beleg:'ø 4,7 vor, ø 2,3 nach dem Tausch',pruefen:'Vergleiche Notizen zu körnig'},{ref:['F1'],text:'Der Tausch hat die Creme definitiv verursacht schlecht.',beleg:'x',pruefen:'y'},{ref:['F2'],text:'Das lindert Hautprobleme.',beleg:'x',pruefen:'y'}]})};
+await ausKi();await W();const t=document.getElementById('ausk').innerText;
+r.shown=/Handcreme wurde/.test(t)&&/Rückfragen/i.test(t)&&/Mögliche Erklärungen/i.test(t);r.dropNote=t.match(/\d+ Aussagen? ohne Bezug/)?.[0];r.noCausal=!/definitiv|lindert|Erfundener/.test(t);
+r.sentData=/"id":"F1"/.test(sent)&&!/IBAN|@/.test(sent);r.sentN=JSON.parse(sent.replace(/^<daten>\n|\n<\/daten>$/g,'')).length;
+window.KI_MOCK=async()=>'{"foo":1}';await ausKi();await W();r.bad=document.getElementById('ausk').innerText;
+window.KI_MOCK=async()=>{throw kiErr('limit')};await ausKi();await W();r.limit=document.getElementById('ausk').innerText;
+localStorage.removeItem('inciheinz-ki-key');localStorage.removeItem('inciheinz-ki-cfg');sheetAus();await W();r.btnOffAgain=!!document.getElementById('auskib');
+LANG='en';localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));window.KI_MOCK=async()=>JSON.stringify({zusammenfassung:[{ref:['F1'],text:'x'}]});sheetAus();await W();await ausKi();await W();r.en=document.getElementById('sheet').innerText.slice(-150);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

@@ -332,3 +332,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - A3: "Mit KI genauer lesen" in "Aus Produktseite übernehmen", Ergebnis läuft durch die vorhandene Vorschau (prodPrev/prodApply). INCI bleibt "ungeprüft".
 - A4: Mehr › Rechnung einlesen (nur bei KI): Text einfügen, Textdatei oder Foto lokal per OCR. Preise werden mit dem Rechnungsdatum als Bezug eingetragen (Feld src "aus Rechnung ... vom ..."). Bestand wird nicht verändert (Option "Bestand buchen" ist bewusst noch nicht gebaut). Versand und Rabatt werden getrennt gezeigt. Doppelte Rechnungen (Lieferant, Nummer, Datum) werden erkannt (neues optionales Feld S.inv). Positionen ohne Lagerartikel oder mit nicht passender Einheit werden nicht vorausgewählt.
 - Offen: Qualität mit dem echten Modell prüfen; PDF-Text direkt lesen (bisher Text kopieren oder Foto/Screenshot per OCR); "Bestand buchen" für aktuelle Lieferungen.
+
+
+## KI C: Auffälligkeiten erklären (07.11.2026)
+- Neu: proto/js38.js (ausKi, kiAusCheck), Test t106, Button "Mit KI erklären" unten in der Auffälligkeiten-Tabelle (nur bei KI).
+- Gesendet wird nur die Tabelle aus ausData() mit Kennungen F1, F2 … (Rezeptnamen, Rohstoffnamen, Zahlen). Der Prüfer verwirft jede Aussage ohne gültigen Bezug auf eine Kennung, mit Ursachenbehauptung (verursacht, definitiv …) oder Wirk-/Gesundheitsaussage und zeigt die Zahl der verworfenen Aussagen. Ausgabe: Zusammenfassung, Rückfragen, mögliche Erklärungen mit Beleg und "Nachsehen". Immer als "Von der KI formuliert, nicht geprüft" gekennzeichnet.
+- C2 Alternativen und Rückfragen mit Antwort-Speicherung sind noch nicht gebaut.
