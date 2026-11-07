@@ -46,18 +46,19 @@ Jede Funktion legt fest, ab welcher Rechenstufe sie sinnvoll ist (Tabelle in Abs
 ### 1.6 Abgrenzung zum Bestand
 Die App hat bereits ein Regelwerk für Import: Text-, Foto- und Datei-Import mit Bestätigung (`rzParse`, `splitMods`, OCR im Ordner `ocr/`, Rezept-Import als Text/Foto/json), den Lückenfinder und die Dosierungsprüfung. KI ersetzt diese nicht, sondern **hängt sich als zusätzliche Rechenstufe in dieselbe Bestätigungsstrecke**. Dadurch bleibt die Berührung des Grundgerüsts klein.
 
-### 1.7 Vertrauensstufen: Was als verifiziert gilt (Beschluss 07.11.2026)
-Es gelten die Validierungsstufen aus `KATALOG_ERWEITERUNG.md`. Für alles, was von der KI kommt, gilt:
-| Stufe | Bedeutung bei KI-Werten und KI-Rezepten | Wer setzt sie |
-|---|---|---|
-| **1** | KI-Vorschlag oder KI-Recherche. Mehr kann die KI nie erreichen. Der Wert steht nur in der Vorschau, **nicht** im Artikel. | KI |
-| **2** | Der Nutzer hat den Wert **übernommen**. Er steht jetzt im Artikel, ist aber weiterhin „ungeprüft“ und gekennzeichnet („aus KI-Vorschlag, übernommen“). | Nutzer (Übernehmen) |
-| **3** | Der Nutzer hat den Wert **geprüft und bestätigt** (Siegel, z. B. nach Mischen und gutem Ergebnis, Vergleich mit Etikett oder Datenblatt). Erst jetzt gilt er als verifiziert. | Nutzer (Bestätigen) |
-Folgen:
-- **Keine KI-Daten ohne Übernahme im Artikel.** Wir achten bei Katalog und Eingabe darauf, dass nur geprüfte Daten gelten; die KI darf das nicht unterlaufen. Recherche und Vorschläge bleiben in der Vorschau, bis der Nutzer übernimmt.
-- **Stufe 2 zählt nicht als verifiziert.** Qualitätsanzeige (Dashboard rot/gelb/grün), Vollständigkeit und die Gewichtung in Funktion C und D unterscheiden „ausgefüllt“ von „bestätigt“. Ein neuer Lückenfilter „KI-Werte, noch nicht bestätigt“ zeigt, was noch zu prüfen ist.
+### 1.7 Vertrauensstufen: Was als verifiziert gilt (Beschluss 07.11.2026, präzisiert)
+Es gelten die Validierungsstufen aus `KATALOG_ERWEITERUNG.md` (Stufe 1 eine Quelle, Stufe 2 zwei unabhängige Quellen, Stufe 3 vom Nutzer bestätigt). Für alles, was die KI liefert:
+| Stufe | Bedeutung | Wo sichtbar | Wer setzt sie |
+|---|---|---|---|
+| **1** | KI-Vorschlag oder KI-Recherche, **vor** der Übernahme. Mehr kann die KI allein nie erreichen. | nur in der **Vorschau** (mit Haken zum Übernehmen), nicht im Artikel | KI |
+| **2** | Der Nutzer hat den Wert mit Haken **übernommen**. Ebenso zählen Katalogwerte mit zwei unabhängigen Quellen. | **in den Eingabe- und Wertfeldern des Artikels, grau** (unbestätigt, aber mit dem der Nutzer arbeiten und rechnen kann) | Nutzer (Übernehmen) bzw. Katalog |
+| **3** | Der Nutzer hat den Wert **geprüft und bestätigt** oder selbst eingetragen bzw. überschrieben. Erst jetzt gilt er als verifiziert. | **schwarz** (Siegel) | Nutzer (Bestätigen/Überschreiben) |
+Grundsätze:
+- Übernommene KI-Werte sind sofort nutzbar (Rechner, Listen, Filter), bleiben aber **grau**, bis der Nutzer sie bestätigt oder überschreibt. Der Nutzer entscheidet selbst, welche Werte er mit Stufe 3 auszeichnet und welche grau mitgerechnet werden.
+- Grau ist die bestehende Darstellung für Vorschlagswerte (Katalog) und wird hier erweitert: grau = unbestätigt (Stufe 2), schwarz = bestätigt oder eigener Wert (Stufe 3).
+- **Stufe 2 gilt nicht als verifiziert.** Qualitätsanzeige (Dashboard rot/gelb/grün), Vollständigkeit und die Gewichtung in Funktion C und D unterscheiden „ausgefüllt“ von „bestätigt“. Ein Lückenfilter „KI-Werte, noch nicht bestätigt“ zeigt, was noch zu prüfen ist.
 - **Rezepte** laufen genauso: KI-Entwurf in der Vorschau (Stufe 1), gespeichert als „KI-Entwurf, nicht geprüft“ (Stufe 2), nach Mischen und gutem Ergebnis vom Nutzer bestätigt (Stufe 3; die App bietet den Knopf an, entscheidet aber nie selbst).
-- **Artikelwerte** bestätigt der Nutzer per Knopf nach dem Muster von „INCI als geprüft bestätigen“ (`inciConfirm`); der Dialog nennt, wo der Wert verwendet wurde und wie die Charge bewertet ist. Die Herkunft („KI, Modell, Datum“) bleibt auch nach Stufe 3 am Wert sichtbar.
+- **Bestätigen** geschieht per Knopf nach dem Muster von „INCI als geprüft bestätigen“ (`inciConfirm`); der Dialog nennt, wo der Wert verwendet wurde und wie die Charge bewertet ist. Die Herkunft („KI, Modell, Datum“) bleibt auch nach Stufe 3 am Wert sichtbar.
 - **Datenmodell (additiv):** je betroffenem Wert Stufe, Quelle, Modell und Datum (Umsetzung beim Bau; die Katalogfelder `eq`/`bq` kennen Herkunft und Validierungsstufe bereits).
 - „Stufe“ meint in diesem Papier immer diese Validierungsstufen. Die Rechenstufen heißen R0 bis R2.
 
@@ -166,7 +167,7 @@ Digitale Rechnungen (PDF, Foto, Text aus einer E-Mail, Tabelle) können jederzei
 4. **Bestand wird dabei nicht verändert** (Standard: aus). Alte Rechnungen dürfen den heutigen Lagerbestand nicht erhöhen. „Bestand buchen“ ist nur für eine aktuelle Lieferung gedacht und muss ausdrücklich gewählt werden.
 5. **Doppelte vermeiden:** Gemerkt werden Lieferant, Rechnungsnummer und Datum (additives Feld); eine schon erfasste Rechnung wird erkannt und nicht doppelt eingetragen.
 6. **Versandkosten und Rabatte:** getrennt ausweisen und nicht stillschweigend auf Artikelpreise umlegen; Positionen mit Rabatt oder Paketpreis werden als „bitte prüfen“ markiert.
-7. **Datenschutz:** Rechnungen enthalten Name, Adresse und Kundennummer. Der Dialog nennt das vor dem Senden. Vorschlag zur Datensparsamkeit: bei digitalen PDFs den Text zuerst lokal lesen, Kopf- und Adressdaten entfernen und nur die Positionszeilen an die KI geben; bei Fotos geht das Bild vollständig an den Anbieter (R2). Der Entwickler entscheidet, ob die lokale Vorstufe in Version 1 enthalten ist.
+7. **Datenschutz, lokale Vorfilterung (beschlossen 07.11.2026, Version 1):** Rechnungen enthalten Name, Adresse, Kundennummer, Bankdaten. Der Text (digitaler PDF-Text oder lokale Texterkennung, OCR) wird **lokal vorgefiltert, bevor etwas gesendet wird**: Er wird auf die wesentlichen Artikeldaten beschnitten, nämlich Bezeichnung, Menge, Einheit, Preis (Einzel und Gesamt), Datum, Lieferant, Rechnungsnummer; Gramm, Mengen und Preise bleiben natürlich erhalten. Adress-, Konto-, Telefon- und Kundendaten werden verworfen. Vor dem Senden zeigt die App, was gesendet wird. Nur bei Fotos ohne lokale Texterkennung ginge das Bild vollständig an den Anbieter (R2); das wird vorher gesagt. Dieselbe Vorstufe gilt für „Produktseite lesen“.
 8. **Das Rechnungsfoto wird wie Originalfotos nicht gespeichert** (Beschluss zu 3.3).
 
 ### Kommentare zu Abschnitt 3
@@ -310,6 +311,7 @@ Umsetzung:
 - **Inhalt:** eigene, komprimierte Wissenskarten aus der Fachliteratur und eigene Regeln, z. B. `{id, thema, aussage, quelle (Buch, Seite), status geprüft/ungeprüft, stichworte}`. **Nur eigene Zusammenfassungen, Zahlen und Regeln, keine Buchabschnitte** (Urheberrecht).
 - **Herkunft:** Auszüge aus dem Notebook des Nutzers (Neumann, Käser, Rührkunde, weitere Bücher) sowie Regeln, die der Nutzer aus Recherchen mit „Als feste Regel merken“ übernimmt.
 - **Technik:** zunächst einfache lokale Stichwortsuche; die besten Karten gehen als Kontext in die Anfrage. Ein Vektorindex ist nicht nötig, solange die Basis klein ist.
+- **Beispiel einer Wissenskarte:** Die KI recherchiert, wie man Seife besonders schaumig bekommt. Statt den Chat aufzuheben, speichert der Nutzer das Ergebnis als kleine Karte: Titel („Schaum bei Stückseife“), Aussage in eigenen Worten und Zahlen, Quelle (Buch mit Seite oder Webadresse), Datum, Stufe (1 bis 3). Beim nächsten Mal findet der Chat die Karte lokal und braucht nicht erneut zu suchen; der Nutzer kann sie ändern oder löschen.
 - **Austausch mit NotebookLM:** Der Lagerexport für NotebookLM besteht. In Gegenrichtung können Notebook-Antworten als Text eingefügt und über die Erfassungsstrecke (Funktion A) als Wissenskarten bestätigt werden.
 - **Websuche** wie 2.8: nur mit Quellen, nie automatisch zur Regel.
 
@@ -332,15 +334,15 @@ Der Nutzer sagt „setz mir die fehlenden Zutaten auf die Einkaufsliste“ oder 
 ### 6.12 Chats: was gespeichert wird und was nicht
 | Art | Behandlung |
 |---|---|
-| **Rezept-Chat** (Rezept wurde im Chat erstellt) | Der Verlauf hängt als **Markdown-Datei** am entstandenen Rezept (an der Version, die aus dem Chat entstand). Schreibgeschützt, ansehen, kopieren, exportieren, löschen. **Kein Fortsetzen.** Teil der Sicherung. |
+| **Rezept-Chat** (Rezept wurde im Chat erstellt) | Der Verlauf hängt als **Markdown-Datei** am entstandenen Rezept (an der Version, die aus dem Chat entstand). Schreibgeschützt: ansehen, kopieren, exportieren, löschen. Teil der Sicherung. **Kein offenes Fortsetzen.** Auf Wunsch lässt sich die Datei als **Ausgangstext für einen neuen Rezept-Chat** verwenden: Sie wird in einen frischen Chat gelegt (bei Länge gekürzt oder zusammengefasst). |
 | **Allgemeine Chats** (Guide, Fragen, Recherche) | **Wegwerf-Chats.** Verlauf in der Sitzung sichtbar und kopierbar; nichts wird gespeichert, nichts angehängt. |
 | **Artikel** | Es werden **keine** Chats an Artikel gehängt (beschlossen 07.11.2026). |
 Vorschläge zur Entscheidung (weitere mögliche Anhänge, bewusst klein gehalten):
-1. **Auswertungs-Chat zu einem Rezept** („Warum ist die Creme schlechter geworden?“) kann auf Wunsch als Markdown am Rezept hängen, getrennt vom Entstehungs-Chat und mit Datum.
+1. **Auswertungs-Chat zu einem Rezept** („Warum ist die Creme schlechter geworden?“) kann auf Wunsch als Markdown am Rezept hängen, getrennt vom Entstehungs-Chat und mit Datum. **Wird in der Testphase ausprobiert** (Beschluss 07.11.2026) und danach bewertet.
 2. **Chat zu einer Charge** (Nachbewertung): Statt den Chat anzuhängen, schlägt die KI eine kurze Zusammenfassung für die Notiz der Nachbewertung vor, die der Nutzer bestätigt.
 3. **Recherche mit Ergebnis** wird nicht als Chat, sondern über „Als feste Regel merken“ eine Wissenskarte (2.8, 6.7).
 4. **Einkaufs-Chat** endet in der Einkaufsliste (6.11), nicht in einem gespeicherten Chat.
-Technisch bleibt der Rezept-Chat ein Textfeld (`v.chat`, Markdown) und bläht den Zustand kaum auf.
+Technisch bleibt der Rezept-Chat ein Textfeld (`v.chat`, Markdown) und bläht den Zustand kaum auf. **Es bleiben keine Chats beim Sprachmodell offen:** Die App sendet bei jeder Antwort den bisherigen Verlauf selbst mit; ein „offenes Kontextfenster“ beim Anbieter gibt es nicht. Der Kontext wird begrenzt, indem lange Verläufe gekürzt oder zusammengefasst werden und beim Wiederaufnehmen nur der gespeicherte Text als Ausgang dient.
 
 ### 6.13 Funktionsbereitschaft und Hilfe bei fehlenden Werten (Beschluss 07.11.2026)
 Die App bietet schon Funktionen (Kaltverseifung, Tensidrechner, Dosierungsprüfung, Spreitwert-Check, Kalkulation, Rezept umrechnen), die ohne Werte am Artikel nichts oder wenig liefern. Der Chat soll das erkennen, darauf hinweisen und beim Beschaffen der Werte helfen. Damit klärt sich auch, welche Seifenarten möglich sind.
@@ -349,7 +351,7 @@ Die App bietet schon Funktionen (Kaltverseifung, Tensidrechner, Dosierungsprüfu
 3. **Der Chat erklärt die Folgen:** „Für eine feste Stückseife aus deinem Bestand fehlen bei Olivenöl, Kokosöl und Sheabutter Härte und Ranziditätsfaktor. Mit diesen drei Werten kann ich einen berechneten Vorschlag machen.“ Gleiches für andere Funktionen und Produktarten.
 4. **Der Chat hilft beim Beschaffen:** Er nennt die üblichen Quellen für den jeweiligen Wert: Datenblatt oder Händlerseite des Rohstoffs (über „Produktseite lesen“), Etikett, die Wissensbasis aus den Fachbüchern des Nutzers, bei Bedarf Recherche im Web mit Quellenangabe. Er erklärt kurz, was der Wert bedeutet und woran man ihn erkennt, ohne Messverfahren zu verlangen, die zu Hause nicht möglich sind.
 5. **Wege in den Artikel:** Gefundene Werte kommen als `vorschlag_artikelwert` in die Vorschau (Stufe 1), der Nutzer übernimmt (Stufe 2) und bestätigt später (Stufe 3). Ohne Übernahme ändert sich nichts.
-6. **Sicherheit bei Seife:** Die Laugenberechnung hängt direkt an der Verseifungszahl; ein falscher Wert macht die Seife unbrauchbar oder ätzend. Darum zeigt der Rechner bei Werten unterhalb Stufe 3 einen deutlichen Hinweis („Wert nicht bestätigt, vor dem Sieden mit Datenblatt abgleichen“); die Quelle jedes verwendeten Wertes steht in der Vorschau. Werte ohne bekannte Quelle werden nicht verwendet. Ob Stufe 2 ausreicht oder nur Stufe 3 zugelassen wird, entscheidet der Entwickler (Entscheidung 13).
+6. **Sicherheit bei Seife (beschlossen 07.11.2026):** Die Laugenberechnung hängt direkt an der Verseifungszahl; ein falscher Wert macht die Seife unbrauchbar oder ätzend. Ziel ist, dass **alle Rechner funktionieren**, damit der Nutzer sieht, mit welchem Wert gerechnet wird. Deshalb rechnet der Seifenrechner auch mit Werten der **Stufe 2** und zeigt dazu einen deutlichen Warnhinweis („Wert nicht bestätigt, vor dem Sieden mit dem Datenblatt abgleichen“). Jede Zeile nennt den verwendeten Wert, seine Stufe (grau/schwarz) und die Quelle. Fehlt ein Wert ganz, wird das Fett nicht verwendet und die Lücke genannt.
 7. **Nutzen über den Chat hinaus:** Dieselbe Bereitschaftsprüfung speist die Qualitätsanzeige im Dashboard und den App-Guide (Funktion B: „Warum kann ich das noch nicht?“).
 
 ### Kommentare zu Abschnitt 6
@@ -463,10 +465,10 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 | 10 | Rückfallstand als Branch `ohne-ki` (8.1) | erledigt 07.11.2026 |
 | 4 | Originalfoto beim Rezeptimport: nicht speichern, danach löschen (3.3, 3.8) | beschlossen 07.11.2026 |
 | 5 | Seifenart zuerst | erledigt: richtet sich nach der Datenlage über den Rezept-Chat (6.13) |
-| 13 | Laugenberechnung nur mit Stufe-3-Werten oder auch Stufe 2 mit Warnhinweis (6.13) | offen |
+| 13 | Laugenberechnung mit Stufe-2-Werten und Warnhinweis (6.13) | beschlossen 07.11.2026 |
 | 6 | Chatverlauf: Rezept-Chat als Markdown am Rezept, sonst Wegwerf (6.12) | beschlossen 07.11.2026 |
-| 11 | Rechnungen: lokale Vorstufe für Adressdaten in Version 1? Versandkosten getrennt ausweisen (3.10) | offen |
-| 12 | Weitere Chat-Anhänge laut Vorschlägen 1 bis 4 (6.12) | offen |
+| 11 | Rechnungen: lokale Vorfilterung des Rohtextes in Version 1 (3.10) | beschlossen 07.11.2026; Versandkosten getrennt ausweisen weiterhin offen |
+| 12 | Weitere Chat-Anhänge laut Vorschlägen 1 bis 4 (6.12) | Vorschlag 1 (Auswertungs-Chat) wird in der Testphase ausprobiert; 2 bis 4 offen |
 | 7 | Arbeitsregel „Landkarte im selben Commit pflegen“ in `UEBERGABE.md` (4.3) | beschlossen 07.11.2026, aufgenommen |
 | 8 | Reihenfolge 9.1 so in Ordnung | offen |
 | 9 | Anbieter und Modell für den Test (Gemini; Modellname vor dem Bau prüfen) | offen |
@@ -486,4 +488,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026, Entwickler: Vertrauensstufen für KI-Werte festgelegt (KI höchstens Stufe 1, Übernahme durch den Nutzer Stufe 2, Bestätigung Stufe 3 als Siegel; verifiziert erst nach Prüfung und Bestätigung durch den Nutzer) → 1.7. Branch `ohne-ki` als Rückfallstand angelegt (Commit 788a9d5); es wird zunächst auf main weitergearbeitet, ein KI-Branch mit eigener Datenbank folgt, sobald KI-Code entsteht → 8.1, 8.3.
 - 07.11.2026, Entwickler: Seifenart wird nicht vorab festgelegt; der Rezept-Chat prüft die Datenlage, weist auf fehlende Werte hin und hilft bei Beschaffung (6.13).
 - 07.11.2026, Entwickler: Mischbarkeit wird nach Bestand beurteilt; beim Erstellen neuer Rezepte spielt der Bestand keine Rolle, es muss mit allen fiktiven Katalogartikeln gerechnet werden können → 6.6 neu gefasst (auch 2.5, 6.2, 1.3).
+- 07.11.2026, Entwickler: Stufen präzisiert: Übernommene KI-Werte stehen grau in den Feldern (Stufe 2), bestätigte oder überschriebene schwarz (Stufe 3), Stufe 1 nur in der Vorschau (1.7). Rezept-Chat als Markdown darf als Ausgangstext eines neuen Chats dienen; keine offenen Chats beim Sprachmodell (6.12). Auswertungs-Chat in der Testphase ausprobieren. Lokale Vorfilterung des OCR-Rohtextes bei Rechnungen und Produktseiten beschlossen (3.10). Seifenrechner rechnet mit Stufe 2 und Warnhinweis, alle Rechner sollen funktionieren (6.13).
 - Finales Go: offen.
