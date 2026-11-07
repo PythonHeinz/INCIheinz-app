@@ -36,3 +36,13 @@ function kiProdSys(){const l=langName(mutL());return KI_PROD_SYS+` Sprache der A
 /* Zahlen- und Datumsformat folgen der Dokumentsprache */
 {const _c=rzCardHtml;rzCardHtml=function(id,vn,o){return DOCL?withLang(DOCL,()=>_c(id,vn,o)):_c(id,vn,o)}}
 {const _t2=rzTextOf;rzTextOf=function(id,vn){return DOCL?withLang(DOCL,()=>_t2(id,vn)):_t2(id,vn)}}
+/* Orientierung: Pfeil neben dem Titel, kein Neuladen durch Herunterziehen, Eingaben gehen nicht versehentlich verloren */
+{const st=document.createElement('style');st.textContent='html,body{overscroll-behavior-y:contain}.sheet{overscroll-behavior:contain}.sheet .bk{top:14px}.sheet .bk ~ h2{padding-left:38px}';document.head.appendChild(st)}
+function sheetDirty(){const s=document.getElementById('sheet');return !!s&&[...s.querySelectorAll('textarea:not([readonly])')].some(t=>t.value.trim().length>=3)}
+document.addEventListener('click',e=>{const t=e.target;if(t&&t.closest){if(t.closest('#dim')&&sheetDirty()){e.stopPropagation();e.preventDefault();toast('Im Fenster stehen Eingaben. Zum Schließen nutze das X.');return}if(t.closest('#sheet .x'))draftsClear()}},true);
+const DR_IDS=['rzit','invt','pt'];
+function draftsClear(){DR_IDS.forEach(id=>{try{localStorage.removeItem('inciheinz-draft-'+id)}catch(_){}})}
+document.addEventListener('input',e=>{const t=e.target;if(t&&DR_IDS.includes(t.id)){try{localStorage.setItem('inciheinz-draft-'+t.id,JSON.stringify({t:Date.now(),v:t.value}))}catch(_){}}});
+function draftRestore(){DR_IDS.forEach(id=>{const e=document.getElementById(id);if(!e||e.value.trim())return;try{const d=JSON.parse(localStorage.getItem('inciheinz-draft-'+id)||'null');if(d&&d.v&&Date.now()-d.t<36e5){e.value=d.v;e.insertAdjacentHTML('afterend','<div class="s">Dein Text von eben wurde wiederhergestellt.</div>')}}catch(_){}})}
+{const _o=openSheet;openSheet=function(h){_o(h);draftRestore()}}
+['invCommit','rzImportOpen','prodApply'].forEach(n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){const r=f.apply(this,arguments);if(!document.getElementById('sheet'))draftsClear();return r}});

@@ -404,3 +404,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## Rechnung: Positionen ohne Lagerartikel, Alle auswählen (07.11.2026)
 - invPrev: Positionen ohne Lagerartikel mit Preis und Packungsgröße sind anhakbar („wird als neuer Rohstoff mit Bestand 0 angelegt“); Kontrollkästchen „Alle Positionen auswählen“ (invAll). invCommit legt per invNewItem fehlende Rohstoffe an (Name ohne Größenangabe, Katalogtreffer wenn möglich, Bestand 0, unk=true, Notiz „Aus Rechnung angelegt“) und trägt den Preis mit Rechnungsdatum in den Verlauf ein. Positionen ohne Größe oder Preis (Rabatt) bleiben gesperrt.
 - Test t116. Offen: Zubehör (Gläser, Spender) wird wie Rohstoff angelegt, bis es eine Artikelart dafür gibt.
+
+## Orientierung in Fenstern (07.11.2026)
+- Zurück-Pfeil (.bk) steht auf Höhe des Titels, der Titel rückt ein (CSS in js44.js). Herunterziehen löst kein Neuladen mehr aus (overscroll-behavior). Tippen neben ein Fenster mit Eingaben (Textfelder mit Inhalt) schließt es nicht mehr, Hinweis „Zum Schließen nutze das X“. Texte in Rezeptimport (rzit), Rechnung (invt) und Produktseite (pt) werden als Entwurf bis eine Stunde im Gerät gehalten und beim nächsten Öffnen wiederhergestellt; Löschen bei X, Übernahme, Speichern. Test t117.
+- Offen: einheitliche Fensterkopfzeile (Pfeil, Titel, X) für alle Blätter; Android-Zurück-Geste schließt weiterhin das Fenster.
