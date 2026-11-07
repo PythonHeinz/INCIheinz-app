@@ -132,7 +132,7 @@ Text-, Foto- und Dateiimport mit Bestätigung: Rezept-Import als Text/Foto/json 
 Arbeitsschritte, Hinweise (Achtung/Tipp/Sicherheit), Haltbarkeit und Abfüllung werden als Module vorgeschlagen. Die KI übernimmt Hinweise aus der Vorlage, **ergänzt aber keine eigenen Wirk- oder Gesundheitsaussagen**. Sicherheitshinweise, die die App von sich aus ergänzt (z. B. bei Lauge), kommen aus festen App-Texten, nicht von der KI.
 
 ### 3.5 Artikel-Erfassung
-Quellen: Produktseite (Text), Foto von Etikett oder Datenblatt, Rechnung/Bestellung. Zielfelder: INCI, Form, Dichte, Einsatzbereich, Preis, Menge, Lieferant, Datum, Charge/MHD, Beschreibung. Gleiche Strecke: erst die vorhandenen Regeln, KI als Fallback, Vorschau mit Haken je Feld. Werte sind „ungeprüft“; INCI bleibt ungeprüft, bis der Nutzer bestätigt (bestehende Regel). Rechnungen mit mehreren Positionen ergeben eine Mehrfach-Vorschau (Preis, Menge, Lieferant, Datum) und füttern den Preisverlauf für Funktion C.
+Quellen: Produktseite (Text), Foto von Etikett oder Datenblatt, Rechnung/Bestellung. Zielfelder: INCI, Form, Dichte, Einsatzbereich, Preis, Menge, Lieferant, Datum, Charge/MHD, Beschreibung. Gleiche Strecke: erst die vorhandenen Regeln, KI als Fallback, Vorschau mit Haken je Feld. Werte sind „ungeprüft“; INCI bleibt ungeprüft, bis der Nutzer bestätigt (bestehende Regel). Rechnungen werden in 3.10 beschrieben.
 
 ### 3.6 Modellstufen
 - Bild und Handschrift: **R2** (Cloud). Kleine lokale Modelle erkennen Handschrift nicht verlässlich. Vor dem Senden steht der Hinweis, dass das Foto an den Anbieter geht.
@@ -148,10 +148,21 @@ Testsatz aus etwa zehn Beispielen (verschiedene Handschriften, Bildschirmfotos, 
 - Für die Erfassung des Bestands (180 Zutaten, morgen) ist A nicht nötig; dort reicht der vorhandene Import.
 
 ### 3.9 Teilschritte
-A1 Rezept aus Text · A2 Rezept aus Foto/Handschrift · A3 Artikel aus Text/Foto · A4 Rechnung mit mehreren Positionen.
+A1 Rezept aus Text · A2 Rezept aus Foto/Handschrift · A3 Artikel aus Text/Foto · A4 Rechnungen mit mehreren Positionen, auch rückwirkend (3.10).
+
+### 3.10 Rechnungen und rückwirkende Preise (A4, Wunsch des Entwicklers)
+Digitale Rechnungen (PDF, Foto, Text aus einer E-Mail, Tabelle) können jederzeit eingelesen werden; die Preise werden **mit dem Rechnungsdatum** in den Preisverlauf der Artikel eingetragen, auch für zurückliegende Rechnungen.
+1. **Eingabe:** eine oder viele Dateien nacheinander. Je Rechnung eine Vorschau, am Ende eine Sammelbestätigung.
+2. **Positionen:** Bezeichnung, Menge, Einheit, Einzel- oder Gesamtpreis, Rechnungsdatum, Lieferant, Rechnungsnummer, Versandkosten.
+3. **Zuordnung** zu Artikeln wie in 3.3 (lokale Ähnlichkeit zuerst, Ampel, Nutzer wählt bei Unsicherheit). Der Preis wird als Bezugsquelle mit Datum am Artikel eingefügt; Preis je 100 g/ml rechnet die App aus (Rechner, nicht KI). Herkunftsvermerk „aus Rechnung vom …“.
+4. **Bestand wird dabei nicht verändert** (Standard: aus). Alte Rechnungen dürfen den heutigen Lagerbestand nicht erhöhen. „Bestand buchen“ ist nur für eine aktuelle Lieferung gedacht und muss ausdrücklich gewählt werden.
+5. **Doppelte vermeiden:** Gemerkt werden Lieferant, Rechnungsnummer und Datum (additives Feld); eine schon erfasste Rechnung wird erkannt und nicht doppelt eingetragen.
+6. **Versandkosten und Rabatte:** getrennt ausweisen und nicht stillschweigend auf Artikelpreise umlegen; Positionen mit Rabatt oder Paketpreis werden als „bitte prüfen“ markiert.
+7. **Datenschutz:** Rechnungen enthalten Name, Adresse und Kundennummer. Der Dialog nennt das vor dem Senden. Vorschlag zur Datensparsamkeit: bei digitalen PDFs den Text zuerst lokal lesen, Kopf- und Adressdaten entfernen und nur die Positionszeilen an die KI geben; bei Fotos geht das Bild vollständig an den Anbieter (R2). Der Entwickler entscheidet, ob die lokale Vorstufe in Version 1 enthalten ist.
+8. **Das Rechnungsfoto wird wie Originalfotos nicht gespeichert** (Beschluss zu 3.3).
 
 ### Kommentare zu Abschnitt 3
-(noch keine)
+- 07.11.2026, Entwickler: Rechnungen kommen meist digital; sie sollen jederzeit zu allen Artikeln eingelesen werden und anhand des Rechnungsdatums rückwirkend Preise eintragen; viele Rechnungen liegen schon vor. → eingearbeitet in 3.10.
 
 ---
 
@@ -222,7 +233,7 @@ Beispielantwort: „Charge 7 bis 9 (je 2 bis 3 Sterne) haben gemeinsam: Zutat X 
 2. **Nachbewertung** nach einigen Wochen (Trennung, Geruch, Konsistenz im Verlauf).
 3. **Herkunft der eingewogenen Ware:** welches Gebinde, welche Bezugsquelle, Charge/MHD des Rohstoffs (heute nur die Artikel-ID).
 4. **Prozessangaben**, optional: Temperatur, Rührzeit, Rührgerät.
-**Das berührt das Datenmodell des Rezeptbuchs (`S.chg`).** Änderungen müssen rückwärtskompatibel sein (fehlende Felder = leer) und in Sicherung, Import/Export und Statistik berücksichtigt werden. Weil die echte Erfassung beginnt, bevor Funktion C gebaut ist, sollte mindestens Punkt 1 vorher entschieden werden (siehe Kommentarfrage unten).
+**Das berührt das Datenmodell des Rezeptbuchs (`S.chg`).** Änderungen müssen rückwärtskompatibel sein (fehlende Felder = leer) und in Sicherung, Import/Export und Statistik berücksichtigt werden. Weil die echte Erfassung beginnt, bevor Funktion C gebaut ist, wird Punkt 1 vorgezogen (Beschluss unten).
 
 ### 5.6 Alternativen und Recherche zwischen Rezeptbuch und Artikeldaten (C2)
 Anfrage: „Ersatz für Zutat X in Rezept Y“.
@@ -235,7 +246,11 @@ Die Auswertung läuft auch bei roter/gelber Dashboard-Anzeige, nennt aber die L�
 
 ### Kommentare zu Abschnitt 5
 (noch keine)
-**Frage an den Entwickler:** Soll vor dem Start der echten Erfassung ein kleines, optionales Bewertungsformular je Charge (3 bis 4 Kriterien, Nachbewertung) ins Rezeptbuch? Das ist ein kleiner Eingriff am Datenmodell des Rezeptbuchs, aber spätere Auswertungen hängen davon ab.
+**Beschluss 07.11.2026 (Entwickler): Das Bewertungsformular je Charge kommt.** Es muss nicht direkt nach dem Mischen ausgefüllt werden; die Nutzerin soll Chargen auch Wochen später nachbewerten und dabei immer mehr dokumentieren. Entwurf, mit dem Entwickler vor dem Bau zu bestätigen:
+- **Aufbau:** In der Charge ein einklappbarer Block „Bewertung“ mit den vorhandenen Sternen und der vorhandenen Notiz als **Erstbewertung**, dazu optionale Kriterien (Konsistenz, Duft, Aussehen, Anwendung als persönliches Urteil), jeweils einfache Skala oder Symbol, alles freiwillig.
+- **Nachbewertung:** „Nachbewertung hinzufügen“ legt einen datierten Eintrag an (Datum, Sterne, Kriterien, Notiz). Mehrere Einträge je Charge sind möglich; die Chargenliste zeigt die jüngste Sternzahl.
+- **Datenmodell (additiv):** `c.bew[]` mit `{date, stars, k:{…}, note}`. Die bestehenden Felder `c.stars` und `c.note` bleiben gültig und gelten als Erstbewertung. Fehlende Felder = leer. Sicherung, Wiederherstellung und Export berücksichtigen das Feld.
+- **Idee, nicht beschlossen:** Filter „noch nicht nachbewertet“ in der Chargenliste (ohne Erinnerungsmeldungen).
 
 ---
 
@@ -250,7 +265,7 @@ Der Nutzer beschreibt per Text oder Diktat, was er herstellen will („feste Sei
 3. KI wählt Zutaten aus dem Kandidatenpaket (Lager, Bestand > 0, Mischbarkeit) und schlägt Anteile vor.
 4. **Rechner prüft** über die Werkzeuge (2.5); Fehler und Warnungen gehen zurück an die KI, die korrigiert (wenige Runden).
 5. Prüfer (2.6), Vorschau (2.7), **Entwurf im Editor**, Speichern als **neues Rezept**, Version 1, Vermerk „KI-Entwurf, nicht geprüft“.
-6. Der Chatverlauf gilt für die Sitzung. Ob er gespeichert wird, ist offen (er enthält Lagerdaten).
+6. Was vom Chat gespeichert wird, regelt 6.12: allgemeine Chats sind Wegwerf-Chats, ein Rezept-Chat hängt als Markdown-Datei am entstandenen Rezept.
 
 ### 6.3 Rollenverteilung
 | KI | App-Code (Rechner, Prüfer) |
@@ -270,7 +285,11 @@ Harte Regeln im Code:
 Phasen und Mengen aus dem Rezeptmodell; Emulgatoranteil über Emulgator-/HLB-Rechner; Dosierung gegen Einsatzbereiche; Hinweis, wenn eine wasserhaltige Rezeptur keine Konservierung enthält (Regel, kein Sicherheitsversprechen); Ablaufmodule aus den vorhandenen Standard-Abläufen der App, von der KI angepasst, ohne neue Sicherheits- oder Wirkaussagen.
 
 ### 6.6 Nur aus dem Lager
-Standard: nur Artikel mit Bestand (Mischbarkeit wie in der Rezeptansicht). Optional vom Nutzer einschaltbar: „auch fehlende Zutaten vorschlagen“. Diese sind dann als „fehlt“ markiert und lassen sich auf die Einkaufsliste setzen. Nie still.
+Standard: Zutaten aus dem Lager (Bestand > 0, Mischbarkeit wie in der Rezeptansicht). **Der Chat kann auf jeden Fall auch fehlende Zutaten vorschlagen** (Beschluss 07.11.2026): Zutaten, die die KI kennt und die zum Gelingen beitragen, aber nicht im Lager sind.
+- Sie sind deutlich als **„nicht im Lager“** markiert und mit Begründung versehen.
+- Ist die Zutat im Katalog, wird sie über die Katalog-ID verknüpft; sonst steht sie als Freitext „ohne Katalogbezug“ (Ausnahme von Grundsatz 5, sichtbar gekennzeichnet).
+- Im Entwurf zählen sie als „fehlt“ (das Rezept ist dann nicht mischbar).
+- Sie lassen sich über 6.11 auf die Einkaufsliste setzen. Nie still.
 
 ### 6.7 Wissensbasis (RAG) und Recherche
 - **Inhalt:** eigene, komprimierte Wissenskarten aus der Fachliteratur und eigene Regeln, z. B. `{id, thema, aussage, quelle (Buch, Seite), status geprüft/ungeprüft, stichworte}`. **Nur eigene Zusammenfassungen, Zahlen und Regeln, keine Buchabschnitte** (Urheberrecht).
@@ -286,10 +305,30 @@ Diktat läuft über die Tastatur des Handys; das braucht keine Entwicklung. Eine
 Der Chat funktioniert auch bei rot/gelb. Er nennt zu Beginn, was die Qualität bremst (z. B. „12 Fette ohne Verseifungszahl, nicht verwendet“).
 
 ### 6.10 Offene Fragen
-Welche Seifenarten zuerst (nur feste Kaltverseifung)? Standardwerte für Laugenunterschuss und Wasseranteil? Duftstoffe und Farbstoffe in Seife (Grenzen aus Katalog `e1`)? Chatverlauf speichern oder nur Sitzung?
+Welche Seifenart zuerst (Vorschlag: feste Stückseife mit NaOH, dann Flüssig- und Rasierseife mit KOH)? Standardwerte für Laugenunterschuss und Wasseranteil? Duftstoffe und Farbstoffe in Seife (Grenzen aus Katalog `e1`)?
+
+### 6.11 Einkaufsliste aus dem Chat
+Der Nutzer sagt „setz mir die fehlenden Zutaten auf die Einkaufsliste“ oder die KI schlägt es nach einem Rezeptentwurf vor.
+- Neues Vorschlags-Werkzeug `vorschlag_einkauf`: je Posten Artikel (ID, Katalog-ID oder Freitext), Menge und Einheit, Lieferant, Begründung (z. B. Rezept).
+- **Menge:** Der Bedarf kommt vom Rechner (Rezeptbedarf minus Bestand), nicht von der KI; die Einkaufsvorschläge der App (knapp, nicht bestellt) bleiben als R0 erhalten.
+- **Lieferant:** nur aus den bekannten Lieferanten und Bezugsquellen des Artikels; der günstigste ergibt sich aus dem Preisvergleich (R0). Unbekannt bleibt leer.
+- Vorschau, Bestätigung, dann Eintrag in die vorhandene Einkaufsliste (dieselben Funktionen wie „+ Rohstoff“). Es wird nichts bestellt oder gebucht.
+
+### 6.12 Chats: was gespeichert wird und was nicht
+| Art | Behandlung |
+|---|---|
+| **Rezept-Chat** (Rezept wurde im Chat erstellt) | Der Verlauf hängt als **Markdown-Datei** am entstandenen Rezept (an der Version, die aus dem Chat entstand). Schreibgeschützt, ansehen, kopieren, exportieren, löschen. **Kein Fortsetzen.** Teil der Sicherung. |
+| **Allgemeine Chats** (Guide, Fragen, Recherche) | **Wegwerf-Chats.** Verlauf in der Sitzung sichtbar und kopierbar; nichts wird gespeichert, nichts angehängt. |
+| **Artikel** | Es werden **keine** Chats an Artikel gehängt (beschlossen 07.11.2026). |
+Vorschläge zur Entscheidung (weitere mögliche Anhänge, bewusst klein gehalten):
+1. **Auswertungs-Chat zu einem Rezept** („Warum ist die Creme schlechter geworden?“) kann auf Wunsch als Markdown am Rezept hängen, getrennt vom Entstehungs-Chat und mit Datum.
+2. **Chat zu einer Charge** (Nachbewertung): Statt den Chat anzuhängen, schlägt die KI eine kurze Zusammenfassung für die Notiz der Nachbewertung vor, die der Nutzer bestätigt.
+3. **Recherche mit Ergebnis** wird nicht als Chat, sondern über „Als feste Regel merken“ eine Wissenskarte (2.8, 6.7).
+4. **Einkaufs-Chat** endet in der Einkaufsliste (6.11), nicht in einem gespeicherten Chat.
+Technisch bleibt der Rezept-Chat ein Textfeld (`v.chat`, Markdown) und bläht den Zustand kaum auf.
 
 ### Kommentare zu Abschnitt 6
-(noch keine)
+- 07.11.2026, Entwickler: Fehlende Zutaten sollen im Chat auf jeden Fall vorschlagbar sein (6.6); Einkaufslisten aus dem Chat mit Artikel, Menge und Lieferant (6.11); Rezept-Chats hängen als Markdown am Rezept, kein Fortsetzen; allgemeine Chats sind Wegwerf-Chats; keine Chats an Artikel (6.12). → eingearbeitet.
 
 ---
 
@@ -392,12 +431,14 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 | Nr | Frage | Status |
 |---|---|---|
 | 1 | Benennung der Stufen für bestätigte KI-Werte (1.7) | offen |
-| 2 | Bewertungsformular je Charge vor dem Start der Erfassung (5.5) | offen |
+| 2 | Bewertungsformular je Charge vor dem Start der Erfassung (5.5) | grundsätzlich beschlossen 07.11.2026; Details und Bauzeitpunkt offen |
 | 3 | KI-Testfassung: Branch plus Unterordner `ki/` oder eigenes Repo (8.3) | offen |
 | 10 | Rückfallstand als Branch `ohne-ki` oder von Hand angelegter Tag/Release (8.1) | offen |
 | 4 | Originalfoto beim Rezeptimport: nicht speichern, danach löschen (3.3, 3.8) | beschlossen 07.11.2026 |
-| 5 | Seifenarten zuerst (6.10) | offen |
-| 6 | Chatverlauf speichern oder nur Sitzung (6.10) | offen |
+| 5 | Seifenart zuerst (6.10) | offen |
+| 6 | Chatverlauf: Rezept-Chat als Markdown am Rezept, sonst Wegwerf (6.12) | beschlossen 07.11.2026 |
+| 11 | Rechnungen: lokale Vorstufe für Adressdaten in Version 1? Versandkosten getrennt ausweisen (3.10) | offen |
+| 12 | Weitere Chat-Anhänge laut Vorschlägen 1 bis 4 (6.12) | offen |
 | 7 | Arbeitsregel „Landkarte im selben Commit pflegen“ in `UEBERGABE.md` (4.3) | beschlossen 07.11.2026, aufgenommen |
 | 8 | Reihenfolge 9.1 so in Ordnung | offen |
 | 9 | Anbieter und Modell für den Test (Gemini; Modellname vor dem Bau prüfen) | offen |
@@ -413,4 +454,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026: Landkarte `APP_LANDKARTE.md` als Erstentwurf aus der laufenden App erzeugt (Lücken in Abschnitt 10 der Landkarte).
 - 07.11.2026: Rückfallstand: Tag `ohne-ki-2026-11-07` auf Commit 788a9d5 lokal angelegt, Push des Tags abgelehnt (403). Ersatz offen (Branch `ohne-ki` oder Tag/Release von Hand auf GitHub).
 - 07.11.2026, Entwickler: Originalfoto beim Import wird nicht gespeichert, sondern danach gelöscht; erst nach Store-Portierung neu entscheiden. Arbeitsregel „Ansicht, Menü oder Datenfeld ändern heißt Landkarte im selben Commit pflegen“ bestätigt und in `UEBERGABE.md` aufgenommen (Entscheidungen 4 und 7).
+- 07.11.2026, Entwickler: Bewertungsformular je Charge gewünscht (Nachbewertung Wochen später, mehrere Einträge); fehlende Zutaten im Chat vorschlagbar; Einkaufsliste aus dem Chat; Rechnungen digital und rückwirkend mit Rechnungsdatum; Rezept-Chat als Markdown am Rezept, allgemeine Chats Wegwerf, keine Chats an Artikel. Eingearbeitet in 3.10, 5.5, 6.6, 6.11, 6.12.
 - Finales Go: offen.
