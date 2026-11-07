@@ -296,3 +296,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Vertrauensstufen für KI-Werte beschlossen (Konzept 1.7): KI höchstens Stufe 1, Übernahme durch den Nutzer Stufe 2, Bestätigung Stufe 3; verifiziert erst nach Bestätigung.
 - Beschlossen am 07.11.2026: Originalfoto beim KI-Import wird nicht gespeichert (gelöscht danach); Arbeitsregel „Landkarte im selben Commit pflegen“ steht jetzt in `UEBERGABE.md`.
 - Offen: Entscheidungen 1 bis 3, 5, 6, 8 bis 10 im Konzept (Abschnitt 9.4), insbesondere ein optionales Bewertungsformular je Charge vor Start der echten Erfassung (Datenmodell Rezeptbuch, additiv).
+
+
+## Bewertungsformular in der Charge (07.11.2026)
+- Neu: src/proto/js32.js (Wrapper um rzChgs/rzChg aus js19.js), Eintrag in patch7.py, EN/ES in i18n7.py, Test src/tests/t101.js.
+- Daten additiv und optional: c.k={kons,duft,aus,haut}, c.bew=[{id,date,stars,k,note}]. Erstbewertung c.stars/c.note unverändert; Export und Statistik (js23.js) unverändert.
+- Tests: t101 ok, t83 bis t100 ohne Fehler.
+- Offen: Filter "noch nicht nachbewertet" (nur Idee).

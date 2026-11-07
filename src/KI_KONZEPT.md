@@ -70,7 +70,7 @@ Grundsätze:
 ## 2. Architektur (gemeinsame Grundlage für A bis D)
 
 ### 2.1 Eine Dienst-Schicht, austauschbare Anbieter
-Neue Datei `js32.js` (KI-Dienst) mit einer einzigen Schnittstelle, z. B. `ki.ask({funktion, kontext, werkzeuge, bild})`. Dahinter Anbieter-Adapter:
+Neue Datei `js33.js` (KI-Dienst) mit einer einzigen Schnittstelle, z. B. `ki.ask({funktion, kontext, werkzeuge, bild})`. Dahinter Anbieter-Adapter:
 - `gemini` (Cloud, direkter `fetch()` aus dem Browser, Modellname als Einstellung, damit Modellwechsel keine Codeänderung braucht),
 - `ollama` (lokal, passend zu Heinz UI; ob der Zugriff aus der PWA auf Termux auf dem Pixel sauber läuft, wird vor dem Bau getestet),
 - `aus` (Standard).
@@ -112,7 +112,7 @@ Eine gemeinsame Vorschau `kiPreview`: Vorher/Nachher, Warnungen aus dem Prüfer,
 Kein Netz, falscher Schlüssel, Kontingent leer, Zeitüberschreitung: klare Meldung, die App arbeitet unverändert weiter. Keine stillen Wiederholungen, Tageslimit, Anzeige der Anfragen heute. Ist KI aus, findet **kein einziger Netzwerkaufruf** statt (Testfall).
 
 ### 2.10 Eingriffe ins Grundgerüst (für STAND.md „Berührt Grundgerüst“)
-Neu: `js32.js` (Dienst, Kontext-Builder, Prüfer), `js33.js` (Oberfläche, Vorschau), Eintrag in der Einstellungsliste (`js30.js`), Einstiegsknöpfe (Import-Dialog, Rezeptseite, Hilfe), Ausnahme des KI-Schlüssels in Sicherung und `restoreMerge`, Übersetzungen in `i18n7.py`, Tests ab t101. Die Anbindung an `patch7.py`/Build-Reihenfolge ist beim Bau zu prüfen (Fallstrick: spätere Dateien überschreiben frühere Funktionen).
+Neu: `js33.js` (Dienst, Kontext-Builder, Prüfer), `js34.js` (Oberfläche, Vorschau), Eintrag in der Einstellungsliste (`js30.js`), Einstiegsknöpfe (Import-Dialog, Rezeptseite, Hilfe), Ausnahme des KI-Schlüssels in Sicherung und `restoreMerge`, Übersetzungen in `i18n7.py`, Tests ab t101. Die Anbindung an `patch7.py`/Build-Reihenfolge ist beim Bau zu prüfen (Fallstrick: spätere Dateien überschreiben frühere Funktionen).
 
 ### Kommentare zu Abschnitt 2
 (noch keine)
@@ -429,7 +429,7 @@ Gerät die KI-Fassung außer Kontrolle: Branch verwerfen, Tag `ohne-ki-2026-11-0
 1. **Landkarte** `APP_LANDKARTE.md` mit Build-Prüfung. Keine App-Änderung nötig, hilft sofort allen Chats.
 2. Entscheidung **Bewertungsformular je Charge** (5.5), klein und möglichst vor Start der Erfassung.
 3. **KI-Testsatz** (Abschnitt 7).
-4. **Dienst-Schicht, Einstellungen, Schlüssel** (`js32.js`, `js33.js`) mit Mock-Tests.
+4. **Dienst-Schicht, Einstellungen, Schlüssel** (`js33.js`, `js34.js`) mit Mock-Tests.
 5. **B App-Guide** als erste Probe (keine Nutzerdaten).
 6. **C, R0:** Tabelle „Auffälligkeiten“ (nützt auch ohne KI).
 7. **A1/A2:** Rezepte aus Text, dann aus Foto/Handschrift.
@@ -489,4 +489,12 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026, Entwickler: Seifenart wird nicht vorab festgelegt; der Rezept-Chat prüft die Datenlage, weist auf fehlende Werte hin und hilft bei Beschaffung (6.13).
 - 07.11.2026, Entwickler: Mischbarkeit wird nach Bestand beurteilt; beim Erstellen neuer Rezepte spielt der Bestand keine Rolle, es muss mit allen fiktiven Katalogartikeln gerechnet werden können → 6.6 neu gefasst (auch 2.5, 6.2, 1.3).
 - 07.11.2026, Entwickler: Stufen präzisiert: Übernommene KI-Werte stehen grau in den Feldern (Stufe 2), bestätigte oder überschriebene schwarz (Stufe 3), Stufe 1 nur in der Vorschau (1.7). Rezept-Chat als Markdown darf als Ausgangstext eines neuen Chats dienen; keine offenen Chats beim Sprachmodell (6.12). Auswertungs-Chat in der Testphase ausprobieren. Lokale Vorfilterung des OCR-Rohtextes bei Rechnungen und Produktseiten beschlossen (3.10). Seifenrechner rechnet mit Stufe 2 und Warnhinweis, alle Rechner sollen funktionieren (6.13).
+- Finales Go: offen.
+
+
+## Nachtrag 07.11.2026 (Freigaben)
+- EAN aus Rohtexten (OCR, Produktseiten, Rechnungen) auslesen: gewünscht. Umsetzung deterministisch (R0): 13-stellige Zahl mit Prüfziffer; die lokale Vorfilterung behält EAN-Zeilen immer.
+- Versandkosten auf Rechnungen werden getrennt ausgewiesen: beschlossen.
+- Umsetzungsreihenfolge §9.1 bestätigt. Alle nicht kommentierten Vorschläge, die Chat-Anhang-Vorschläge, Chargen-Notiz, Einkaufs-Chat und die Kontextkomprimierung sind freigegeben.
+- Bewertungsformular in der Charge ist gebaut (js32.js; KI-Dateien heißen deshalb js33/js34). Kriterien: Konsistenz, Duft, Aussehen, Hautgefühl. Filter "noch nicht nachbewertet" bleibt Idee.
 - Finales Go: offen.

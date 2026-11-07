@@ -101,3 +101,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Regeln für Änderungen (Mehrere Chats)
 Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Arbeit“ lesen; bei Eintrag unter 24 Stunden oder berührtem Fremdmodul den Nutzer fragen. Eigene Zeile in „Aktive Arbeit“ eintragen und sofort committen. Nach der Änderung: `src/APP_LANDKARTE.md` (bei geänderter Ansicht, Menü oder Datenfeld), ENTWICKLUNGSVERLAUF.md, STAND.md (Zeile entfernen, Nächste Aufgaben anpassen), UEBERGABE.md, INDEX.md pflegen, pushen, im Projektordner `git pull`. Nur ein Chat baut gleichzeitig; Katalogdateien nie parallel ändern.
+
+
+- Charge: optionale Felder `c.k` (Kriterien 1 bis 5: kons, duft, aus, haut) und `c.bew[]` (Nachbewertungen {id,date,stars,k,note}), angelegt in js32.js. Liste zeigt die Sterne der jüngsten Nachbewertung.

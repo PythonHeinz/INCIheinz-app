@@ -1,0 +1,22 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,250));const r={};
+demoLoad();await W();
+let c=rzChgAll()[0];if(!c){c={id:uid(),rez:(S.rez||[])[0]&&S.rez[0].id,ver:1,date:new Date().toISOString().slice(0,16),total:100,note:'',stars:3,abz:0,lines:[]};S.chg.push(c)}
+r.hasChg=!!c;
+tab('chgs');await W();r.listBefore=document.querySelector('#main .rz-st')?document.querySelector('#main .rz-st').textContent:null;
+stack.push(R);R={name:'chg',id:c.id};draw();await W();
+r.acc=!!document.getElementById('bewacc');
+bewK(c.id,'duft',4);bewK(c.id,'kons',2);r.k=JSON.stringify(c.k);
+bewK(c.id,'duft',4);r.kToggle=c.k.duft;
+bewSheet(c.id);await W();r.sheet=!!document.getElementById('sheet');
+rzBN.stars=5;rzBN.k={duft:5};rzBN.note='nach 4 Wochen';rzBN.date='2099-01-01';bewSave();await W();
+r.bew=c.bew.length;r.open=document.getElementById('bewacc').open;r.listed=document.getElementById('bewacc').innerText.includes('nach 4 Wochen');
+r.starsKept=c.stars;
+back();await W();tab('chgs');await W();r.listAfter=document.querySelector('#main .rz-st').textContent;
+stack.push(R);R={name:'chg',id:c.id};draw();await W();
+bewDel(c.id,c.bew[0].id);await W();r.bewDel=c.bew.length;
+LANG='en';draw();await W();r.en=document.getElementById('bewacc').innerText.slice(0,60);
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

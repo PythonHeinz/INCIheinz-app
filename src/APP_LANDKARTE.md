@@ -231,3 +231,7 @@ Navigation: `tab(name)`, `go(name,id)`, `back()`, `rzWorld('lager'|'rez')`. Quel
 
 ## 10. Noch nicht erfasst (Lücken dieses Entwurfs)
 Detailansichten und Unterdialoge, die der Erstentwurf nicht durchlaufen hat: Charge-Detail, Werkbank im Einzelnen, Module & Ablauf (Standard-Ablauf bearbeiten), Rezeptkarte/Rezepte & Chargen drucken, Rezept-Statistik, Anleitung und Info im Wortlaut, Bestand-ändern-Dialog (zwei Felder, Zu-/Abgang), Gefäß-Dialog, Bezugsquellen-Dialog, Produktseiten-Vorschau. Die Katalog-Funktionen („Katalog aktualisieren“) und die Rechner-Eingabefelder im Einzelnen sind nur oben im Überblick beschrieben. Dieser Abschnitt wird beim nächsten Durchlauf abgearbeitet; ein Build-Test, der Spalten, Rechner und Menüs gegen die Datei prüft, ist vorgesehen (Konzept 4.3).
+
+
+## Nachtrag: Bewertung in der Charge (07.11.2026)
+Die Chargenansicht hat unter den Notizen den Block "Bewertung" (aufklappbar): vier Kriterien (Konsistenz, Duft, Aussehen, Hautgefühl) je 1 bis 5 Punkte, eine Liste der Nachbewertungen und "Nachbewertung hinzufügen" (Datum, Sterne, Kriterien, Notiz). Die Chargenliste zeigt die Sterne der jüngsten Nachbewertung, sonst die Erstbewertung. Daten: c.k, c.bew[].
