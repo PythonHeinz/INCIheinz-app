@@ -16,7 +16,7 @@ const gone=[...A].filter(x=>!B.has(x[0])).map(x=>x[1]),neu=[...B].filter(x=>!A.h
 const t=gone.length&&neu.length?'Zutatentausch in Version '+b.n+': '+neu.join(', ')+' statt '+gone.join(', '):neu.length?'Zutat neu in Version '+b.n+': '+neu.join(', '):'Zutat entfernt in Version '+b.n+': '+gone.join(', ');
 const before=rated.filter(c=>c.ver===a.n).map(c=>c.stars),after=rated.filter(c=>c.ver===b.n).map(c=>c.stars);let d='',sev=1;
 if(before.length>=2&&after.length>=2){d='Davor ø '+nf(ausAvg(before),1)+' ★ ('+before.length+' Chargen), danach ø '+nf(ausAvg(after),1)+' ★ ('+after.length+' Chargen)';if(ausAvg(after)<=ausAvg(before)-1){sev=3;swapped=true}}
-out.push({typ:'tausch',sev,rez:nm,date:(b.date||'').slice(0,10),t,d,n2:sev===3?'Zeitlich zusammen, kein Beweis für die Ursache.':''})}
+out.push({typ:'tausch',sev,rez:nm,date:(b.date||'').slice(0,10),t,d,n2:sev===3?'Zeitlichen Zusammenhang prüfen. Ob der Tausch die Ursache ist, zeigen die Daten nicht.':''})}
 /* Bewertungstrend ohne Versionswechsel */
 if(!swapped&&rated.length>=5){const last=rated.slice(-3).map(c=>c.stars),prev=rated.slice(0,-3).map(c=>c.stars);if(ausAvg(last)<=ausAvg(prev)-1)out.push({typ:'trend',sev:2,rez:nm,date:rated[rated.length-1].date.slice(0,10),t:'Bewertung sinkt: '+nm,d:'Letzte 3 Chargen ø '+nf(ausAvg(last),1)+' ★, davor ø '+nf(ausAvg(prev),1)+' ★'})}
 /* zu wenig Daten */

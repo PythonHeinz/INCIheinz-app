@@ -239,3 +239,8 @@ Die Chargenansicht hat unter den Notizen den Block "Bewertung" (aufklappbar): vi
 
 ## Nachtrag: KI-Funktionen (07.11.2026)
 Mehr › Einstellungen › KI-Funktionen: Modell und Schlüssel eintragen, "Schlüssel prüfen", "Schlüssel entfernen". Ist die KI freigeschaltet, erscheint im Mehr-Menü unter "KI" der Eintrag "App-Guide" (Frage eintippen, Antwort lesen; gesendet werden nur Frage und App-Beschreibung). Im Expertenmodus unter Testbetrieb gibt es zusätzlich "KI-Testsatz laden/entfernen".
+
+
+## Nachtrag: Auffälligkeiten (07.11.2026)
+Statistik hat die Kachel "Auffälligkeiten" (Anzahl und die zwei wichtigsten). Tippen öffnet die Tabelle: je Rezept (Zutatentausch mit Bewertung davor und danach, Einwaage-Abweichung, sinkende Bewertung, zu wenig Chargen), dann Preise und Lieferanten, dann Bestand (abgelaufen). Oben stellst du die Toleranz bei der Einwaage in Gramm ein. Die Hinweise sind keine Urteile.
+Im Menü KI-Funktionen kannst du das Modell per Tipp wählen oder einen eigenen Namen eintragen.

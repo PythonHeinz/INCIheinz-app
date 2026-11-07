@@ -1035,7 +1035,7 @@ N7.update({"Auffälligkeiten":("Anomalies","Anomalías"),"Keine gefunden":("None
 "Keine Auffälligkeiten gefunden":("No anomalies found","No se encontraron anomalías"),
 "Dafür braucht die App Chargen mit Bewertung und Preise mit Datum.":("For this the app needs batches with ratings and prices with dates.","Para ello la app necesita lotes con valoración y precios con fecha."),
 "Preise und Lieferanten":("Prices and suppliers","Precios y proveedores"),"Bestand":("Stock","Existencias"),
-"Zeitlich zusammen, kein Beweis für die Ursache.":("Happened at the same time, no proof of the cause.","Coinciden en el tiempo, no prueba la causa.")})
+"Zeitlichen Zusammenhang prüfen. Ob der Tausch die Ursache ist, zeigen die Daten nicht.":("Check the timing. The data do not show whether the swap is the cause.","Revisa la coincidencia en el tiempo. Los datos no muestran si el cambio es la causa.")})
 for _p,_e,_s in [
 (r"^Einwaage weicht ab: (.+)$","Weighed amount differs: \\1","El peso difiere: \\1"),
 (r"^Soll (.+) g, Ist (.+) g · (.+)$","Target \\1 g, actual \\2 g · \\3","Objetivo \\1 g, real \\2 g · \\3"),
