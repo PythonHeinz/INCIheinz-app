@@ -12,7 +12,7 @@ document.querySelector('#rzkirow .row').click();await W();r.ki=[/Rezept mit KI e
 closeSheet();tab('rez');await W();document.querySelector('button.plus').click();await W();r.plus=[/Ohne KI/.test(T()),/Rezept mit KI einlesen/.test(T()),/Rezept im Chat/.test(T())];closeSheet();
 sheetImport();await W();r.lagerImp=[/Rechnung importieren/.test(T()),/Artikel mit KI erfassen/.test(T())];closeSheet();
 localStorage.removeItem('inciheinz-ki-key');tab('rez');await W();document.querySelector('button.plus').click();await W();r.noKey=!document.getElementById('sheet')&&!!document.getElementById('main');
-S.expert=true;demoLoad();await W();r.demo=[S.items.length>0,S.rez.length,S.rez.filter(x=>x.bsp).every(x=>x.vers[0].d.phasen.some(p=>p.z.some(z=>z.item)))];
+S.expert=true;demoLoad();await W();r.demo=[S.items.length>0,S.rez.length,S.rez.filter(x=>x.bsp&&x.bsp[0]==='T').every(x=>x.vers[0].d.phasen.some(p=>p.z.some(z=>z.item)))];
 demoRm();await W();r.rm=[S.items.length,S.rez.length];
 freshData();r.reset=[S.items.length,S.rez.length];
 return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

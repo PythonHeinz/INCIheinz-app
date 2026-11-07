@@ -35,7 +35,7 @@ const rzVolOk=d=>rzSum(d)>0&&!rzVolMiss(d).length;
 function rzItem(z){if(z.item){const i=getI(z.item);if(i)return i}
 if(z.cid){const i=S.items.find(x=>x.cid===z.cid);if(i)return i}
 const f=FOLD(z.name);return f?(S.items.find(x=>FOLD(x.name)===f)||null):null}
-const rzName=z=>{const i=rzItem(z);return i?i.name:(z.name||'')};
+const rzName=z=>{const i=rzItem(z);return i?i.name:(z.name||(z.cid&&typeof CM!=='undefined'&&CM[z.cid]?CM[z.cid].n:''))};
 function rzInciOf(z){const i=rzItem(z);if(i)return i.inci||'';const c=z.cid&&CM[z.cid];if(c)return c.i||'';return /^(wasser|aqua|dest)/i.test(z.name||'')?'Aqua':''}
 function rzHave(z){const i=rzItem(z);if(!i)return z.cid?{k:'nein'}:{k:'frei'};if(i.unk)return {k:'unb',i};
 let g=null;if(i.kind==='w')g=i.total;else if(i.kind==='v'&&i.dens>0)g=i.total*i.dens;if(g==null)return {k:'unb',i,dens:i.kind==='v'};return {k:'ok',g,i}}
