@@ -30,7 +30,7 @@ Alles, was die App mit Filtern und Regeln schon kann, bleibt Regelwerk: „Habe 
 5. **IDs statt Namen.** Die KI bekommt und liefert Artikel-IDs bzw. Katalog-IDs (`cid`), keine freien Namen. Was nicht zuordenbar ist, wird als „nicht zugeordnet“ gezeigt und vom Nutzer gewählt.
 6. **Grenzen im Code.** Einsatzbereiche (`dmin/dmax`, `e0/e1`), Laugenunterschuss und Sicherheitsgrenzen bei Seife werden im Code geprüft. Ein Vorschlag außerhalb der Grenzen wird nicht angezeigt oder deutlich markiert.
 7. **Keine Wirk- oder Gesundheitsversprechen.** Gilt auch für KI-Texte. KI-Antworten werden vor der Anzeige gegen eine Sperrliste geprüft und im Prompt entsprechend angewiesen. Bei Laugen und Seife immer der Sicherheitshinweis, keine Zusage „garantiert sicher“.
-8. **Vorschläge sind gekennzeichnet.** Von der KI stammende Werte tragen wie die Katalogvorschläge den Status „ungeprüft“, bis der Nutzer sie bestätigt. Quelle und Herkunft („KI-Vorschlag“, Modell, Datum) werden am Wert vermerkt.
+8. **Vorschläge sind gekennzeichnet.** Von der KI stammende Werte erreichen höchstens Stufe 1; durch Übernahme des Nutzers werden sie Stufe 2, als verifiziert gelten sie erst nach seiner Bestätigung (Stufe 3, siehe 1.7). Quelle und Herkunft („KI-Vorschlag“, Modell, Datum) werden am Wert vermerkt.
 9. **Datenschutz offen sagen.** Sobald Daten an einen Cloud-Dienst gehen, gilt der Satz „Daten bleiben auf dem Gerät“ für diese Anfrage nicht. KI-Funktionen sind deshalb **standardmäßig aus** und schaltbar (Mehr › Einstellungen); vor der ersten Nutzung steht ein klarer Hinweis, welche Daten gesendet werden. In der Testphase nutzt der Entwickler sein eigenes Konto; vor einer Veröffentlichung wird neu entschieden, welche Daten die App sendet (siehe Abschnitt 9).
 10. **Funktioniert auch mit wenig Daten.** Der Dashboard-Status (rot/gelb/grün) sperrt die KI nicht. Bei rot/gelb zeigt sie den Hinweis „Ergebnisse sind begrenzt, weil Daten fehlen“ und nennt, welche Lücken (z. B. fehlende Seifenwerte) die Antwort verschlechtern. Besonders A (Erfassen) soll von Anfang an nutzbar sein.
 11. **Nur Hilfsmittel.** Die App ersetzt keine Fachprüfung (Sicherheitsbewertung, Kosmetikrecht). Das steht in den Hinweisen, nicht in jedem Satz.
@@ -46,12 +46,20 @@ Jede Funktion legt fest, ab welcher Rechenstufe sie sinnvoll ist (Tabelle in Abs
 ### 1.6 Abgrenzung zum Bestand
 Die App hat bereits ein Regelwerk für Import: Text-, Foto- und Datei-Import mit Bestätigung (`rzParse`, `splitMods`, OCR im Ordner `ocr/`, Rezept-Import als Text/Foto/json), den Lückenfinder und die Dosierungsprüfung. KI ersetzt diese nicht, sondern **hängt sich als zusätzliche Rechenstufe in dieselbe Bestätigungsstrecke**. Dadurch bleibt die Berührung des Grundgerüsts klein.
 
-### 1.7 Bestätigungsweg: von „KI-Vorschlag“ zu „bewährt“ (Ergänzung aus Kommentar)
-- Alles, was die KI liefert (Rezepte, Artikelwerte), trägt zuerst die Kennzeichnung **„KI-Vorschlag, ungeprüft“**.
-- **Rezept:** Wurde es gemischt und eine Charge gut bewertet, bietet die App „Rezept bestätigen“ an. Der Nutzer entscheidet, nichts geschieht automatisch. Die Herkunft „aus KI-Entwurf“ bleibt sichtbar, der Status wechselt auf bestätigt.
-- **Artikelwerte:** Bestätigung per Knopf nach dem Muster von „INCI als geprüft bestätigen“ (`inciConfirm`). Der Dialog nennt, wo der Wert verwendet wurde und wie die Charge bewertet ist.
-- **Folge:** Bestätigte Werte zählen wie eigene Werte (Vorrang vor dem Katalog), tragen keinen „ungeprüft“-Hinweis mehr, und die Funktionen C und D gewichten sie höher.
-- **Begriff klären:** Die Katalogregeln (`KATALOG_ERWEITERUNG.md`) kennen Stufe 1 (eine Quelle), Stufe 2 (zwei unabhängige Quellen) und Stufe 3 (durch den Nutzer bestätigt). Im Gespräch ist die Nutzerbestätigung als „Stufe 2“ bezeichnet worden. Für die KI-Werte wird eine einheitliche Benennung gebraucht (Vorschlag: KI-Vorschlag = Stufe 1, durch Praxis und Nutzer bestätigt = höchste Stufe), damit „Stufe“ nicht zweierlei meint. Die Rechenstufen dieses Papiers heißen deshalb R0 bis R2.
+### 1.7 Vertrauensstufen: Was als verifiziert gilt (Beschluss 07.11.2026)
+Es gelten die Validierungsstufen aus `KATALOG_ERWEITERUNG.md`. Für alles, was von der KI kommt, gilt:
+| Stufe | Bedeutung bei KI-Werten und KI-Rezepten | Wer setzt sie |
+|---|---|---|
+| **1** | KI-Vorschlag oder KI-Recherche. Mehr kann die KI nie erreichen. Der Wert steht nur in der Vorschau, **nicht** im Artikel. | KI |
+| **2** | Der Nutzer hat den Wert **übernommen**. Er steht jetzt im Artikel, ist aber weiterhin „ungeprüft“ und gekennzeichnet („aus KI-Vorschlag, übernommen“). | Nutzer (Übernehmen) |
+| **3** | Der Nutzer hat den Wert **geprüft und bestätigt** (Siegel, z. B. nach Mischen und gutem Ergebnis, Vergleich mit Etikett oder Datenblatt). Erst jetzt gilt er als verifiziert. | Nutzer (Bestätigen) |
+Folgen:
+- **Keine KI-Daten ohne Übernahme im Artikel.** Wir achten bei Katalog und Eingabe darauf, dass nur geprüfte Daten gelten; die KI darf das nicht unterlaufen. Recherche und Vorschläge bleiben in der Vorschau, bis der Nutzer übernimmt.
+- **Stufe 2 zählt nicht als verifiziert.** Qualitätsanzeige (Dashboard rot/gelb/grün), Vollständigkeit und die Gewichtung in Funktion C und D unterscheiden „ausgefüllt“ von „bestätigt“. Ein neuer Lückenfilter „KI-Werte, noch nicht bestätigt“ zeigt, was noch zu prüfen ist.
+- **Rezepte** laufen genauso: KI-Entwurf in der Vorschau (Stufe 1), gespeichert als „KI-Entwurf, nicht geprüft“ (Stufe 2), nach Mischen und gutem Ergebnis vom Nutzer bestätigt (Stufe 3; die App bietet den Knopf an, entscheidet aber nie selbst).
+- **Artikelwerte** bestätigt der Nutzer per Knopf nach dem Muster von „INCI als geprüft bestätigen“ (`inciConfirm`); der Dialog nennt, wo der Wert verwendet wurde und wie die Charge bewertet ist. Die Herkunft („KI, Modell, Datum“) bleibt auch nach Stufe 3 am Wert sichtbar.
+- **Datenmodell (additiv):** je betroffenem Wert Stufe, Quelle, Modell und Datum (Umsetzung beim Bau; die Katalogfelder `eq`/`bq` kennen Herkunft und Validierungsstufe bereits).
+- „Stufe“ meint in diesem Papier immer diese Validierungsstufen. Die Rechenstufen heißen R0 bis R2.
 
 ### Kommentare zu Abschnitt 1
 - 07.11.2026, Entwickler: Nachdem KI-Werte und KI-Rezepte als „ungeprüft“ bzw. „durch KI erstellt“ gekennzeichnet sind, soll der Nutzer sie nach dem Mischen und erfolgreichem Test bestätigen können; dann erreichen sie „Stufe 2“. → eingearbeitet in 1.7; Benennung der Stufen ist offen (siehe dort).
@@ -361,22 +369,22 @@ Etwa zehn Beispielvorlagen (Fließtext, Tabelle, Bildschirmfoto, Handschrift) mi
 
 ### 8.1 Rückfallstand „ohne KI“
 Vor jeder Änderung wird der heutige, getestete Stand eingefroren:
-- annotierter Git-Tag `ohne-ki-2026-11-07` auf dem Stand von main (Commit 788a9d5),
+- Branch `ohne-ki` auf dem Stand von main vor den KI-Arbeiten (Commit 788a9d5; ein Tag ließ sich nicht hochladen),
 - GitHub-Release mit den drei gebauten Dateien (`index.html`, `sw.js`, `katalog.json`),
 - Offline-Kopie im Projektordner: `INCI-App-Projekt/archiv/ohne-ki-2026-11-07/` mit gebautem Stand und Commit-Nummer,
 - Zeile in `STAND.md` und `INDEX.md`.
 Dieser Stand wird nie überschrieben und ist jederzeit als Notbremse nutzbar.
-**Status 07.11.2026:** Der Stand ist Commit 788a9d5 (main, vor diesem Konzept). Der Tag `ohne-ki-2026-11-07` existiert nur lokal, das Hochladen von Tags wurde von der Umgebung abgelehnt (HTTP 403). Als Ersatz bietet sich ein Branch `ohne-ki` auf 788a9d5 oder ein von Hand auf GitHub angelegter Tag/Release an. Entscheidung offen; bis dahin ist 788a9d5 in der Historie von main jederzeit auffindbar.
+**Status 07.11.2026:** Der Rückfallstand ist der Branch `ohne-ki` auf Commit 788a9d5 (angelegt und auf GitHub vorhanden). Der Tag `ohne-ki-2026-11-07` liegt nur lokal, das Hochladen von Tags wurde von der Umgebung abgelehnt (HTTP 403); er wird nicht gebraucht. Dieser Branch wird nie weiterentwickelt.
 
 ### 8.2 Warum nicht einfach auf main weiterarbeiten
 GitHub Pages liefert main aus, die installierten PWAs (deine und die deiner Freundin) holen sich Updates selbst. Jeder Push erreicht damit sofort den **echten Test**. Außerdem liegen alle Daten in einer Datenbank pro Adresse (`inciheinz-proto`); eine zweite Fassung unter derselben Adresse würde dieselben Echtdaten verwenden.
 
-### 8.3 Vorschlag für die Entwicklung
-- Arbeit auf einem Branch `ki`.
-- Test-Build wird in einen Unterordner `ki/` der Pages-Adresse veröffentlicht, mit **eigenem Datenbanknamen** (z. B. `inciheinz-ki`), eigenem Cache-Namen im Service Worker und eigenem Manifest (Name „INCIheinz KI-Test“, erkennbares Symbol). Echte Daten bleiben unberührt; Daten kommen nur per Sicherung/Wiederherstellung oder Testsatz in die Testfassung.
-- Dafür bekommt der Build einen Parameter (z. B. `KI_TEST=1`), der Datenbankname, Cache und Manifest umstellt.
-- Übernahme nach main erst nach deinem Go. KI ist dann standardmäßig aus.
-**Alternative:** eigenes Repo `INCIheinz-KI` (strengere Trennung, eigene Adresse, doppelte Pflege). Entscheidung offen.
+### 8.3 Entwicklung (Beschluss 07.11.2026)
+- **Zunächst wird auf der Ursprungsversion (main) weitergearbeitet.** Solange der Rückfallstand `ohne-ki` bekannt und unverändert ist, ist das in Ordnung. Das gilt auch für kleine additive Änderungen vor dem KI-Bau, etwa das Bewertungsformular.
+- Ein eigener **KI-Branch** (`ki`) wird angelegt, sobald KI-Code entsteht („bald“). Er bekommt dann eine **eigene Datenbank** (z. B. `inciheinz-ki`), eigenen Cache-Namen im Service Worker und ein eigenes Manifest („INCIheinz KI-Test“), damit echte Daten unberührt bleiben. Daten kommen nur per Sicherung/Wiederherstellung oder Testsatz hinein. Dafür bekommt der Build einen Parameter (z. B. `KI_TEST=1`).
+- Hintergrund bleibt 8.2: Pages liefert main aus, die installierten PWAs holen sich Updates selbst und alle Daten liegen in einer Datenbank pro Adresse (`inciheinz-proto`).
+- Übernahme von `ki` nach main erst nach dem Go. KI ist dann standardmäßig aus.
+**Alternative** (eigenes Repo `INCIheinz-KI`) bleibt zurückgestellt.
 
 ### 8.4 Regeln für das Datenmodell
 - Nur **additive** Felder (keine Umbenennung, kein Löschen). Eine Sicherung aus der KI-Fassung muss in der Fassung ohne KI einspielbar sein, unbekannte Felder werden ignoriert. Dafür kommt ein Testfall (Sicherung Hin und Zurück).
@@ -430,10 +438,10 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 ### 9.4 Offene Entscheidungen für das Go
 | Nr | Frage | Status |
 |---|---|---|
-| 1 | Benennung der Stufen für bestätigte KI-Werte (1.7) | offen |
+| 1 | Vertrauensstufen für KI-Werte: Stufe 1 KI, 2 übernommen, 3 bestätigt (1.7) | beschlossen 07.11.2026 |
 | 2 | Bewertungsformular je Charge vor dem Start der Erfassung (5.5) | grundsätzlich beschlossen 07.11.2026; Details und Bauzeitpunkt offen |
-| 3 | KI-Testfassung: Branch plus Unterordner `ki/` oder eigenes Repo (8.3) | offen |
-| 10 | Rückfallstand als Branch `ohne-ki` oder von Hand angelegter Tag/Release (8.1) | offen |
+| 3 | KI-Testfassung: erst auf main weiter, später Branch `ki` mit eigener Datenbank (8.3) | beschlossen 07.11.2026; Zeitpunkt des KI-Branchs offen |
+| 10 | Rückfallstand als Branch `ohne-ki` (8.1) | erledigt 07.11.2026 |
 | 4 | Originalfoto beim Rezeptimport: nicht speichern, danach löschen (3.3, 3.8) | beschlossen 07.11.2026 |
 | 5 | Seifenart zuerst (6.10) | offen |
 | 6 | Chatverlauf: Rezept-Chat als Markdown am Rezept, sonst Wegwerf (6.12) | beschlossen 07.11.2026 |
@@ -455,4 +463,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026: Rückfallstand: Tag `ohne-ki-2026-11-07` auf Commit 788a9d5 lokal angelegt, Push des Tags abgelehnt (403). Ersatz offen (Branch `ohne-ki` oder Tag/Release von Hand auf GitHub).
 - 07.11.2026, Entwickler: Originalfoto beim Import wird nicht gespeichert, sondern danach gelöscht; erst nach Store-Portierung neu entscheiden. Arbeitsregel „Ansicht, Menü oder Datenfeld ändern heißt Landkarte im selben Commit pflegen“ bestätigt und in `UEBERGABE.md` aufgenommen (Entscheidungen 4 und 7).
 - 07.11.2026, Entwickler: Bewertungsformular je Charge gewünscht (Nachbewertung Wochen später, mehrere Einträge); fehlende Zutaten im Chat vorschlagbar; Einkaufsliste aus dem Chat; Rechnungen digital und rückwirkend mit Rechnungsdatum; Rezept-Chat als Markdown am Rezept, allgemeine Chats Wegwerf, keine Chats an Artikel. Eingearbeitet in 3.10, 5.5, 6.6, 6.11, 6.12.
+- 07.11.2026, Entwickler: Vertrauensstufen für KI-Werte festgelegt (KI höchstens Stufe 1, Übernahme durch den Nutzer Stufe 2, Bestätigung Stufe 3 als Siegel; verifiziert erst nach Prüfung und Bestätigung durch den Nutzer) → 1.7. Branch `ohne-ki` als Rückfallstand angelegt (Commit 788a9d5); es wird zunächst auf main weitergearbeitet, ein KI-Branch mit eigener Datenbank folgt, sobald KI-Code entsteht → 8.1, 8.3.
 - Finales Go: offen.
