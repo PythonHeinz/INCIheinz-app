@@ -1,0 +1,22 @@
+/* ---------- KI: Wissensbasis (gehostet) und Nutzerregeln "Meine Regeln" ---------- */
+let KI_WIDX=null;
+async function kiWissen(thema){const q=FOLD(thema);try{if(!KI_WIDX){const r=await fetch('wissen/index.json',{cache:'no-cache'});if(!r.ok)throw 0;KI_WIDX=await r.json()}}catch(e){return {treffer:[],hinweis:'Noch keine Wissensdateien in der App vorhanden. Antworte nur mit dem, was die Werkzeuge liefern, und sage das offen.'}}
+const list=(KI_WIDX.dateien||KI_WIDX||[]).filter(f=>f&&f.datei);if(!list.length)return {treffer:[],hinweis:'Noch keine Wissensdateien in der App vorhanden. Antworte nur mit dem, was die Werkzeuge liefern, und sage das offen.'};
+const hit=list.filter(f=>(FOLD((f.titel||'')+' '+(f.stichworte||[]).join(' '))).split(/\s+/).some(w=>w.length>3&&q.includes(w))||q.split(/\s+/).some(w=>w.length>3&&FOLD((f.titel||'')+' '+(f.stichworte||[]).join(' ')).includes(w))).slice(0,2);const out=[];
+for(const f of hit){try{const r=await fetch('wissen/'+f.datei);if(r.ok)out.push({quelle:f.titel||f.datei,text:(await r.text()).slice(0,2500)})}catch(e){}}
+return {treffer:out,hinweis:out.length?'Verdichtete Fachinformationen, nur als Hintergrund. Keine Wirkversprechen daraus ableiten.':'Dazu gibt es keine Wissensdatei.'}}
+/* Nutzerregeln */
+const KR_MAX=30,KR_BAD=/ignorier|vergiss|vergessen sie|umgeh|ohne\s+pr[uü]f|keine\s+warn|kein\s+hinweis|[uü]berschreib|master|systemregel|systemprompt|anweisung(en)?\s+(oben|davor)|nie\s+widersprech|immer\s+zustimm|nicht\s+(nachrechnen|rechnen\s+lassen)|selbst\s+rechnen/i;
+function krCheck(t,list){t=String(t||'').replace(/\s+/g,' ').trim();if(t.length<8)return {fehler:'Die Regel ist zu kurz.'};if(t.length>200)return {fehler:'Die Regel ist zu lang (höchstens 200 Zeichen).'};
+if(KI_WIRK.test(t))return {fehler:'Regeln mit Wirk- oder Gesundheitsaussagen sind nicht erlaubt.'};if(KR_BAD.test(t))return {fehler:'Diese Regel versucht, die Master-Regeln zu ändern. Das geht nicht.'};
+if(/<|>|\{|\}|`/.test(t))return {fehler:'Bitte nur normalen Text ohne Sonderzeichen.'};if((list||[]).length>=KR_MAX)return {fehler:'Es sind höchstens '+KR_MAX+' Regeln möglich.'};if((list||[]).some(r=>FOLD(r.text)===FOLD(t)))return {fehler:'Diese Regel gibt es schon.'};return {text:t}}
+function krAdd(t){S.kiRegeln=S.kiRegeln||[];const c=krCheck(t,S.kiRegeln);if(c.fehler)return c;S.kiRegeln.push({id:uid(),text:c.text,date:today()});save();return {ok:true}}
+function krDel(id){S.kiRegeln=(S.kiRegeln||[]).filter(r=>r.id!==id);save();sheetRegeln()}
+function krNew(){const el=document.getElementById('krin');const r=krAdd(el&&el.value);if(r.fehler){toast(r.fehler);return}sheetRegeln()}
+function sheetRegeln(){const l=S.kiRegeln||[];openSheet(`<h2>Meine Regeln</h2><div class="s" style="margin-bottom:6px;line-height:1.5">Regeln, die der Rezept-Chat immer beachtet, zum Beispiel „Plane Seifen immer mit 5 % Überfettung“. Sie stehen unter den festen App-Regeln und können diese nicht aufheben. Wirk- und Gesundheitsaussagen sind nicht erlaubt.</div>
+${l.length?l.map(r=>`<div class="row" style="padding:6px 2px"><div class="t">${esc(r.text)}<div class="s">${dde(r.date)}</div></div><button class="lnk" onclick="krDel('${r.id}')">Löschen</button></div>`).join(''):'<div class="s">Noch keine Regeln.</div>'}
+<label class="fld" style="margin-top:8px"><span>Neue Regel</span><input id="krin" maxlength="200"></label><div class="btns"><button class="btn" onclick="krNew()">Regel speichern</button><button class="btn sec" onclick="sheetKI()">Zurück</button></div>`)}
+function chatRule(ti){const t=CH.turns[ti];if(!t)return;const el=document.getElementById('chatin');const first=String(t.text).split(/[.!?\n]/)[0].trim().slice(0,200);
+openSheet(`<h2>Als Regel merken</h2><div class="s" style="margin-bottom:6px">Formuliere die Regel in einem Satz. Du kannst sie ändern, bevor sie gespeichert wird.</div><label class="fld"><span>Regel</span><textarea id="krin" rows="3" maxlength="200">${esc(first)}</textarea></label><div class="btns"><button class="btn" onclick="chatRuleSave()">Regel speichern</button><button class="btn sec" onclick="sheetChat()">Abbrechen</button></div>`)}
+function chatRuleSave(){const el=document.getElementById('krin');const r=krAdd(el&&el.value);if(r.fehler){toast(r.fehler);return}toast('Regel gespeichert');sheetChat()}
+(function(){const o=sheetKI;sheetKI=function(){o.apply(this,arguments);const s=shEl();if(!s||!kiOn())return;s.insertAdjacentHTML('beforeend',rowH(['flask','Meine Regeln',(S.kiRegeln||[]).length+' Regeln für den Rezept-Chat',"sheetRegeln()"]))}})();

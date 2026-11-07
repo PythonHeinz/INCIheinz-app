@@ -244,3 +244,8 @@ Mehr › Einstellungen › KI-Funktionen: Modell und Schlüssel eintragen, "Schl
 ## Nachtrag: Auffälligkeiten (07.11.2026)
 Statistik hat die Kachel "Auffälligkeiten" (Anzahl und die zwei wichtigsten). Tippen öffnet die Tabelle: je Rezept (Zutatentausch mit Bewertung davor und danach, Einwaage-Abweichung, sinkende Bewertung, zu wenig Chargen), dann Preise und Lieferanten, dann Bestand (abgelaufen). Oben stellst du die Toleranz bei der Einwaage in Gramm ein. Die Hinweise sind keine Urteile.
 Im Menü KI-Funktionen kannst du das Modell per Tipp wählen oder einen eigenen Namen eintragen.
+
+## Nachtrag: Rezept-Chat und Meine Regeln (07.11.2026)
+- Mehr › Rezept-Chat (nur bei KI an): Blatt mit Verlauf, Eingabefeld, Senden, Neuer Chat. Unter KI-Antworten: "Als Regel merken". Karten: Seifenrechnung, Rezeptvorschlag (Als Entwurf öffnen), Einkaufsliste (Auf die Einkaufsliste).
+- Mehr › Einstellungen › KI-Funktionen › Meine Regeln: Liste eigener Regeln, neue Regel, Löschen.
+- Rezeptversion kann ein Feld chat (Markdown des Gesprächs) tragen, S.kiRegeln neu, beides optional.

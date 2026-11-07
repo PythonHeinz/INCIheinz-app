@@ -509,3 +509,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 
 - Stufe 6 gebaut (07.11.2026): "Auffälligkeiten" (R0) als Kachel in der Statistik und Tabelle je Rezept, `proto/js35.js`. Regeln: Einwaage-Abweichung (Toleranz einstellbar, Standard 1 g), Zutatentausch mit Bewertung davor/danach, Bewertungstrend, Preissprung (ab 20 %), Lieferantenwechsel (ab 10 %), abgelaufene Ware, "zu wenig Chargen" (unter 3). Alle fünf Muster des Testsatzes werden gefunden, ohne falsche Treffer.
 - Modellauswahl im Menü KI-Funktionen: Vorschläge 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite plus eigener Name; nach dem Prüfen wird die Antwortzeit gezeigt (zum Vergleich von Modellen und Kosten).
+
+- Stufe D gebaut (07.11.2026): Rezept-Chat mit Werkzeugen und "Meine Regeln" (js39.js, js40.js). Details im Entwicklungsverlauf.

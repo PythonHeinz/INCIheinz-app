@@ -338,3 +338,13 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Neu: proto/js38.js (ausKi, kiAusCheck), Test t106, Button "Mit KI erklären" unten in der Auffälligkeiten-Tabelle (nur bei KI).
 - Gesendet wird nur die Tabelle aus ausData() mit Kennungen F1, F2 … (Rezeptnamen, Rohstoffnamen, Zahlen). Der Prüfer verwirft jede Aussage ohne gültigen Bezug auf eine Kennung, mit Ursachenbehauptung (verursacht, definitiv …) oder Wirk-/Gesundheitsaussage und zeigt die Zahl der verworfenen Aussagen. Ausgabe: Zusammenfassung, Rückfragen, mögliche Erklärungen mit Beleg und "Nachsehen". Immer als "Von der KI formuliert, nicht geprüft" gekennzeichnet.
 - C2 Alternativen und Rückfragen mit Antwort-Speicherung sind noch nicht gebaut.
+
+## KI D: Rezept-Chat und Meine Regeln (07.11.2026)
+- Neu: proto/js39.js (Chat-Engine, Werkzeuge, Karten), proto/js40.js (Wissensanbindung kiWissen, Nutzerregeln), in patch7.py nach js38 eingetragen. Test t107. Zusätzlich kiFmt in js34.js (Fett/Kursiv/Backticks in Antworten sauber dargestellt).
+- Mehr-Menü: Zeile "Rezept-Chat" (nur bei KI an). KI-Funktionen: Zeile "Meine Regeln".
+- Ablauf: Je Nachricht geht Verlauf (nur Text) plus neue Nachricht an Gemini mit Werkzeugen (kiChatStep, bis 8 Runden, Antworten der Werkzeuge verbatim inkl. Thought-Signatures zurück). Werkzeuge lesen und rechnen nur, sie schreiben nichts: lager_suche, katalog_suche, artikel_details, rechne_seife (Port von seiCalc), summen_check, seife_als_rezept, vorschlag_rezept (über kiRezCheck), vorschlag_einkauf, wissen_suche.
+- Karten im Chat: Seifenrechnung (feste Sicherheitstexte der App), Rezeptvorschlag "Als Entwurf öffnen" (Chat als Markdown an der Version in v.chat), Einkaufsliste "Auf die Einkaufsliste" (fehlende Katalogartikel werden mit Bestand 0 angelegt, Rückgängig möglich). Fiktive Planung mit Katalogartikeln ohne Bestand, "mischbar" richtet sich nach Bestand.
+- Nutzerregeln S.kiRegeln [{id,text,date}]: 8 bis 200 Zeichen, höchstens 30, Prüfer lehnt Wirk-/Gesundheitsaussagen und Versuche ab, Master-Regeln zu ändern. Sie hängen im Systemprompt unter den Master-Regeln ("nachrangig"). "Als Regel merken" unter jeder KI-Antwort.
+- Kontext: ab ca. 12000 Zeichen Verlauf wird per KI zusammengefasst (CH.summary).
+- Wissensbasis: wissen/index.json ist noch leer/nicht vorhanden, der Chat sagt das offen. Dateien liefert Andreas später.
+- Offen: Chat-Verlauf an der Version anzeigen; Wissensdateien; Google-Suche/Denkstufe mit echtem Schlüssel testen; C2 Alternativen.
