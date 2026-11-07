@@ -8,6 +8,7 @@ cv=lambda P:[[a,re.sub(r'\\(\d)',r'$\1',b)] for a,b in P]
 pats=cv(PATS);pes=cv(PES)
 t=t.replace("const CAT=__CAT__;","const CAT=__CAT__;\nlet LANG='de',LOC='de-DE';\nconst LANGS={en:{dict:%s,pats:%s},es:{dict:%s,pats:%s}};\nconst locOf=l=>l==='en'?'en-GB':l==='es'?'es-ES':'de-DE';"%(json.dumps(EN,ensure_ascii=False),json.dumps(pats,ensure_ascii=False),json.dumps(ES,ensure_ascii=False),json.dumps(pes,ensure_ascii=False)),1)
 t=t.replace("const nf=(n,d=2)=>Number(n).toLocaleString('de-DE',{maximumFractionDigits:d});","const nf=(n,d=2)=>Number(n).toLocaleString(LOC,{maximumFractionDigits:d});")
+t=t.replace("const dde=d=>d?pdt(d).toLocaleDateString('de-DE'):'–';","const dde=d=>d?pdt(d).toLocaleDateString(LOC):'–';")
 t=t.replace("const eur=n=>Number(n).toLocaleString('de-DE',{","const eur=n=>Number(n).toLocaleString(LOC,{")
 t=t.replace("new Date(d).toLocaleDateString('de-DE')","new Date(d).toLocaleDateString(LOC)")
 t=t.replace("S.items=(S.items||[]).map(normI);","LANG=S.lang||'de';LOC=locOf(LANG);S.items=(S.items||[]).map(normI);")

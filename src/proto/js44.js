@@ -10,7 +10,7 @@ function docData(d,l){return withLang(l,()=>{const c=JSON.parse(JSON.stringify(d
 const DOC_HEAD=/^(Zutaten gesamt|Zutaten|Phasen|Zubereitung)$/;
 function docTextLines(txt,l){return withLang(l,()=>txt.split('\n').map(z=>{if(!z.trim())return z;if(DOC_HEAD.test(z))return trStr(z);
 let m=z.match(/^(Einsatzzweck|Ziel-pH|Ergibt|Zeitaufwand|Schwierigkeit|Haltbarkeit|Abfüllung|Hinweis|Notiz|INCI \(Entwurf\)|Summe): (.*)$/);if(m)return trStr(m[1])+': '+m[2];
-m=z.match(/^(Version \d+)$/);if(m)return trStr(z);
+m=z.match(/^Version (\d+)(.*)$/);if(m)return trStr('Version')+' '+m[1]+m[2];
 m=z.match(/^([\d.,]+ g )(.+)$/);if(m)return m[1]+trStr(m[2]);return z}).join('\n'))}
 {const _t=rzTextOf;rzTextOf=function(id,vn){if(!DOCL)return _t(id,vn);const r=rzGet(id),v=rzVer(r,vn||rzCurV(r).n),old=v.d;v.d=docData(old,DOCL);try{return docTextLines(_t(id,vn),DOCL)}finally{v.d=old}}}
 {const _p=rzPdf;rzPdf=function(id,vn,o){if(!DOCL)return _p(id,vn,o);return withLang(DOCL,()=>_p(id,vn,o))}}
@@ -32,3 +32,7 @@ function mutSet(l){S.mut=l;save();sheetAppSet()}
 const d=document.createElement('div');d.id='mutset';d.innerHTML=`<div style="height:26px"></div>${scap('Meine Sprache (Zielsprache)')}<div class="tb" style="gap:8px;flex-wrap:wrap">${DOC_LANGS.map(x=>`<button type="button" class="pill ${mutL()===x[0]?'on':''}" style="width:auto;height:auto" onclick="mutSet('${x[0]}')">${x[1]}</button>`).join('')}</div><div class="s" style="margin-top:6px">In diese Sprache übersetzt die KI fremdsprachige Rezepte beim Import und bei „Übersetzen“. Die Sprache der App stellst du oben ein.</div>`;b.insertAdjacentElement('afterend',d);try{trWalk(d)}catch(e){}}}
 /* Artikeldaten aus KI-Lesungen: Freitexte in der Zielsprache, Original bleibt als Quelle erhalten */
 function kiProdSys(){const l=langName(mutL());return KI_PROD_SYS+` Sprache der Ausgabe ist ${l}: name, sonstige.name und Freitext in sonstige.wert schreibst du auf ${l}. Der Name ist die übliche Bezeichnung des Rohstoffs in dieser Sprache, ohne Marke, Shop-Zusätze und Packungsgröße. In name_original steht der Name wörtlich wie im Dokument. INCI-Bezeichnungen, Zahlen, Einheiten, CAS-Nummern und H-Sätze bleiben unverändert.`}
+
+/* Zahlen- und Datumsformat folgen der Dokumentsprache */
+{const _c=rzCardHtml;rzCardHtml=function(id,vn,o){return DOCL?withLang(DOCL,()=>_c(id,vn,o)):_c(id,vn,o)}}
+{const _t2=rzTextOf;rzTextOf=function(id,vn){return DOCL?withLang(DOCL,()=>_t2(id,vn)):_t2(id,vn)}}

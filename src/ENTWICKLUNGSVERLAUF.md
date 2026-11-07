@@ -393,3 +393,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Ursache: festes KI-Zeitlimit 40 s (kiRaw) reichte für eine Rechnung mit 48 Positionen nicht. Jetzt 45 s + 8 ms je Zeichen + 15 s je Bild, höchstens 170 s (opts.timeout überschreibt).
 - Rechnungstext vor dem Senden: Strichcode-Reste (|, I, l-Folgen) und Zeilen ohne Buchstaben/Ziffern entfernt (js37 invStep).
 - Offen: Texterkennung liest Fotos teils falsch („Weihrauchol“, „10m!“); Option „Bilder direkt an die KI“ würde auch Adresse mitsenden und braucht eine Einwilligung im Dialog.
+
+## Zahlen und Datum je Dokumentsprache (07.11.2026)
+- rzCardHtml und rzTextOf laufen bei gesetztem DOCL unter withLang, dadurch folgen Dezimal- und Tausendertrennzeichen und Datum (nf, dde, rzIv) der Dokumentsprache. patch4.py: dde nutzt jetzt LOC statt fest de-DE (wirkt auch in der App-Oberfläche je Sprache). Textexport übersetzt die Zeile „Version n · Datum“.
