@@ -422,3 +422,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - js45.js (neu, letzte Datei): `rzNew()` (Plus im Rezeptbuch: bei aktiver KI Auswahl „Rezept mit KI erfassen“ / „Selbst schreiben“), Karte „Rezept mit KI erfassen“ oben auf der Rezepte-Seite (`#rzkib`), „Artikel mit KI erfassen“ im Neu-Blatt (`#artki`) und als erste Zeile auf der Lager-Eingabeseite. Ohne KI-Schlüssel unverändert.
 - js37.js: `kiFilter` lässt in den ersten 10 Zeilen den Firmennamen vor Straße/PLZ durch (Lieferant); KI_INV_SYS fordert den Rechnungssteller. Neu: `invHead/invHeadGo` (Lieferant, Nr., Datum ändern), `invEdit/invEditGo` (Bezeichnung, Packungsgröße, Einheit, Anzahl, Preis je Position); Zeilenknöpfe „Rohstoff“ und „Werte“.
 - Test t119. Offen: Praxistest mit echtem Key.
+
+## Beta-Kandidat: Import-Menüs, Plus, Auslieferzustand, Anleitung (07.11.2026)
+- js46.js (neu, letzte Datei): `sheetRzKi`/`RZKIMODE` (KI-Fenster zeigt nur KI; klassisches Fenster mit „Mit KI“-Zeile unten), Lager-Import um „Artikel mit KI erfassen“, `starterRez`/`freshData`/`freshAsk`/`freshGo`, `seed` überschrieben (leer; Test-Browser behält altes Lager), Hilfekapitel.
+- js45.js: `rzNew` mit drei Wegen, Karte auf Rezepte-Seite (`#rzkibn`). js36/js42: KI-Zusätze nur bei `RZKIMODE`. js20: `demoLoad/demoRm` verknüpfen/lösen Beispielrezepte (`bsp`).
+- Test t120. Hinweis: Die 27 Beispielrezepte sind eigene, ungeprüfte Testrezepte, keine Rezepte von Heike Käser.

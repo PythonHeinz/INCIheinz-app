@@ -12,7 +12,7 @@ window.KI_MOCK=async(s,u,m,o)=>{calls.push(s.slice(0,22));
  if(/Du übersetzt Texte/.test(s)){const d=JSON.parse(u.match(/<daten>\n([\s\S]*?)\n<\/daten>/)[1]);r.tr={ziele:d.ziele,quelle:d.quelle,n:d.texte.length,gloss:d.glossar.length,texte:d.texte.map(t=>t.text)};
   return JSON.stringify({texte:d.texte.map(t=>({k:t.k,uebersetzung:Object.fromEntries(d.ziele.map(l=>[l,TRN[t.text]?TRN[t.text][l]:(l+': '+t.text.slice(0,12)+(t.text==='Stir until uniform.'?' <b>':''))]))}))})}
  return EXT};
-sheetRzImport('Shampoo Bars\nirgendein Text');await W();await rzKiRun();await W();
+sheetRzKi('Shampoo Bars\nirgendein Text');await W();await rzKiRun();await W();
 let t=document.getElementById('sheet').innerText;r.calls=calls.length;
 r.dbg=t.slice(-420);r.prev={mapped:/2 von 4 Zutaten/.test(t),orig:/Sprache des Originals:\s*Englisch/i.test(t),ki:/nicht geprüft/.test(t),dryDE:/Trockenphase/.test(t)};
 r.ziele=r.tr.ziele;r.quelle=r.tr.quelle;r.gloss=r.tr.gloss;r.texte=r.tr.texte;r.fake=RZIM.d.phasen.flatMap(p=>p.z).find(z=>/Stock/.test(z.name)).cid||'none';
@@ -41,9 +41,9 @@ sheetTrAll();await W();r.infoAfter=document.getElementById('trinfo').innerText;
 window.KI_MOCK=async()=>{throw kiErr('limit')};S.tm={};TRA.langs=['en'];sheetTrAll();await W();await trAllGo();await W();r.limitMsg=document.getElementById('er').textContent;
 // Alle Sprachen beim Import
 S.tm={};S.mut='de';window.KI_MOCK=async(s,u)=>{if(/dem Rohstoffkatalog/.test(s))return JSON.stringify({zutaten:[]});if(/Du übersetzt Texte/.test(s)){r.all=JSON.parse(u.match(/<daten>\n([\s\S]*?)\n<\/daten>/)[1]).ziele;return JSON.stringify({texte:[]})}return EXT};
-sheetRzImport('x');await W();document.getElementById('rztall').checked=true;await rzKiRun();await W();
+sheetRzKi('x');await W();document.getElementById('rztall').checked=true;await rzKiRun();await W();
 // Quelle = Zielsprache: keine Übersetzung
 let tcalls=0;window.KI_MOCK=async(s)=>{if(/Du übersetzt Texte/.test(s))tcalls++;if(/dem Rohstoffkatalog/.test(s))return JSON.stringify({zutaten:[]});return EXT.replace('"en"','"de"')};
-sheetRzImport('x');await W();await rzKiRun();await W();r.noTrSame=tcalls;
+sheetRzKi('x');await W();await rzKiRun();await W();r.noTrSame=tcalls;
 LANG='en';sheetTrAll();await W();r.enUI=document.getElementById('sheet').innerText.slice(0,60);
 return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

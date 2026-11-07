@@ -179,6 +179,15 @@ Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigene
 - Dokumentsprache: Beim Drucken (Rezeptkarte, Rezeptbuch), Rezept als Text und Rezept teilen gibt es „Sprache des Dokuments“ (Deutsch, English, Español, Standard Sprache der App). Fehlende Übersetzungen erscheinen im Original.
 - Zielsprache: Mehr › Einstellungen › „Meine Sprache (Zielsprache)“. In diese Sprache übersetzt die KI beim Rezeptimport und bei „Übersetzen“, und in ihr schreibt sie Namen und Freitexte bei Artikeldaten. Der Originalname bleibt in der Notiz.
 
+## Nachtrag: KI-Einstiege, Import-Menüs, Auslieferzustand (07.11.2026)
+- **Grundsatz:** KI-Funktionen stehen gebündelt unter Mehr › KI und zusätzlich dort, wo der Anwendungsfall passiert. Ohne KI-Schlüssel erscheint keiner dieser Einträge (alles prüft `kiOn()` beim Zeichnen).
+- **Import-Menüs:** Lager › Mehr › Import: oben klassisch (Excel, CSV, Text), unten „Mit KI“ (Rechnung importieren, Artikel mit KI erfassen). Rezeptbuch › Mehr › Rezepte importieren: oben klassisch (Text auswerten, Foto lokal, Rezeptdatei), unten „Mit KI › Rezept mit KI erfassen“. Das KI-Fenster (`sheetRzKi`, Flag `RZKIMODE`) zeigt nur die KI-Wege.
+- **Plus im Rezeptbuch** (`rzNew`): Ohne KI schreiben, Rezept mit KI einlesen, Rezept im Chat entwickeln. Ohne KI direkt der Editor. Die Rezepte-Seite zeigt oben eine Karte mit den zwei KI-Wegen.
+- **Plus im Lager** (`sheetNeu`): oben „Artikel mit KI erfassen“; Eingabeseite: erste Zeile „Artikel mit KI erfassen“.
+- **Rechnung:** Kopfdaten (Lieferant, Nr., Datum) und je Position „Rohstoff“ und „Werte“ (Bezeichnung, Packungsgröße, Einheit, Anzahl, Preis) änderbar; neue Positionen als Rohstoff mit Bestand 0.
+- **Auslieferzustand:** erster Start = Lager leer, 27 Beispielrezepte (Feld `bsp`, ohne Bestand, verknüpfen über `cid`). Mehr › Einstellungen › Testbetrieb (Expertenmodus): Testdaten laden/entfernen und „Auslieferzustand herstellen“ (`freshAsk`, ersetzt `sheetClear`). In Playwright (navigator.webdriver) bleibt das alte Beispiellager aktiv, außer localStorage `inciheinz-fresh`.
+- **Anleitung** (Mehr › Hilfe): neue Kapitel Rezeptbuch, Neues Rezept, Import mit und ohne KI, Mit KI arbeiten, Artikel erfassen, Rechnungen einlesen, Sprachen und Dokumente, Beispielrezepte.
+
 ## 5. Formate
 | Vorgang | Format | Hinweis |
 |---|---|---|

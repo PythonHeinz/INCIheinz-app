@@ -121,3 +121,5 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 - Übersetzungen: freie Rezepttexte bleiben im Original, Anzeige in anderen Sprachen kommt aus S.tm. Neue Anzeigen/Exporte müssen Texte aus d.* über den Textknoten-Weg (tmGet) oder direkt über tmGet(text) ausgeben. d.lang = Originalsprache, S.mut = Zielsprache.
 
 - Dokumentsprache (js44.js): DOCL + withLang; PDF-Texte laufen über TT in T/pdfWrap, HTML-Druck über DOMParser+trWalk. Im Script nie das Literal '</body>' schreiben. Artikel-KI: kiProdSys() statt KI_PROD_SYS verwenden (Ausgabesprache = S.mut), name_original → Notiz.
+
+- Auslieferzustand (js46): `seed()` liefert in echten Browsern ein leeres Lager mit 27 Beispielrezepten (`bsp`, keine Käser-Rezepte, ungeprüft). Playwright (navigator.webdriver) bekommt das alte Beispiellager, damit die Tests t83–t119 laufen; localStorage `inciheinz-fresh` erzwingt den Auslieferzustand (t120). KI-Fenster im Rezeptbuch nur über `sheetRzKi()`; `sheetRzImport()` ohne Argument ist das klassische Fenster.

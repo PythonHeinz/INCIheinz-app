@@ -80,7 +80,7 @@ const lief=r.lief||'Rechnung';const snap=JSON.stringify(S);let n=0;INV.rows.forE
 it.bezug.push({id:uid(),lief,nr:'',preis:x.p.preis,menge:x.p.m,kind:x.p.kind,datum:r.datum,src:'aus Rechnung'+(r.nr?' '+r.nr:'')+' vom '+r.datum});n++});
 if(!n){$('#er').textContent='Es ist keine Position zum Eintragen gewählt.';return}
 (S.inv=S.inv||[]).push({lief:r.lief,nr:r.nr,datum:r.datum,versand:r.versand,rabatt:r.rabatt,n,added:today()});adoptLief();save();closeSheet();undoOffer('Preise aus Rechnung',snap,JSON.stringify(S),true);toast(n+(n===1?' Preis eingetragen':' Preise eingetragen'))}
-(function(){const o=sheetMehr;sheetMehr=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(s)s.insertAdjacentHTML('beforeend',rowH(['import','Rezept importieren','Aus Webseite, Text oder Foto',"sheetRzImport()"])+rowH(['import','Rechnung importieren','Preise mit Rechnungsdatum eintragen',"sheetInv()"]))}})();
+(function(){const o=sheetMehr;sheetMehr=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(s)s.insertAdjacentHTML('beforeend',rowH(['import','Rezept importieren','Aus Webseite, Text oder Foto',"sheetRzKi()"])+rowH(['import','Rechnung importieren','Preise mit Rechnungsdatum eintragen',"sheetInv()"]))}})();
 
 function invAll(on){document.querySelectorAll('[id^=inv_]').forEach(e=>{if(!e.disabled)e.checked=on})}
 function invNewItem(p){const nm=String(p.bez||'').replace(/[,;]?\s*\d+(?:[.,]\d+)?\s*(?:ml|g|kg|l|liter|stück|stk)\b.*$/i,'').replace(/\s+/g,' ').trim()||String(p.bez||'').trim();if(!nm)return null;

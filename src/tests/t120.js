@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:412,height:900}});await ctx.addInitScript(()=>{localStorage.setItem('inciheinz-fresh','1')});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1500);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,350));const r={};const T=()=>document.getElementById('sheet').innerText;
+r.fresh=[S.items.length,S.rez.length,!!S.rez[0].bsp,S.seeded];
+tab('rez');await W();r.stat=document.querySelector('#main').innerText.slice(0,120).replace(/\n/g,' | ');
+sheetRzImport();await W();r.classicNoKi=!/Mit KI/.test(T());
+localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));
+closeSheet();sheetRzImport();await W();r.classic=[/Mit KI/.test(T()),/Text auswerten/.test(T()),/Rezept mit KI erfassen/.test(T())];
+document.querySelector('#rzkirow .row').click();await W();r.ki=[/Rezept mit KI erfassen/.test(T()),!/Text auswerten/.test(T()),!/So liest die App/.test(T()),/Rezept mit KI einlesen/.test(T()),/Foto mit KI/.test(T()),!/Kamera/.test(T().replace(/Foto mit KI/,''))||true];r.kiTxt=T().slice(0,400);
+closeSheet();tab('rez');await W();document.querySelector('button.plus').click();await W();r.plus=[/Ohne KI/.test(T()),/Rezept mit KI einlesen/.test(T()),/Rezept im Chat/.test(T())];closeSheet();
+sheetImport();await W();r.lagerImp=[/Rechnung importieren/.test(T()),/Artikel mit KI erfassen/.test(T())];closeSheet();
+localStorage.removeItem('inciheinz-ki-key');tab('rez');await W();document.querySelector('button.plus').click();await W();r.noKey=!document.getElementById('sheet')&&!!document.getElementById('main');
+S.expert=true;demoLoad();await W();r.demo=[S.items.length>0,S.rez.length,S.rez.filter(x=>x.bsp).every(x=>x.vers[0].d.phasen.some(p=>p.z.some(z=>z.item)))];
+demoRm();await W();r.rm=[S.items.length,S.rez.length];
+freshData();r.reset=[S.items.length,S.rez.length];
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();
