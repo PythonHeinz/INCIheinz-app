@@ -15,16 +15,18 @@ i18n=r'''
 /* ---------- Sprache ---------- */
 const reEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function prep(d){if(d.fb)return;d.fb=Object.keys(d.dict).filter(k=>k.length>=5).sort((a,b)=>b.length-a.length).map(k=>[new RegExp('(?<![\\p{L}])'+reEsc(k)+'(?![\\p{L}])','gu'),d.dict[k]]);d.pr=d.pats.map(p=>[new RegExp(p[0]),p[1]])}
-function trStr(s){if(LANG==='de')return s;const d=LANGS[LANG];if(!d)return s;prep(d);const k=s.trim();if(!k)return s;const r=d.dict[k];if(r!==undefined)return s.replace(k,()=>r);
+const tmGet=s=>{const k=s.trim();if(!k)return null;const a=S.tm&&S.tm[k],b=typeof RZIM!=='undefined'&&RZIM&&RZIM.tm&&RZIM.tm[k];const e=a||b;return e&&e[LANG]?e[LANG]:null};
+const tmOn=()=>{if(typeof RZIM!=='undefined'&&RZIM&&RZIM.tm)return true;for(const k in (S.tm||{}))return true;return false};
+function trStr(s){const tv=tmGet(s);if(tv!==null)return s.replace(s.trim(),()=>tv);if(LANG==='de')return s;const d=LANGS[LANG];if(!d)return s;prep(d);const k=s.trim();if(!k)return s;const r=d.dict[k];if(r!==undefined)return s.replace(k,()=>r);
 for(const [re,rep] of d.pr)if(re.test(k))return s.replace(k,()=>k.replace(re,rep));
 let out=k;for(const [re,rep] of d.fb)out=out.replace(re,()=>rep);return out===k?s:s.replace(k,()=>out)}
-function trWalk(root){if(LANG==='de'||!root)return;if(root.nodeType===3){trNode(root);return}if(root.nodeType!==1)return;
+function trWalk(root){if((LANG==='de'&&!tmOn())||!root)return;if(root.nodeType===3){trNode(root);return}if(root.nodeType!==1)return;
 const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;const l=[];while(n=w.nextNode())l.push(n);l.forEach(trNode);
 const els=root.matches&&root.matches('[placeholder],[aria-label],[title],optgroup')?[root]:[];root.querySelectorAll('[placeholder],[aria-label],[title],optgroup').forEach(e=>els.push(e));
 els.forEach(e=>['placeholder','aria-label','title','label'].forEach(a=>{if(e.hasAttribute(a)){const v=e.getAttribute(a),r=trStr(v);if(r!==v)e.setAttribute(a,r)}}))}
-function trNode(n){const p=n.parentElement;if(!p||/^(TEXTAREA|SCRIPT|STYLE)$/.test(p.tagName)||p.classList.contains('nm'))return;const v=n.nodeValue;if(!v.trim())return;const r=trStr(v);if(r!==v)n.nodeValue=r}
+function trNode(n){const p=n.parentElement;if(!p||/^(TEXTAREA|SCRIPT|STYLE)$/.test(p.tagName))return;const v=n.nodeValue;if(!v.trim())return;const tv=tmGet(v);if(tv!==null){n.nodeValue=v.replace(v.trim(),()=>tv);return}if(p.classList.contains('nm')||LANG==='de')return;const r=trStr(v);if(r!==v)n.nodeValue=r}
 let OBS=null;
-function startI18n(){const app=$('#app');OBS=new MutationObserver(ms=>{if(LANG==='de')return;OBS.disconnect();ms.forEach(m=>{if(m.type==='characterData')trWalk(m.target);else m.addedNodes.forEach(trWalk)});OBS.observe(app,{childList:true,subtree:true,characterData:true})});OBS.observe(app,{childList:true,subtree:true,characterData:true})}
+function startI18n(){const app=$('#app');OBS=new MutationObserver(ms=>{if(LANG==='de'&&!tmOn())return;OBS.disconnect();ms.forEach(m=>{if(m.type==='characterData')trWalk(m.target);else m.addedNodes.forEach(trWalk)});OBS.observe(app,{childList:true,subtree:true,characterData:true})});OBS.observe(app,{childList:true,subtree:true,characterData:true})}
 function setLang(l){LANG=l;LOC=locOf(l);S.lang=l;document.documentElement.lang=l;save();closeSheet();draw();trWalk($('#app'))}
 function pickLang(){pick('Sprache',[['de','Deutsch'],['en','English'],['es','Español']],LANG,setLang)}
 '''

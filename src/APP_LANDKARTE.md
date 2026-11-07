@@ -252,3 +252,6 @@ Im Menü KI-Funktionen kannst du das Modell per Tipp wählen oder einen eigenen 
 
 ## Nachtrag: Mehrfachbilder (07.11.2026)
 - Rezept importieren: "Galerie / Screenshots (bis 5)", "Aus Galerie mit KI (bis 5)". Rechnung einlesen: "Galerie / Fotos (bis 5)". Aus Produktseite übernehmen (bei KI an): "Foto mit KI lesen", "Screenshots mit KI (bis 5)".
+
+## Nachtrag: Fremdsprachige Rezepte (07.11.2026)
+- Rezept importieren › Mit KI genauer lesen / Fotos: Vorschau zeigt "x von y Zutaten wurden dem Katalog zugeordnet", Sprache des Originals, Hinweis auf KI-Übersetzung. S.tm neu (optional), d.lang und z.on an Rezept/Zutat optional.
