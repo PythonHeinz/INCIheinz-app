@@ -388,3 +388,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Artikeldaten per KI (Produktseite, Foto, Screenshots, Datenblatt): kiProdSys() hängt die Ausgabesprache (Zielsprache) an; name und Freitexte in sonstige in der Zielsprache, name_original wörtlich. Beim Übernehmen steht der Originalname in der Notiz („Originalname: …“), sofern der Name übernommen wurde. INCI, Zahlen, CAS, H-Sätze bleiben unverändert.
 - Fix: im Script darf kein Literal '</body>' stehen (beendet das Script), deshalb '</bo'+'dy>'.
 - Tests: t113 (Dokumentsprache: ES/DE/Original, Daten unverändert, PDF, Auswahl im Blatt), t114 (Zielsprache-Einstellung, Ausgabesprache im Prompt, Originalname). Offen: Zahlen-/Datumsformat je Dokumentsprache, Rechnungspositionen, Vorlagen-Überarbeitung (kommt später).
+
+## Fix Rechnung mit vielen Positionen (07.11.2026)
+- Ursache: festes KI-Zeitlimit 40 s (kiRaw) reichte für eine Rechnung mit 48 Positionen nicht. Jetzt 45 s + 8 ms je Zeichen + 15 s je Bild, höchstens 170 s (opts.timeout überschreibt).
+- Rechnungstext vor dem Senden: Strichcode-Reste (|, I, l-Folgen) und Zeilen ohne Buchstaben/Ziffern entfernt (js37 invStep).
+- Offen: Texterkennung liest Fotos teils falsch („Weihrauchol“, „10m!“); Option „Bilder direkt an die KI“ würde auch Adresse mitsenden und braucht eine Einwilligung im Dialog.

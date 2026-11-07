@@ -12,7 +12,7 @@ function kiErr(code,status){const e=new Error(code);e.status=status;return e}
 async function kiRaw(key,model,system,user,opts){
 if(window.KI_MOCK)return window.KI_MOCK(system,user,model,opts);
 if(String(system).length+String(user).length>((opts&&opts.max)||KI_MAXIN)||(opts&&(opts.images||(opts.image?[opts.image]:[])).reduce((a,x)=>a+x.data.length,0)>18e6))throw kiErr('zu-lang');
-const ac=new AbortController();const to=setTimeout(()=>ac.abort(),40000);
+const ac=new AbortController();const nimg=((opts&&(opts.images||(opts.image?[opts.image]:[])))||[]).length;const to=setTimeout(()=>ac.abort(),(opts&&opts.timeout)||Math.min(170000,45000+String(user).length*8+nimg*15000));
 try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(Object.assign({systemInstruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:user}].concat(((opts&&(opts.images||(opts.image?[opts.image]:[])))||[]).map(x=>({inlineData:{mimeType:x.mime,data:x.data}})))}]},opts&&opts.json?{generationConfig:{responseMimeType:'application/json'}}:{}))});
 if(!r.ok)throw kiErr(r.status===400||r.status===403?'key':r.status===404?'modell':r.status===429?'limit':'dienst',r.status);
 const j=await r.json();const p=((j.candidates||[])[0]||{}).content;const t=((p&&p.parts)||[]).map(x=>x.text||'').join('').trim();if(!t)throw kiErr('leer');return t}
