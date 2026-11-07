@@ -412,3 +412,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 ## KI-Menü und Import-Zugänge (07.11.2026)
 - Mehr › KI (Lager und Rezeptbuch): App-Guide, Rezept importieren, Rechnung importieren, Rezept-Chat (im Rezeptbuch zusätzlich Rezepte übersetzen). Lager › Import hat zusätzlich „Mit KI › Rechnung importieren“; Rezeptbuch › Import bleibt der Rezeptimport. Test t118.
 - KI-Meldungen bei Zeitüberschreitung/Verbindungsabbruch raten zum Bleiben in der App (wechselt man die App, bricht der Browser die Anfrage ab); Schaltfläche zeigt „Die KI liest … (bis 30 s)“.
+
+## Übersetzungsblatt mit allen Sprachen, feinere Gliederung beim KI-Rezeptimport (07.11.2026)
+- Blatt „Übersetzungen“ (js43.js sheetRzTr): Reiter für alle Sprachen in TR3 (umbrechend, für viele Sprachen ausgelegt), markiert mit „Originalsprache“ (d.olang||d.lang) und „Zielsprache“ (S.mut). Der Reiter der Textsprache (recSrc) zeigt die Texte schreibgeschützt, ohne Speichern/KI-Knopf; alle anderen Reiter sind bearbeitbar.
+- KI_RZ_SYS (js36.js): schritte jetzt {titel,text} mit kurzer Überschrift (kiRezCheck nimmt weiter auch reine Texte an, KI_WIRK-Filter auch für Titel); neue Hinweisarten „Anwendung“ und „Zubehör“ (als Notiz-Modul mit Titel, in KI_STD_T, deshalb nicht übersetzt sondern über das Wörterbuch); Aufforderung, Vorbereitung, Erhitzen, Mischen, Abkühlen, Abfüllen als eigene Schritte, Sicherheit/Achtung/Tipp/Haltbarkeit/Abfüllung getrennt zu halten.
+- Offen: Schritte einer Phase zuordnen (Modul-Feld fehlt), Titel der Schritte bei Übersetzung prüfen.
