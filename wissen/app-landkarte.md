@@ -249,3 +249,6 @@ Im Menü KI-Funktionen kannst du das Modell per Tipp wählen oder einen eigenen 
 - Mehr › Rezept-Chat (nur bei KI an): Blatt mit Verlauf, Eingabefeld, Senden, Neuer Chat. Unter KI-Antworten: "Als Regel merken". Karten: Seifenrechnung, Rezeptvorschlag (Als Entwurf öffnen), Einkaufsliste (Auf die Einkaufsliste).
 - Mehr › Einstellungen › KI-Funktionen › Meine Regeln: Liste eigener Regeln, neue Regel, Löschen.
 - Rezeptversion kann ein Feld chat (Markdown des Gesprächs) tragen, S.kiRegeln neu, beides optional.
+
+## Nachtrag: Mehrfachbilder (07.11.2026)
+- Rezept importieren: "Galerie / Screenshots (bis 5)", "Aus Galerie mit KI (bis 5)". Rechnung einlesen: "Galerie / Fotos (bis 5)". Aus Produktseite übernehmen (bei KI an): "Foto mit KI lesen", "Screenshots mit KI (bis 5)".

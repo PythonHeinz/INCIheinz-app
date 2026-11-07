@@ -355,3 +355,7 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Rezept: bis zu 5 Fotos/Screenshots in einer KI-Anfrage (rzKiPhotoRun), Textgrenze für "Mit KI genauer lesen" von 8000 auf 40000 Zeichen, Prompt-Hinweis auf Webseiten-Beiwerk, Fehlermeldungen scrollen in Sicht (vorher stand sie über dem Button, daher "ging nichts").
 - OCR (lokal) nimmt bei Rezept- und Rechnungsimport aus der Galerie bis zu 5 Bilder und fügt den Text zusammen (ocrStart/ocrRun in js13.js). Mehrbild-OCR nur per Syntaxcheck geprüft, Tesseract läuft in den Tests nicht.
 - Rechnungen gehen weiter nur über lokale OCR plus Filter (Name, Konto, Adresse bleiben auf dem Gerät), nicht als Bild an die KI.
+
+## KI: Datenblatt-Werte am Artikel (07.11.2026)
+- "Aus Produktseite übernehmen" liest bei KI (Text, Fotos, Screenshots) zusätzlich Dichte, Verseifungszahl, NaOH-Bedarf, Jodzahl, Schmelzpunkt und "sonstige" Angaben (pH, Flammpunkt, Einsatz laut Hersteller, H-Sätze …). prodExt (js37.js) prüft: Zahlen und Spannen nur in plausiblen Bereichen, Dichte mit Einheit (kg/m³ wird umgerechnet), Wirkaussagen fallen raus. Vorschau mit Haken und "bisher" je Wert (js41.js: prodPrev/prodApply-Wrapper). Felder: dens, sapk, sapn, iod, smp; Rest als Block "Aus Datenblatt (Datum): …" angehängt an die Notiz, nie überschrieben.
+- Nach Abbruch der Übernahme (zum Beispiel Lieferant fehlt) wird nichts geschrieben. Produktbilder werden mit 2000 px gesendet (kiShrink nimmt jetzt eine Größe). Tests t110, t111.

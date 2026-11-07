@@ -9,3 +9,18 @@ catch(x){KI_PROD_BUSY=false;bs.forEach(b=>b.disabled=false);const e2=document.ge
 (function(){const o=sheetProduct;sheetProduct=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();if(!s)return;const bt=s.querySelector('.btns');
 const h=`<div class="two" style="margin:10px 0 0"><button class="btn sec kipb" onclick="prodKiFoto('cam')">Foto mit KI lesen</button><button class="btn sec kipb" onclick="prodKiFoto('gal')">Screenshots mit KI (bis 5)</button></div><div class="s" style="margin:4px 0 8px">Die Bilder werden verkleinert an den KI-Anbieter gesendet und nicht gespeichert. Du siehst vorher eine Vorschau.</div>`;
 if(bt)bt.insertAdjacentHTML('beforebegin',h);else s.insertAdjacentHTML('beforeend',h)}})();
+/* Datenblatt-Werte (Dichte, Verseifungszahl, NaOH-Bedarf, Jodzahl, Schmelzpunkt) mit Haken in der Vorschau, Weiteres als Block in die Notiz */
+const PX=[['dens','Dichte (g/ml)',i=>densOf(i)>0?nf(densOf(i),3):'',v=>nf(v,3)],['sapk','Verseifungszahl (mg KOH/g)',i=>fettOf(i).sapk.v,v=>v],['sapn','NaOH-Bedarf (g je g Fett)',i=>fettOf(i).sapn.v,v=>v],['iod','Jodzahl',i=>fettOf(i).iod.v,v=>v],['smp','Schmelzpunkt',i=>fettOf(i).smp.v,v=>v]];
+const pxLine=r=>(r.ext&&r.ext.sonst||[]).map(p=>p.name+': '+p.wert).join('; ');
+(function(){const o=prodPrev;prodPrev=function(){o.apply(this,arguments);const r=PP.r,x=r&&r.ext;if(!x||!x.n)return;const i=PP.id?getI(PP.id):null;const er=document.getElementById('er');if(!er)return;
+const ck=(id,l,v,old)=>`<label class="chk" style="align-items:flex-start;margin-top:10px"><input type="checkbox" id="px_${id}" checked> <span><b style="font-weight:600">${l}</b><br><span style="overflow-wrap:anywhere">${esc(v)}</span>${old&&old!==v?`<br><span class="s">bisher: ${esc(old)}</span>`:''}</span></label>`;
+let h='<div class="cap" style="margin:16px 0 0">Technische Werte aus dem Datenblatt</div><div class="s">Bitte mit dem Original vergleichen. Abgewählte Werte werden nicht übernommen.</div>';
+PX.forEach(([k,l,old,fm])=>{if(x[k]!=null&&x[k]!=='')h+=ck(k,l,fm(x[k]),i?old(i):'')});const sl=pxLine(r);if(sl)h+=ck('sonst','Weitere Angaben (kommen in die Notiz)',sl,'');
+er.insertAdjacentHTML('beforebegin',h)}})();
+(function(){const o=prodApply;prodApply=function(){const r=PP.r,x=r&&r.ext;const on=k=>{const e=document.getElementById('px_'+k);return !!(e&&e.checked)};const pick={};let sl='';
+if(x&&x.n){PX.forEach(([k])=>{if(x[k]!=null&&x[k]!==''&&on(k))pick[k]=x[k]});if(on('sonst'))sl=pxLine(r)}
+let closed=false;const cs=closeSheet;closeSheet=function(){closed=true;return cs.apply(this,arguments)};try{o.apply(this,arguments)}finally{closeSheet=cs}
+if(!closed||(!Object.keys(pick).length&&!sl))return;const it=R&&R.name==='artikel'?getI(R.id):null;if(!it)return;
+if(pick.dens)it.dens=pick.dens;['sapk','sapn','iod','smp'].forEach(k=>{if(pick[k])it[k]=String(pick[k])});
+if(sl)it.notiz=(it.notiz?it.notiz+'\n\n':'')+'Aus Datenblatt ('+dde(today())+'): '+sl;save();draw()}})();
+(function(){const o=sheetProduct;sheetProduct=function(){o.apply(this,arguments);if(!kiOn())return;const s=shEl();const b=s&&s.querySelector('.kipb');if(b&&b.parentElement)b.parentElement.insertAdjacentHTML('beforebegin','<div class="s" style="margin-top:10px">Auch Datenblätter und Sicherheitsdatenblätter gehen. Gelesen werden dann zusätzlich Dichte, Verseifungszahl, Jodzahl, Schmelzpunkt und weitere technische Angaben.</div>')}})();
