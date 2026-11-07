@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1200);
+const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,350));const r={};S.expert=true;const T=()=>document.getElementById('sheet').innerText;
+const f=kiFilter('Dragonspice Naturwaren GmbH · Musterstraße 5 · 12345 Bonn\nRechnung 4711\n2 x Sheabutter 250 g 9,90','inv');r.filter=f.text;
+localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));
+tab('rez');await W();r.rzBanner=!!document.getElementById('rzkib');
+document.querySelector('button.plus').click();await W();r.rzNew=[/Rezept mit KI erfassen/.test(T()),/Selbst schreiben/.test(T())];closeSheet();await W();
+tab('lager');await W();sheetNeu();await W();r.artKI=/Artikel mit KI erfassen/.test(T());closeSheet();await W();
+scan2();await W();r.scan=document.querySelector('#main .row b').textContent;
+INV={res:{lief:'',nr:'',datum:'2025-05-01',versand:0,rabatt:0,pos:[]},rows:[{p:{bez:'Test 59',n:1,m:0,kind:'',preis:4.5,ean:'',q:['Packungsgröße fehlt']},it:'',sure:false,on:false}]};invPrev();await W();
+invHead();await W();document.getElementById('ihl').value='Dragonspice';invHeadGo();await W();r.head=/Dragonspice/.test(T());
+invEdit(0);await W();document.getElementById('iem').value='5';document.getElementById('ieu').value='g';invEditGo(0);await W();r.row=INV.rows[0].p.m===5&&INV.rows[0].p.q.length===0&&INV.rows[0].on;
+return r});console.log(JSON.stringify(out,null,1),errs);await b.close()})();

@@ -417,3 +417,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Blatt „Übersetzungen“ (js43.js sheetRzTr): Reiter für alle Sprachen in TR3 (umbrechend, für viele Sprachen ausgelegt), markiert mit „Originalsprache“ (d.olang||d.lang) und „Zielsprache“ (S.mut). Der Reiter der Textsprache (recSrc) zeigt die Texte schreibgeschützt, ohne Speichern/KI-Knopf; alle anderen Reiter sind bearbeitbar.
 - KI_RZ_SYS (js36.js): schritte jetzt {titel,text} mit kurzer Überschrift (kiRezCheck nimmt weiter auch reine Texte an, KI_WIRK-Filter auch für Titel); neue Hinweisarten „Anwendung“ und „Zubehör“ (als Notiz-Modul mit Titel, in KI_STD_T, deshalb nicht übersetzt sondern über das Wörterbuch); Aufforderung, Vorbereitung, Erhitzen, Mischen, Abkühlen, Abfüllen als eigene Schritte, Sicherheit/Achtung/Tipp/Haltbarkeit/Abfüllung getrennt zu halten.
 - Offen: Schritte einer Phase zuordnen (Modul-Feld fehlt), Titel der Schritte bei Übersetzung prüfen.
+
+## KI-Einstiege, Lieferant, Rechnungskorrektur (07.11.2026)
+- js45.js (neu, letzte Datei): `rzNew()` (Plus im Rezeptbuch: bei aktiver KI Auswahl „Rezept mit KI erfassen“ / „Selbst schreiben“), Karte „Rezept mit KI erfassen“ oben auf der Rezepte-Seite (`#rzkib`), „Artikel mit KI erfassen“ im Neu-Blatt (`#artki`) und als erste Zeile auf der Lager-Eingabeseite. Ohne KI-Schlüssel unverändert.
+- js37.js: `kiFilter` lässt in den ersten 10 Zeilen den Firmennamen vor Straße/PLZ durch (Lieferant); KI_INV_SYS fordert den Rechnungssteller. Neu: `invHead/invHeadGo` (Lieferant, Nr., Datum ändern), `invEdit/invEditGo` (Bezeichnung, Packungsgröße, Einheit, Anzahl, Preis je Position); Zeilenknöpfe „Rohstoff“ und „Werte“.
+- Test t119. Offen: Praxistest mit echtem Key.

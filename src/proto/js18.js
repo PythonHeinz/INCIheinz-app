@@ -65,7 +65,7 @@ if(rzDirty())rzAsk('Ungespeicherte Arbeit','Wenn du jetzt wechselst, gehen die �
 const back18=back;back=function(){if(rzDirty()){rzAsk('Ungespeicherte Arbeit','Wenn du zurückgehst, gehen die Änderungen verloren.','Verwerfen',()=>{RE=null;RM=null;draftClear();back18()});return}
 if(R.name==='reze'||R.name==='misch'){RE=null;RM=null}back18()};
 function rznav(a){const it=(k,l,i)=>`<button class="${a===k?'on':''}" onclick="tab('${k}')">${ic(i)}<span>${l}</span></button>`;
-return `<nav>${it('rez','Rezepte','book')}${it('bau','Rechner','calc')}<div style="flex:1;display:flex;flex-direction:column;align-items:center"><button class="plus" onclick="rzEdit(null)" aria-label="Neues Rezept">${ic('plus','#fff',26)}</button><span style="font-size:.68rem;font-weight:500;color:var(--sub);margin-top:2px">Neu</span></div>${it('chgs','Chargen','list')}<button onclick="sheetMehr()">${ic('more')}<span>Mehr</span></button></nav>`}
+return `<nav>${it('rez','Rezepte','book')}${it('bau','Rechner','calc')}<div style="flex:1;display:flex;flex-direction:column;align-items:center"><button class="plus" onclick="rzNew()" aria-label="Neues Rezept">${ic('plus','#fff',26)}</button><span style="font-size:.68rem;font-weight:500;color:var(--sub);margin-top:2px">Neu</span></div>${it('chgs','Chargen','list')}<button onclick="sheetMehr()">${ic('more')}<span>Mehr</span></button></nav>`}
 const draw18=draw;
 draw=function(){const rz=!!RZP[R.name];$('#app').classList.toggle('rez',rz);if(!rz)return draw18.apply(this,arguments);
 const v=$('#view');closeSheet();$('#app').classList.remove('artpg');
