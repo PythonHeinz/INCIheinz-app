@@ -430,3 +430,4 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Editor-Hinweis zur Textsprache (07.11.2026)
 - js46.js: `rzEd`-Wrapper zeigt im Editor einen Hinweis (`#rzedlang`), wenn die Rezepttexte nicht in der Zielsprache vorliegen, aber Übersetzungen existieren. „Übersetzung übernehmen“ (`rzEdAdoptAsk/Go`) nutzt `trAdoptGo` und öffnet den Editor neu. Test t121. Hinweistext ist nur Deutsch (dynamische Sprachnamen).
+- Fehler behoben: js44 hatte `draftRestore` des Rezept-Editors (js23) überschrieben (Entwurf nach Neustart ging nicht). Eingabe-Entwürfe heißen jetzt `idraftRestore`. t67 wieder grün. Ältere Tests t55, t69, t75, t77, t82 melden abweichende Erwartungen (vermutlich überholte UI-Annahmen, nicht einzeln geprüft).

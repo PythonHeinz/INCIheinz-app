@@ -43,8 +43,8 @@ document.addEventListener('click',e=>{const t=e.target;if(t&&t.closest){if(t.clo
 const DR_IDS=['rzit','invt','pt'];
 function draftsClear(){DR_IDS.forEach(id=>{try{localStorage.removeItem('inciheinz-draft-'+id)}catch(_){}})}
 document.addEventListener('input',e=>{const t=e.target;if(t&&DR_IDS.includes(t.id)){try{localStorage.setItem('inciheinz-draft-'+t.id,JSON.stringify({t:Date.now(),v:t.value}))}catch(_){}}});
-function draftRestore(){DR_IDS.forEach(id=>{const e=document.getElementById(id);if(!e||e.value.trim())return;try{const d=JSON.parse(localStorage.getItem('inciheinz-draft-'+id)||'null');if(d&&d.v&&Date.now()-d.t<36e5){e.value=d.v;e.insertAdjacentHTML('afterend','<div class="s">Dein Text von eben wurde wiederhergestellt.</div>')}}catch(_){}})}
-{const _o=openSheet;openSheet=function(h){_o(h);draftRestore()}}
+function idraftRestore(){DR_IDS.forEach(id=>{const e=document.getElementById(id);if(!e||e.value.trim())return;try{const d=JSON.parse(localStorage.getItem('inciheinz-draft-'+id)||'null');if(d&&d.v&&Date.now()-d.t<36e5){e.value=d.v;e.insertAdjacentHTML('afterend','<div class="s">Dein Text von eben wurde wiederhergestellt.</div>')}}catch(_){}})}
+{const _o=openSheet;openSheet=function(h){_o(h);idraftRestore()}}
 ['invCommit','rzImportOpen','prodApply'].forEach(n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){const r=f.apply(this,arguments);if(!document.getElementById('sheet'))draftsClear();return r}});
 /* Import-Blatt des Lagers: Rechnung (KI) zusätzlich anbieten */
 {const _i=sheetImport;sheetImport=function(){_i.apply(this,arguments);if(!kiOn())return;const s=shEl();if(!s||s.querySelector('#invrow'))return;const b=s.querySelector('.btns');const d=document.createElement('div');d.id='invrow';d.innerHTML='<div class="cap" style="margin:14px 0 2px">Mit KI</div>'+rowH(['import','Rechnung importieren','Preise mit Rechnungsdatum eintragen',"sheetInv()"]);if(b)b.parentNode.insertBefore(d,b);else s.appendChild(d);try{trWalk(d)}catch(e){}}}
