@@ -101,6 +101,8 @@ Pfad: `Rezeptbuch › Rezepte › (Rezept)`.
 - **Abschnitte:** Zutaten nach Phasen mit Mengen, Anteilen und Lagerstatus; **INCI-Deklaration (Entwurf)**; **Eckdaten**; **Ablauf und Hinweise**.
 - **Weitergeben:** Rezeptkarte drucken · Rezept teilen (fertiges PDF).
 
+- **Rezept löschen:** ganz unten in der Rezeptseite, roter Link „Rezept löschen“. Fragt nach, entfernt das Rezept mit allen Versionen (Chargen bleiben im Chargenbuch als „Gelöschtes Rezept“) und bietet sofort „Rückgängig“ an. Pfad: Rezeptbuch › Rezepte › (Rezept antippen) › nach unten scrollen › Rezept löschen.
+
 ### 3.3 Versionen
 Pfad: `… › Rezeptseite › Versionen`. Liste v1, v2 … mit Datum, Notiz und Differenz in Gramm; „Als Ausgangspunkt bearbeiten“, „Als neues Rezept speichern“, „Version markieren“ (gut/schlecht). **Jedes Speichern erzeugt eine neue Version** mit Notiz „Was hast du geändert?“; eine Version wird nie überschrieben.
 
@@ -112,6 +114,8 @@ Pfad: `Rezeptbuch › Neues Rezept` bzw. Rezeptseite › Bearbeiten.
 - **Ablauf und Hinweise (optional):** „+ Modul“: Arbeitsschritt, Hinweis (Achtung/Tipp/Sicherheit), Abfüllung, Haltbarkeit, Notiz; Module lassen sich verschieben (▲ ▼), löschen, einfügen.
 - **Entwurf** bleibt erhalten, wenn man den Editor verlässt; Speichern-Leiste unten; Tastatur blendet sie aus.
 - **Rezept-Import** (Mehr › Import): Text, Foto oder Datei wird in einen Entwurf umgewandelt, der im Editor geprüft und gespeichert wird.
+- **Zutatenkopf (Liste „Zutaten“, wenn Phasen existieren):** jede Zeile zeigt den Status als Symbol: gefüllter Punkt = Rohstoff im Lager, Ring = nur im Katalog, gestrichelter Ring = nur Text (kein Rohstoff). Antippen einer Zeile öffnet das Zutatenmenü: Bestätigen (nur bei Import), Anderen Rohstoff wählen (Lager/Katalog; bei unbekanntem Text startet die Suche mit dem Text), Als neuen Rohstoff anlegen (nur Name, Menge offen, Name änderbar), In andere Phase verschieben, Nach oben/unten, Entfernen. Dasselbe Menü öffnet der Name in der Phasenzeile. In der Auswahl gibt es zusätzlich „… als neuen Rohstoff anlegen“ neben „als freien Text verwenden“.
+- **Import-Bestätigung (Entwurf aus dem Import):** alles Importierte (Zutaten, Phasen, Ablaufmodule) ist grau, bis es bestätigt ist: Häkchen je Zeile bzw. Phase, „Bestätigen“ im Modul, „Alle bestätigen“ im Hinweisband oben mit Zähler. Beim Bearbeiten (Fokus) ist der Text schwarz, danach wieder grau. Ersetzen oder neu anlegen bestätigt die Zutat. Speichern mit grauen Resten fragt einmal nach. Marker `z.imp`, `p.imp`, `m.imp` nur im Entwurf, beim Speichern entfernt (`rzClean`).
 
 ### 3.5 Mischen (Werkbank) und Chargen
 - **Mischen:** Rezept wählen → Menge → Zutaten abhaken, Ist-Gewichte eintragen (Enter schaltet weiter) → Abschluss: **Lagerabzug nur nach Bestätigung** („abziehen“ oder „nur Charge speichern“), mit Rückgängig-Leiste. Nicht abgezogen wird bei unbekannter Menge oder fehlender Dichte.
@@ -164,7 +168,7 @@ Pfad: `Mehr › Einstellungen` (Liste; jeder Eintrag öffnet eine eigene Seite, 
 
 ## 4a. KI-Funktionen (nur wenn die KI freigeschaltet ist)
 Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigenen Schlüssel eintragen, „Schlüssel prüfen“. Schlüssel entfernen schaltet alle KI-Funktionen aus (die lokale Texterkennung bleibt). Ohne Freischaltung sind die folgenden Einträge nicht sichtbar. Die KI macht nur Vorschläge: Du siehst jedes Ergebnis in einer Vorschau und bestätigst selbst, gerechnet wird von der App.
-- **App-Guide:** `Mehr › KI › App-Guide`. Frage eintippen, Antwort lesen. Gesendet werden nur Frage und App-Beschreibung, keine Lager- oder Rezeptdaten.
+- **App-Guide:** `Mehr › KI › App-Guide`. Frage eintippen, Antwort lesen. Menüpfade in der Antwort (fett, mit ›) sind antippbar und öffnen den Weg Schritt für Schritt (`kiPathGo`). Gesendet werden nur Frage und App-Beschreibung, keine Lager- oder Rezeptdaten.
 - **Rezept-Chat:** `Mehr › Rezept-Chat`. Rezepte im Gespräch planen mit Lager und Katalog. Die App rechnet (Seifenrechner, Summen), die KI macht Vorschläge als Karten: Seifenrechnung, Rezeptvorschlag („Als Entwurf öffnen“), Einkaufsliste („Auf die Einkaufsliste“). „Neuer Chat“ beginnt neu. Unter jeder Antwort: „Als Regel merken“.
 - **Meine Regeln:** `Mehr › Einstellungen › KI-Funktionen › Meine Regeln`. Eigene Regeln für den Rezept-Chat (höchstens 30). Sie stehen unter den festen App-Regeln.
 - **Rezept importieren mit KI:** `Rezeptbuch › Mehr › Rezepte importieren`. Ganzen Text einer Webseite einfügen und „Mit KI genauer lesen“, oder „Foto mit KI lesen“ / „Aus Galerie mit KI (bis 5)“ für Fotos, Screenshots und Handschrift. Die KI zieht Name, Phasen, Zutaten, Mengen, Schritte und Hinweise heraus, ordnet Zutaten dem Katalog zu und übersetzt Fremdsprachiges. Vorschau, dann „Im Editor öffnen“, gespeichert wird von dir.
@@ -177,7 +181,7 @@ Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigene
 ---
 
 - Dokumentsprache: Beim Drucken (Rezeptkarte, Rezeptbuch), Rezept als Text und Rezept teilen gibt es „Sprache des Dokuments“ (Deutsch, English, Español, Standard Sprache der App). Fehlende Übersetzungen erscheinen im Original.
-- Zielsprache: Mehr › Einstellungen › „Meine Sprache (Zielsprache)“. In diese Sprache übersetzt die KI beim Rezeptimport und bei „Übersetzen“, und in ihr schreibt sie Namen und Freitexte bei Artikeldaten. Der Originalname bleibt in der Notiz.
+- Zielsprache: Mehr › Einstellungen › „Meine Sprache (Zielsprache)“ (eigener Listeneintrag, öffnet eine Seite mit Deutsch, English, Español). In diese Sprache übersetzt die KI beim Rezeptimport und bei „Übersetzen“, und in ihr schreibt sie Namen und Freitexte bei Artikeldaten. Der Originalname bleibt in der Notiz.
 
 ## Nachtrag: KI-Einstiege, Import-Menüs, Auslieferzustand (07.11.2026)
 - **Grundsatz:** KI-Funktionen stehen gebündelt unter Mehr › KI und zusätzlich dort, wo der Anwendungsfall passiert. Ohne KI-Schlüssel erscheint keiner dieser Einträge (alles prüft `kiOn()` beim Zeichnen).

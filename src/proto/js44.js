@@ -27,9 +27,8 @@ function rzxLang(l){docLangPick(RZX,l)}function rzsLang(l){docLangPick(RZS,l)}
 {const _o=sheetRzPub;sheetRzPub=function(k,keep){_o(k,keep);if(RZX&&(k==='card'||k==='book'||k==='txt'))docLangPut(RZX,'rzxLang')}}
 {const _o=sheetRzShare;sheetRzShare=function(id){_o(id);if(RZS)docLangPut(RZS,'rzsLang')}}
 /* Zielsprache (Muttersprache) global in den App-Einstellungen */
-function mutSet(l){S.mut=l;save();sheetAppSet()}
-{const _a=sheetAppSet;sheetAppSet=function(){_a();const s=shEl();if(!s||s.querySelector('#mutset'))return;const b=s.querySelector('[onclick*="pickLang"]');if(!b)return;
-const d=document.createElement('div');d.id='mutset';d.innerHTML=`<div style="height:26px"></div>${scap('Meine Sprache (Zielsprache)')}<div class="tb" style="gap:8px;flex-wrap:wrap">${DOC_LANGS.map(x=>`<button type="button" class="pill ${mutL()===x[0]?'on':''}" style="width:auto;height:auto" onclick="mutSet('${x[0]}')">${x[1]}</button>`).join('')}</div><div class="s" style="margin-top:6px">In diese Sprache übersetzt die KI fremdsprachige Rezepte beim Import und bei „Übersetzen“. Die Sprache der App stellst du oben ein.</div>`;b.insertAdjacentElement('afterend',d);try{trWalk(d)}catch(e){}}}
+function mutSet(l){S.mut=l;save();sheetMutLang();setNavFix()}
+function sheetMutLang(){setSub('Meine Sprache (Zielsprache)',`<div class="tb" style="gap:8px;flex-wrap:wrap">${DOC_LANGS.map(x=>`<button type="button" class="pill ${mutL()===x[0]?'on':''}" style="width:auto;height:auto" onclick="mutSet('${x[0]}')">${x[1]}</button>`).join('')}</div><div class="s" style="margin-top:10px">In diese Sprache übersetzt die KI fremdsprachige Rezepte beim Import und bei „Übersetzen“. Die Sprache der App stellst du unter „Sprache“ ein.</div>`)}
 /* Artikeldaten aus KI-Lesungen: Freitexte in der Zielsprache, Original bleibt als Quelle erhalten */
 function kiProdSys(){const l=langName(mutL());return KI_PROD_SYS+` Sprache der Ausgabe ist ${l}: name, sonstige.name und Freitext in sonstige.wert schreibst du auf ${l}. Der Name ist die übliche Bezeichnung des Rohstoffs in dieser Sprache, ohne Marke, Shop-Zusätze und Packungsgröße. In name_original steht der Name wörtlich wie im Dokument. INCI-Bezeichnungen, Zahlen, Einheiten, CAS-Nummern und H-Sätze bleiben unverändert.`}
 

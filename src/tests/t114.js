@@ -5,7 +5,7 @@ await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitFor
 const out=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,300));const r={};
 localStorage.setItem('inciheinz-ki-key','K');localStorage.setItem('inciheinz-ki-cfg',JSON.stringify({model:'m',ok:true}));
 S.mut='es';save();sheetAppSet();await W();r.mutSheet=/Mi idioma|Meine Sprache \(Zielsprache\)/i.test(document.getElementById('sheet').innerText);
-mutSet('de');await W();r.mut=S.mut;r.pill=[...document.querySelectorAll('#mutset .pill.on')].map(x=>x.innerText);
+mutSet('de');await W();r.mut=S.mut;r.pill=[...document.querySelectorAll('#sheet .pill.on')].map(x=>x.innerText);
 let sys='';window.KI_MOCK=async(s)=>{sys=s;return JSON.stringify({name:'Sheabutter',name_original:'Shea Butter Organic',inci:'Butyrospermum Parkii Butter',form:'fest',preise:[{menge:250,einheit:'g',preis:7.9}],sonstige:[{name:'Lagerung',wert:'kühl und trocken'}]})};
 S.items=[];const id='it1';S.items.push(normI({id,name:'Platzhalter',kind:'oel',unit:'g',qty:0}));
 sheetProduct(id);await W();document.getElementById('pt').value='Shea Butter Organic\nINCI: Butyrospermum parkii butter\nPrice 250 g 7.90 EUR';prodKiStep();await W();await kiSendGo();await W();

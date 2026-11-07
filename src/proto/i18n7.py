@@ -1197,3 +1197,12 @@ P7.extend([
 (r"^1 Eintrag aus dem Import ist noch nicht bestätigt\. Sie werden so gespeichert\.$",r"1 entry from the import is not confirmed yet. They are saved as they are.",r"1 entrada de la importación aún no está confirmada. Se guardan tal cual."),
 (r"^(\d+) Einträge aus dem Import sind noch nicht bestätigt\. Sie werden so gespeichert\.$",r"\1 entries from the import are not confirmed yet. They are saved as they are.",r"\1 entradas de la importación aún no están confirmadas. Se guardan tal cual."),
 ])
+
+N7.update({
+"Rezept löschen":("Delete recipe","Eliminar receta"),
+"Rezept löschen?":("Delete recipe?","¿Eliminar receta?"),
+"Das Rezept wird mit allen Versionen entfernt. Chargen bleiben im Chargenbuch. Du kannst es danach rückgängig machen.":("The recipe is removed with all its versions. Batches stay in the batch book. You can undo it afterwards.","La receta se elimina con todas sus versiones. Los lotes permanecen en el libro de lotes. Después puedes deshacerlo."),
+"Rezept gelöscht":("Recipe deleted","Receta eliminada"),
+"Diesen Weg finde ich hier nicht. Bitte von Hand öffnen.":("I can't find this path here. Please open it manually.","No encuentro esta ruta aquí. Ábrela a mano."),
+"In diese Sprache übersetzt die KI fremdsprachige Rezepte beim Import und bei „Übersetzen“. Die Sprache der App stellst du unter „Sprache“ ein.":("The AI translates foreign-language recipes into this language on import and with “Translate”. You set the app language under “Language”.","La IA traduce a este idioma las recetas en otros idiomas al importar y con «Traducir». El idioma de la app se ajusta en «Idioma»."),
+})

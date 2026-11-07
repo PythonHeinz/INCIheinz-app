@@ -3,6 +3,7 @@ const setSub=(t,body)=>openSheet(`<h2>${t}</h2>${body}`);
 const setMain=function(){const L={de:'Deutsch',en:'English',es:'Español'}[LANG]||'Deutsch';
 return (`<h2>Einstellungen</h2><div class="s" style="margin-bottom:8px">Diese Einstellungen gelten für die ganze App, im Lager und im Rezeptbuch.</div>`
 +rowH(['waves','Sprache',L,"pickLang()"])
++rowH(['waves','Meine Sprache (Zielsprache)',{de:'Deutsch',en:'English',es:'Español'}[mutL()]||'Deutsch',"sheetMutLang()"])
 +rowH(['shield','Sichern und zurücknehmen','Sicherung der ganzen App, letzte Änderung rückgängig',"sheetSetSich()"])
 +rowH(['refresh','Katalog',(S.catmeta&&S.catmeta.version?'Katalog '+esc(S.catmeta.version):'Grundkatalog der App')+' · '+CAT.length+' Einträge',"sheetCatUpd()"])
 +rowH(['cube','Mengeneinstellungen','Genauigkeit der Mengen',"sheetSetMengen()"])

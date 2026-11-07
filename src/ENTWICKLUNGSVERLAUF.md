@@ -445,3 +445,11 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Offen (Nutzerwunsch, noch nicht gebaut): Zutaten-Kopfliste auch direkt Menge editierbar; Wirkung des Löschens/Ersetzens im Kopf auf Phasen ist gelöst, weil die Phasenzeile dieselbe Zutat ist; Schritte einer Phase zuordnen; Praxistest mit der Freundin.
 - Hinweis für den PC-Abgleich: STAND.md, INDEX.md und die Kopie in Toolsbyclaude wurden NICHT aktualisiert (kein PC-Zugriff). Beim nächsten Chat mit PC: git pull im Offline-Repo, STAND.md (Modulstand Rezeptbuch, „Nächste Aufgaben“), ENTWICKLUNGSVERLAUF.md und UEBERGABE.md abgleichen.
 
+## Rezept löschen, Zielsprache als Eintrag, antippbare Guide-Pfade (07.11.2026, spät, Handy)
+- Rezept löschen gab es bisher nirgends: neu `rzDelAsk/rzDelDo` (src/proto/js48.js), roter Link am Ende der Rezeptseite, Rückfrage, Rückgängig-Leiste, Chargen bleiben („Gelöschtes Rezept“).
+- Einstellungen: „Meine Sprache (Zielsprache)“ ist jetzt ein Listeneintrag (js30 `setMain`) mit eigener Seite `sheetMutLang` (js44); der frühere eingeblendete Block (`#mutset`) ist entfernt. t114 angepasst.
+- App-Guide: Pfade in KI-Antworten (fett, mit ›) werden zu Knöpfen (`kiLinks` in kiAsk, `kiPathGo` klickt den Weg per Text durch Navigation und Zeilen); findet er einen Schritt nicht, kommt ein Toast. Die Landkarte kennt jetzt „Rezept löschen“.
+- Entscheidungen aus dem Gespräch: Zutat tauschen wirkt nicht auf Phasen/Module (dieselbe Zeile); Module sind nicht an Zutaten gebunden, Phase löschen schickt die Zutaten zurück in die Kopfliste. Mengen im Kopf ändern ist Komfort und bleibt aus. „Fertig“ bestimmt der Nutzer bzw. seine Testgruppe, kein Abschlusskriterium in der Übergabe.
+- Test t124 (Löschen, Rückgängig, Einstellungseintrag, Guide-Pfad). Regression t83 bis t123 ohne Fehler.
+- Offen/Idee: Schritte einer Phase zuordnen wäre eine KI-Aufgabe im Importprompt (Feld je Schritt), mit Prüfregel dahinter; noch nicht gebaut.
+
