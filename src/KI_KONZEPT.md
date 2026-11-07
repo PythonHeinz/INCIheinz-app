@@ -287,6 +287,7 @@ Harte Regeln im Code:
 - Laugenunterschuss nur im festgelegten Bereich; Anteile summieren auf 100 %; Obergrenzen je stark reinigendem Fett; Gesamtmenge ist `i.total`-treu.
 - Laugenmenge und Wasser ausschließlich vom Rechner; Pflicht-Sicherheitshinweis aus festen App-Texten.
 - Baut auf dem vorhandenen **Seifenrechner (Teil A/B) und „Vorschlag aus meinem Bestand“** (`seiSugCalc`) auf: Das Regelwerk liefert Kandidaten, die KI wählt, begründet und passt an den Wunsch an.
+- Welche Seifenart möglich ist, ergibt sich aus den vorhandenen Werten (6.13), nicht aus einer festen Vorgabe.
 - Ehrlich formuliert: Die **Rechnung** ist exakt, soweit die Eingangswerte stimmen. Härte, Schaum und Haltbarkeit sind **Näherungen aus Buchwerten**; es gibt keine Zusage „perfekt“ oder „garantiert sicher“.
 
 ### 6.5 Kosmetik (Emulsion, Öl, Tensid und andere)
@@ -313,7 +314,7 @@ Diktat läuft über die Tastatur des Handys; das braucht keine Entwicklung. Eine
 Der Chat funktioniert auch bei rot/gelb. Er nennt zu Beginn, was die Qualität bremst (z. B. „12 Fette ohne Verseifungszahl, nicht verwendet“).
 
 ### 6.10 Offene Fragen
-Welche Seifenart zuerst (Vorschlag: feste Stückseife mit NaOH, dann Flüssig- und Rasierseife mit KOH)? Standardwerte für Laugenunterschuss und Wasseranteil? Duftstoffe und Farbstoffe in Seife (Grenzen aus Katalog `e1`)?
+Die Seifenart wird nicht vorab festgelegt: Der Rezept-Chat richtet sich nach der Datenlage (6.13). Offen sind Standardwerte für Laugenunterschuss und Wasseranteil? Duftstoffe und Farbstoffe in Seife (Grenzen aus Katalog `e1`)?
 
 ### 6.11 Einkaufsliste aus dem Chat
 Der Nutzer sagt „setz mir die fehlenden Zutaten auf die Einkaufsliste“ oder die KI schlägt es nach einem Rezeptentwurf vor.
@@ -335,7 +336,18 @@ Vorschläge zur Entscheidung (weitere mögliche Anhänge, bewusst klein gehalten
 4. **Einkaufs-Chat** endet in der Einkaufsliste (6.11), nicht in einem gespeicherten Chat.
 Technisch bleibt der Rezept-Chat ein Textfeld (`v.chat`, Markdown) und bläht den Zustand kaum auf.
 
+### 6.13 Funktionsbereitschaft und Hilfe bei fehlenden Werten (Beschluss 07.11.2026)
+Die App bietet schon Funktionen (Kaltverseifung, Tensidrechner, Dosierungsprüfung, Spreitwert-Check, Kalkulation, Rezept umrechnen), die ohne Werte am Artikel nichts oder wenig liefern. Der Chat soll das erkennen, darauf hinweisen und beim Beschaffen der Werte helfen. Damit klärt sich auch, welche Seifenarten möglich sind.
+1. **Funktionsvoraussetzungen:** Für jede Funktion ist hinterlegt, welche Artikelwerte sie braucht (z. B. Kaltverseifung: Verseifungszahl bzw. NaOH-Bedarf, Härte, Ranziditätsfaktor, Einsatz in Seife; Tensidrechner: WAS; Spreitwert-Check: Spreitwert; Dosierung: Einsatzbereich; Kalkulation: Preise; Umrechnen mit ml: Dichte). Die Tabelle liegt maschinenlesbar im Code und in der Landkarte (Spalte „braucht Werte“, beim Bau aus dem Code zu erfassen).
+2. **Bereitschaftsprüfung (R0, ohne KI):** Werkzeug `funktions_check(funktion)` meldet: bereit / eingeschränkt (z. B. „9 von 14 Fetten im Lager mit Verseifungszahl“) / nicht möglich, dazu die fehlenden Felder und die betroffenen Artikel. Die Lückenfilter der Lagerliste nutzen dieselben Regeln.
+3. **Der Chat erklärt die Folgen:** „Für eine feste Stückseife aus deinem Bestand fehlen bei Olivenöl, Kokosöl und Sheabutter Härte und Ranziditätsfaktor. Mit diesen drei Werten kann ich einen berechneten Vorschlag machen.“ Gleiches für andere Funktionen und Produktarten.
+4. **Der Chat hilft beim Beschaffen:** Er nennt die üblichen Quellen für den jeweiligen Wert: Datenblatt oder Händlerseite des Rohstoffs (über „Produktseite lesen“), Etikett, die Wissensbasis aus den Fachbüchern des Nutzers, bei Bedarf Recherche im Web mit Quellenangabe. Er erklärt kurz, was der Wert bedeutet und woran man ihn erkennt, ohne Messverfahren zu verlangen, die zu Hause nicht möglich sind.
+5. **Wege in den Artikel:** Gefundene Werte kommen als `vorschlag_artikelwert` in die Vorschau (Stufe 1), der Nutzer übernimmt (Stufe 2) und bestätigt später (Stufe 3). Ohne Übernahme ändert sich nichts.
+6. **Sicherheit bei Seife:** Die Laugenberechnung hängt direkt an der Verseifungszahl; ein falscher Wert macht die Seife unbrauchbar oder ätzend. Darum zeigt der Rechner bei Werten unterhalb Stufe 3 einen deutlichen Hinweis („Wert nicht bestätigt, vor dem Sieden mit Datenblatt abgleichen“); die Quelle jedes verwendeten Wertes steht in der Vorschau. Werte ohne bekannte Quelle werden nicht verwendet. Ob Stufe 2 ausreicht oder nur Stufe 3 zugelassen wird, entscheidet der Entwickler (Entscheidung 13).
+7. **Nutzen über den Chat hinaus:** Dieselbe Bereitschaftsprüfung speist die Qualitätsanzeige im Dashboard und den App-Guide (Funktion B: „Warum kann ich das noch nicht?“).
+
 ### Kommentare zu Abschnitt 6
+- 07.11.2026, Entwickler: Die Seifenthematik soll der Rezept-Chat klären. Sobald ihm Werte vorliegen, kann er Funktionen ausführen, die die App schon bietet; fehlen Werte, soll er darauf hinweisen und helfen, wie und woher man sie bekommt. → eingearbeitet in 6.13; Entscheidung 5 damit erledigt.
 - 07.11.2026, Entwickler: Fehlende Zutaten sollen im Chat auf jeden Fall vorschlagbar sein (6.6); Einkaufslisten aus dem Chat mit Artikel, Menge und Lieferant (6.11); Rezept-Chats hängen als Markdown am Rezept, kein Fortsetzen; allgemeine Chats sind Wegwerf-Chats; keine Chats an Artikel (6.12). → eingearbeitet.
 
 ---
@@ -443,7 +455,8 @@ In der Testphase nutzt der Entwickler sein eigenes Konto. Vor einer Veröffentli
 | 3 | KI-Testfassung: erst auf main weiter, später Branch `ki` mit eigener Datenbank (8.3) | beschlossen 07.11.2026; Zeitpunkt des KI-Branchs offen |
 | 10 | Rückfallstand als Branch `ohne-ki` (8.1) | erledigt 07.11.2026 |
 | 4 | Originalfoto beim Rezeptimport: nicht speichern, danach löschen (3.3, 3.8) | beschlossen 07.11.2026 |
-| 5 | Seifenart zuerst (6.10) | offen |
+| 5 | Seifenart zuerst | erledigt: richtet sich nach der Datenlage über den Rezept-Chat (6.13) |
+| 13 | Laugenberechnung nur mit Stufe-3-Werten oder auch Stufe 2 mit Warnhinweis (6.13) | offen |
 | 6 | Chatverlauf: Rezept-Chat als Markdown am Rezept, sonst Wegwerf (6.12) | beschlossen 07.11.2026 |
 | 11 | Rechnungen: lokale Vorstufe für Adressdaten in Version 1? Versandkosten getrennt ausweisen (3.10) | offen |
 | 12 | Weitere Chat-Anhänge laut Vorschlägen 1 bis 4 (6.12) | offen |
@@ -464,4 +477,5 @@ Hier trägt der Chat nach jedem Kommentar des Entwicklers Datum, Abschnitt und B
 - 07.11.2026, Entwickler: Originalfoto beim Import wird nicht gespeichert, sondern danach gelöscht; erst nach Store-Portierung neu entscheiden. Arbeitsregel „Ansicht, Menü oder Datenfeld ändern heißt Landkarte im selben Commit pflegen“ bestätigt und in `UEBERGABE.md` aufgenommen (Entscheidungen 4 und 7).
 - 07.11.2026, Entwickler: Bewertungsformular je Charge gewünscht (Nachbewertung Wochen später, mehrere Einträge); fehlende Zutaten im Chat vorschlagbar; Einkaufsliste aus dem Chat; Rechnungen digital und rückwirkend mit Rechnungsdatum; Rezept-Chat als Markdown am Rezept, allgemeine Chats Wegwerf, keine Chats an Artikel. Eingearbeitet in 3.10, 5.5, 6.6, 6.11, 6.12.
 - 07.11.2026, Entwickler: Vertrauensstufen für KI-Werte festgelegt (KI höchstens Stufe 1, Übernahme durch den Nutzer Stufe 2, Bestätigung Stufe 3 als Siegel; verifiziert erst nach Prüfung und Bestätigung durch den Nutzer) → 1.7. Branch `ohne-ki` als Rückfallstand angelegt (Commit 788a9d5); es wird zunächst auf main weitergearbeitet, ein KI-Branch mit eigener Datenbank folgt, sobald KI-Code entsteht → 8.1, 8.3.
+- 07.11.2026, Entwickler: Seifenart wird nicht vorab festgelegt; der Rezept-Chat prüft die Datenlage, weist auf fehlende Werte hin und hilft bei Beschaffung (6.13).
 - Finales Go: offen.
