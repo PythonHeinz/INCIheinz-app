@@ -115,3 +115,4 @@ Vor der ersten Änderung: `git pull`, `git log`, STAND.md Abschnitt „Aktive Ar
 - Rechnungen: Preise gehen als `bezug` mit `datum` = Rechnungsdatum und `src` in den Preisverlauf, der Bestand bleibt unberührt. Erfasste Rechnungen stehen in `S.inv` (Doppelerkennung). Vor jedem Senden an die KI läuft `kiFilter` (js37.js); neue Sendewege müssen ihn benutzen und dem Nutzer den Text zeigen.
 
 - Rezept-Chat (js39): Werkzeuge der KI lesen und rechnen nur, Schreiben nur über Karten-Buttons nach Tippen. Seifenmengen kommen immer aus chSoapCalc (Port von seiCalc); ändert sich seiCalc, chSoapCalc angleichen. Nutzerregeln S.kiRegeln stehen im Systemprompt nur unter den Master-Regeln; neue Prüfmuster in KR_BAD (js40).
+- Bilder an die KI nur über opts.images (verkleinert per kiShrink, höchstens 5), nie speichern. Nav braucht z-index 10 über den Sticky-Spalten der Lagerliste.

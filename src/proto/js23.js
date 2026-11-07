@@ -171,7 +171,7 @@ return out.join('\n')}
 let RZIM=null;
 function sheetRzImport(txt){const hasOcr=!!window.OCRCB;
 openSheet(`<h2>Rezept importieren</h2><div class="s" style="margin-bottom:6px">Hol ein Rezept aus deinen Notizen. Du siehst vorher eine Vorschau und kannst alles im Editor noch ändern. Es wird nichts gespeichert, bevor du es selbst speicherst.</div>
-<div class="two" style="margin:8px 0"><button class="btn sec" onclick="rzOcr('cam')">Kamera</button><button class="btn sec" onclick="rzOcr('gal')">Galerie / Screenshot</button></div>
+<div class="two" style="margin:8px 0"><button class="btn sec" onclick="rzOcr('cam')">Kamera</button><button class="btn sec" onclick="rzOcr('gal')">Galerie / Screenshots (bis 5)</button></div>
 <label class="fld" style="margin-top:4px"><span>Oder Text einfügen</span><textarea id="rzit" style="min-height:170px" placeholder="Name des Rezepts&#10;Phase A: Wasserphase&#10;80 g Wasser&#10;Phase B: Ölphase&#10;Sheabutter 20 g&#10;1. Alles erwärmen …">${esc(txt||'')}</textarea></label><div class="s" id="er" style="color:var(--err);margin-top:4px"></div>
 <div class="cap" style="margin:12px 0 2px">So liest die App deine Notizen</div>
 <div style="font-size:.88rem;line-height:1.5">Phasen: „Phase A“, „Wasserphase“, „Ölphase“ oder eine Zeile mit Doppelpunkt am Ende<br>Zutaten: „30 g Sheabutter“ oder „Sheabutter 30 g“ (g, kg, ml, %)<br>Schritte: nummerierte Zeilen oder alles nach „Zubereitung“<br>Hinweise: Zeilen mit „Achtung:“, „Tipp:“, „Haltbarkeit:“<br>Zutaten werden mit deinem Lager und dem Katalog abgeglichen.</div>

@@ -348,3 +348,10 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Kontext: ab ca. 12000 Zeichen Verlauf wird per KI zusammengefasst (CH.summary).
 - Wissensbasis: wissen/index.json ist noch leer/nicht vorhanden, der Chat sagt das offen. Dateien liefert Andreas später.
 - Offen: Chat-Verlauf an der Version anzeigen; Wissensdateien; Google-Suche/Denkstufe mit echtem Schlüssel testen; C2 Alternativen.
+
+## KI: Mehrfachbilder, Artikel per Screenshot, Korrekturen (07.11.2026)
+- Neu: proto/js41.js (Artikel: "Foto mit KI lesen" und "Screenshots mit KI (bis 5)" im Blatt "Aus Produktseite übernehmen", Vorschau mit Haken wie beim Text; nav bekommt z-index 10, damit Listenzeilen nicht über dem Neu-Knopf laufen). Test t108 (t109 prüft die Ebene des Neu-Knopfs).
+- kiRaw nimmt opts.images (Liste) zusätzlich zu opts.image; Summe der Bilddaten höchstens 18 MB.
+- Rezept: bis zu 5 Fotos/Screenshots in einer KI-Anfrage (rzKiPhotoRun), Textgrenze für "Mit KI genauer lesen" von 8000 auf 40000 Zeichen, Prompt-Hinweis auf Webseiten-Beiwerk, Fehlermeldungen scrollen in Sicht (vorher stand sie über dem Button, daher "ging nichts").
+- OCR (lokal) nimmt bei Rezept- und Rechnungsimport aus der Galerie bis zu 5 Bilder und fügt den Text zusammen (ocrStart/ocrRun in js13.js). Mehrbild-OCR nur per Syntaxcheck geprüft, Tesseract läuft in den Tests nicht.
+- Rechnungen gehen weiter nur über lokale OCR plus Filter (Name, Konto, Adresse bleiben auf dem Gerät), nicht als Bild an die KI.
