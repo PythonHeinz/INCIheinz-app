@@ -11,6 +11,10 @@ tbsLoad();await W();
 const sj=S.items.filter(i=>i.tb==='sonja');o.loaded=sj.length;o.unk=sj.filter(i=>i.unk).length;o.cat=sj.filter(i=>i.cid).length;o.own=sj.filter(i=>!i.cid).map(i=>i.name);
 o.kinds=[sj.filter(i=>i.kind==='v').length,sj.filter(i=>i.kind==='w').length];
 o.noteSample=(sj.find(i=>i.name==='Vitamin E')||{}).notiz;
+const tk=sj.find(i=>i.name==='Tonka Mazerat in Sonnenblumenöl');o.tonka=tk&&[tk.mhd,tk.kat,tk.kind,tk.unk,!!tk.cid,tk.notiz];
+o.atlas=!!sj.find(i=>i.name==='Atlaszeder'&&i.cid);o.jm=(sj.find(i=>i.name==='Japanminze ätherisches Öl')||{}).notiz;
+o.newCat=['Mandarine rot ätherisches Öl','Lavendelöl Österreich BIO','Bergamotte bergaptenfrei','Ravintsara ätherisches Öl','Duftöl Mango','Zitrone kaltpressung','Benzoe Resinoid','Emulsan II MB','Geranium Bourbon Bio','Sodium Cocoyl Isethionate (SCI, Pulver, WAS ca. 85 %)'].map(n=>!!sj.find(i=>i.name===n&&i.cid));
+o.gone=!sj.some(i=>/Waldkiefer|Tonka Absolue|Ravintsana|Diftöl/.test(i.name));
 o.demoUntouched=S.items.filter(i=>i.demo).length;
 // zweites Laden: nichts Neues
 tbsAsk();await W();o.again=/Nichts Neues/.test(document.body.innerText);closeSheet();await W();

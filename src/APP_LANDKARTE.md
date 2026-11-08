@@ -158,11 +158,11 @@ Rechner übernehmen Ergebnisse nie still: Übernahme öffnet immer einen Entwurf
 Pfad: `Mehr › Einstellungen` (Liste; jeder Eintrag öffnet eine eigene Seite, Pfeil zurück zur Liste):
 - **Sprache:** Deutsch, English, Español (Katalogtexte `b`, `v`, `w` nicht übersetzt).
 - **Sichern und zurücknehmen:** Sicherung der ganzen App (Backup speichern und laden; enthält Lager, Rezepte, Chargen); letzte Änderung rückgängig.
-- **Katalog:** Grundkatalog der App (1050 Einträge), „Katalog aktualisieren“.
+- **Katalog:** Grundkatalog der App (1053 Einträge), „Katalog aktualisieren“.
 - **Mengeneinstellungen:** Anzeigegenauigkeit im Lager (ganze g/ml, 0,1 oder 0,01) und Rundung im Rezeptbuch/Werkbank (0,01 g, 0,1 g, 0,5 g, 1 g).
 - **Hilfe:** Anleitung und Info.
 - **Expertenmodus:** schaltet Spalten, Sortierungen, Lückenfinder-Werte und den Testbetrieb frei.
-- **Testbetrieb** (nur im Expertenmodus): **Testdaten laden/entfernen** (27 Beispielrezepte und passende Rohstoffe; nicht fachlich geprüft, nicht zum Nachmischen).
+- **Testbetrieb** (nur im Expertenmodus): **Testdaten laden/entfernen** (27 Beispielrezepte und passende Rohstoffe; nicht fachlich geprüft, nicht zum Nachmischen). Der Block heißt „Testbestand Heinz“. Daneben gibt es „Testbestand Sonja“: lädt rund 180 Rohstoffe aus Sonjas Lagerreport mit offener Menge (Mengen später per Regal-Check nachtragen); „Testbestand Sonja entfernen“ löscht nur Einträge ohne Menge und ohne Rezeptverwendung.
 
 ---
 
@@ -209,7 +209,7 @@ Freischalten: `Mehr › Einstellungen › KI-Funktionen`: Modell wählen, eigene
 - **Artikel:** Name, Kategorie, Form, INCI (+ Prüfstatus), Beschreibung, Verwendung, Notiz, Einsatz von/bis (%), Dichte, Fettkennzahlen (KOH, NaOH, Jodzahl, Schmelzpunkt), Seifenwerte (Härte, Ranziditätsfaktor, Farbe, Schaum, Einsatz), Tensidwerte (WAS, Klasse), Spreitwert, MHD, Mindestmenge, Lagerort, Schlagwörter, EAN/Code, Foto, **Gesamtmenge** (einzige Wahrheit), Gefäße, Bezugsquellen mit Preisverlauf.
 - **Rezept:** Versionen mit Phasen, Zutaten (Gramm), Ablauf-Modulen, Eckdaten, Markierung gut/schlecht, Notiz und Differenz je Version.
 - **Charge:** Rezept, Version, Datum, Menge, Soll/Ist je Zutat, Sterne, Notiz, Lagerabzug.
-- **Katalog:** 1050 Einträge mit Vorschlagswerten, ungeprüft bis zur Bestätigung.
+- **Katalog:** 1053 Einträge mit Vorschlagswerten, ungeprüft bis zur Bestätigung.
 
 ---
 
