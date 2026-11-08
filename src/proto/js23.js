@@ -118,7 +118,7 @@ function rzParse(raw){const lines=String(raw||'').replace(/\r/g,'').split('\n').
 const d={name:'',zweck:'',ph:'',ergibt:'',zeit:'',grad:'',phasen:[],mod:[]};const warn=[];let cur=null,mode='z',ing=0;
 const newPh=(typ,name)=>{cur={id:uid(),typ,name:name||(typ?'Phase '+typ+' · '+RZPH[typ]:'Zutaten'),z:[]};d.phasen.push(cur);return cur};
 const addZ=(name,g,warnTxt,un)=>{if(!cur)newPh('','Zutaten');const m=rziMatch(name);const z={id:uid(),item:m.k==='i'?m.i.id:'',cid:m.k==='i'?(m.i.cid||''):m.k==='c'?m.c.id:'',name:m.k==='i'?m.i.name:m.k==='c'?m.c.n:name,g};
-if(un==='ml'){const dn=m.k==='i'&&m.i.dens>0?m.i.dens:(/^(wasser|aqua|dest)/i.test(name)?1:0);if(dn>0)z.g=Math.round(g*dn*1000)/1000;else warn.push(name+': ml ohne Dichte als Gramm übernommen')}
+if(un==='ml'){const dn=m.k==='i'&&m.i.dens>0?m.i.dens:(/^(wasser|aqua|dest|h2o|h₂o)/i.test(name)?1:0);if(dn>0)z.g=Math.round(g*dn*1000)/1000;else warn.push(name+': ml ohne Dichte als Gramm übernommen')}
 if(warnTxt)warn.push(name+': '+warnTxt);cur.z.push(z);ing++};
 for(let line of lines){let m;
 if(/^(summe|gesamt|gesamtmenge|total|insgesamt)\b/i.test(line))continue;

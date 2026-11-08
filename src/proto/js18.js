@@ -26,7 +26,7 @@ const rzAbl=()=>Array.isArray(S.rzAbl)&&S.rzAbl.length?S.rzAbl:RZABL0;
 const rzMinOf=s=>{const t=String(s==null?'':s).trim().toLowerCase().replace(',','.');let m=t.match(/^(\d+(?:\.\d+)?)\s*(min|m|minuten?)?$/);if(m)return +m[1];m=t.match(/^(\d+(?:\.\d+)?)\s*(h|std|stunden?)\s*(?:(\d+)\s*(?:min|m)?)?$/);if(m)return Math.round(+m[1]*60+(+m[3]||0));return null};
 const rzZeit=s=>{const n=rzMinOf(s);if(n==null)return String(s||'');if(n>=60){const h=Math.floor(n/60),m=Math.round(n%60);return h+' h'+(m?' '+m+' min':'')}return Math.round(n)+' min'};
 /* Dichte je Zutat (Lager, sonst Wasser = 1) und Volumenrechnung */
-const rzDensZ=z=>{const i=rzItem(z);if(i&&i.dens>0)return i.dens;return /^(wasser|aqua|dest)/i.test(rzName(z)||'')?1:0};
+const rzDensZ=z=>{const i=rzItem(z);if(i&&i.dens>0)return i.dens;return /^(wasser|aqua|dest|h2o|h₂o)/i.test(rzName(z)||'')?1:0};
 const rzVolBase=d=>d.phasen.reduce((s,p)=>s+p.z.reduce((a,z)=>{const g=+z.g||0,dn=rzDensZ(z);return a+(g>0&&dn>0?g/dn:0)},0),0);
 const rzVolMiss=d=>{const o=[];d.phasen.forEach(p=>p.z.forEach(z=>{if((+z.g||0)>0&&!(rzDensZ(z)>0)&&!o.some(x=>x.n===rzName(z)))o.push({n:rzName(z),i:rzItem(z)})}));return o};
 const rzVolOk=d=>rzSum(d)>0&&!rzVolMiss(d).length;
@@ -36,7 +36,7 @@ function rzItem(z){if(z.item){const i=getI(z.item);if(i)return i}
 if(z.cid){const i=S.items.find(x=>x.cid===z.cid);if(i)return i}
 const f=FOLD(z.name);return f?(S.items.find(x=>FOLD(x.name)===f)||null):null}
 const rzName=z=>{const i=rzItem(z);return i?i.name:(z.name||(z.cid&&typeof CM!=='undefined'&&CM[z.cid]?CM[z.cid].n:''))};
-function rzInciOf(z){const i=rzItem(z);if(i)return i.inci||'';const c=z.cid&&CM[z.cid];if(c)return c.i||'';return /^(wasser|aqua|dest)/i.test(z.name||'')?'Aqua':''}
+function rzInciOf(z){const i=rzItem(z);if(i)return i.inci||'';const c=z.cid&&CM[z.cid];if(c)return c.i||'';return /^(wasser|aqua|dest|h2o|h₂o)/i.test(z.name||'')?'Aqua':''}
 function rzHave(z){const i=rzItem(z);if(!i)return z.cid?{k:'nein'}:{k:'frei'};if(i.unk)return {k:'unb',i};
 let g=null;if(i.kind==='w')g=i.total;else if(i.kind==='v'&&i.dens>0)g=i.total*i.dens;if(g==null)return {k:'unb',i,dens:i.kind==='v'};return {k:'ok',g,i}}
 function rzCheck(d,total){const sum=rzSum(d);const rows=[];let max=Infinity;const miss=[],low=[];

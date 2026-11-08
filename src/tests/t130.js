@@ -1,0 +1,17 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:412,height:900}});await ctx.addInitScript(()=>{localStorage.setItem('inciheinz-fresh','1')});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1500);
+const r=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,350));const o={};
+const bw=CAT.find(c=>/^Bienenwachs/i.test(c.n));
+S.items.push(mk(null,{name:'Tamanuöl BIO',kind:'w',total:100}));S.items[S.items.length-1].kat='Pflanzenöl';
+RZIM={d:{name:'Test',zweck:'',ph:'',ergibt:'',zeit:'',grad:'',phasen:[{id:uid(),typ:'B',name:'Phase B · Fett-/Ölphase',z:[{id:uid(),item:'',cid:bw.id,name:bw.n,g:3},{id:uid(),item:'',cid:'',name:'Optiphen Plus',g:3.5,kat:'Konservierung'},{id:uid(),item:'',cid:'',name:'H2O',g:20},{id:uid(),item:'',cid:'',name:'destilliertes Wasser',g:20},{id:uid(),item:'',cid:'',name:'Unbekanntes Zeug',g:1}]}],mod:[]}};
+rzImportOpen();await W();
+const refs=[...document.querySelectorAll('.rz-ref')];
+o.cats=refs.map(e=>e.querySelector('.nm').textContent);
+o.color=getComputedStyle(refs[0].querySelector('.nm')).color;
+o.catColor=getComputedStyle(refs[0].querySelector('.rkat')).color;
+o.banner=document.getElementById('rzimpb').innerText.replace(/\n/g,' | ').slice(0,120);
+rzConfirmAll();await W();o.afterColor=getComputedStyle(document.querySelector('.rz-ref .nm')).color;
+return o});
+console.log(JSON.stringify(r,null,1));console.log('errors:',errs);await p.screenshot({path:'/tmp/shots/c.png'});await b.close()})();

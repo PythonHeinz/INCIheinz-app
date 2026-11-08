@@ -1296,3 +1296,12 @@ N7.update({
 "Zutaten in einem Rezept, die nicht im Lager sind, stehen dort nur als Text und zeigen „fehlt“, bis du den Rohstoff anlegst.":("Ingredients in a recipe that are not in stock appear there as text only and show “missing” until you create the raw material.","Los ingredientes de una receta que no están en el almacén aparecen solo como texto y muestran “falta” hasta que crees la materia prima."),
 })
 
+N7.update({
+"Orange heißt: noch nicht von dir geprüft. Antippen zum Prüfen, Ersetzen oder Löschen, das Häkchen bestätigt.":("Orange means: not checked by you yet. Tap to check, replace or delete; the tick confirms.","Naranja significa: aún no revisado por ti. Toca para revisar, reemplazar o borrar; la marca confirma."),
+"1 Eintrag noch nicht bestätigt":("1 entry not confirmed yet","1 entrada aún sin confirmar"),
+"Noch nicht bestätigte Einträge":("Entries not confirmed yet","Entradas aún sin confirmar"),
+})
+P7.extend([
+(r"^(\d+) Einträge noch nicht bestätigt$",r"\1 entries not confirmed yet",r"\1 entradas aún sin confirmar"),
+(r"^(.*) · Vorschlag$",r"\1 · suggestion",r"\1 · sugerencia"),
+])

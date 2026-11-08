@@ -15,7 +15,7 @@ p.z.slice(0,60).forEach(x=>{if(!x||typeof x.name!=='string')return;const name=x.
 const m=rziMatch(name);const z={id:uid(),item:m.k==='i'?m.i.id:'',cid:m.k==='i'?(m.i.cid||''):m.k==='c'?m.c.id:'',name:m.k==='i'?m.i.name:m.k==='c'?m.c.n:name,g:0};
 if(!isFinite(m0)||m0<0||m0>1e5)warn.push(name+': Menge fehlt');
 else if(un==='g'||un==='')z.g=m0;else if(un==='kg')z.g=m0*1000;
-else if(un==='ml'){const dn=m.k==='i'&&m.i.dens>0?m.i.dens:(/^(wasser|aqua|dest)/i.test(name)?1:0);if(dn>0)z.g=Math.round(m0*dn*1000)/1000;else{z.g=m0;warn.push(name+': ml ohne Dichte als Gramm übernommen')}}
+else if(un==='ml'){const dn=m.k==='i'&&m.i.dens>0?m.i.dens:(/^(wasser|aqua|dest|h2o|h₂o)/i.test(name)?1:0);if(dn>0)z.g=Math.round(m0*dn*1000)/1000;else{z.g=m0;warn.push(name+': ml ohne Dichte als Gramm übernommen')}}
 else if(un==='%'){const t=d.ergibt>0?d.ergibt:100;z.g=Math.round(m0*t)/100;if(!(d.ergibt>0))warn.push(name+': Prozent auf 100 g bezogen')}
 else warn.push(name+': Menge unklar ('+nf(m0,2)+' '+un+')');
 z.g=Math.round(z.g*1000)/1000;ph.z.push(z);ing++});if(ph.z.length)d.phasen.push(ph)});

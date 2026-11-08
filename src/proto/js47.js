@@ -2,8 +2,9 @@
    Status je Zutat (im Lager / im Katalog / nur Text), Ersetzen, schnell neu anlegen, Entfernen.
    Flags: z.imp, p.imp, m.imp (nur im Entwurf, werden beim Speichern entfernt). */
 {const st=document.createElement('style');st.textContent=`
-.rz-zr.imp .nm,.rz-zr.imp .rz-g,.rz-zr.imp .rz-pc,.rz-ref.imp .nm,.rz-ref.imp .rgm,.rz-ph.imp .rz-phh input,.rz-dw.imp summary .rz-sl,.rz-dw.imp .in input,.rz-dw.imp .in textarea{color:#8C7F6F}
+.rz-zr.imp .nm,.rz-zr.imp .rz-g,.rz-zr.imp .rz-pc,.rz-ref.imp .nm,.rz-ref.imp .rgm,.rz-ph.imp .rz-phh input,.rz-dw.imp summary .rz-sl,.rz-dw.imp .in input,.rz-dw.imp .in textarea{color:#C2570C}
 .rz-zr.imp:focus-within .nm,.rz-zr.imp:focus-within .rz-g,.rz-zr.imp:focus-within .rz-pc,.rz-ph.imp .rz-phh input:focus,.rz-dw.imp:focus-within summary .rz-sl,.rz-dw.imp .in input:focus,.rz-dw.imp .in textarea:focus,.rz-dw.imp[open] summary .rz-sl{color:var(--txt)}
+.rz-ref .rkat{display:block;font-size:.72rem;font-weight:400;color:var(--sub);margin-top:1px}.rz-ref.imp .rkat{color:var(--sub)}
 .rz-st{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none;border:2px solid var(--pri);box-sizing:border-box}
 .rz-st.l{background:var(--pri)}.rz-st.t{border-style:dashed;border-color:var(--sub)}
 .rz-leg{display:flex;gap:14px;flex-wrap:wrap;padding:8px 12px;font-size:.74rem;color:var(--sub);border-top:1px solid var(--line)}.rz-leg span{display:inline-flex;align-items:center;gap:6px}
@@ -25,14 +26,15 @@ function rzUnmark(d){d.phasen.forEach(p=>{delete p.imp;p.z.forEach(z=>{delete z.
 {const o=rzImportOpen;rzImportOpen=function(){if(RZIM&&RZIM.d)rzMarkImp(RZIM.d);return o.apply(this,arguments)}}
 /* Speichern: Flags entfernen; bei grauen Resten einmal nachfragen */
 {const o=rzClean;rzClean=function(d){return rzUnmark(o.apply(this,arguments))}}
-{const o=rzSave;rzSave=function(){const n=RE?rzImpCount(RE.d):0;if(n>0&&!RE.impAck){RE.impAck=true;rzAsk('Noch graue Einträge',n+(n===1?' Eintrag aus dem Import ist':' Einträge aus dem Import sind')+' noch nicht bestätigt. Sie werden so gespeichert.','Trotzdem speichern',()=>o());return}return o.apply(this,arguments)}}
+{const o=rzSave;rzSave=function(){const n=RE?rzImpCount(RE.d):0;if(n>0&&!RE.impAck){RE.impAck=true;rzAsk('Noch nicht bestätigte Einträge',n+(n===1?' Eintrag aus dem Import ist':' Einträge aus dem Import sind')+' noch nicht bestätigt. Sie werden so gespeichert.','Trotzdem speichern',()=>o());return}return o.apply(this,arguments)}}
 
 /* Zutatenzeile: grau, wenn unbestätigt; Hinweis zum Status */
 function rzRowHtml(pi,zi,z,sum){const dn=rzDensZ(z);const s=rzZState(z);return `<div class="rz-zr${z.imp?' imp':''}"><button class="rz-zn" onclick="rzZMenu(${pi},${zi})"><span class="nm">${esc(rzName(z))||'Zutat wählen'}</span>${s==='k'?'<small class="amb">nicht im Lager</small>':s==='t'?'<small class="rz-txt">nur Text</small>':''}</button><input class="rz-g" id="rzg_${pi}_${zi}" inputmode="decimal" value="${rzZv(z)}" placeholder="0" oninput="rzZg(${pi},${zi},this.value)"><button class="rz-un ${z.u==='ml'?'on':''}" onclick="rzZU(${pi},${zi})" aria-label="Einheit wechseln, ${dn>0?'g oder ml':'ml braucht die Dichte'}">${z.u==='ml'?'ml':'g'}</button><span class="rz-pc" id="pc_${pi}_${zi}">${rzPc(z,sum)}</span></div>`}
 
 /* Kopfliste: antippen öffnet das Menü (ersetzen, anlegen, entfernen); Symbol zeigt den Status */
+const rzKatOf=z=>{const i=rzItem(z);if(i&&i.kat)return {k:i.kat,s:0};const c=z.cid&&CM[z.cid];if(c&&c.k)return {k:c.k,s:0};if(/^(wasser|aqua|dest|h2o|h₂o)/i.test(z.name||''))return {k:'Hydrolat & Wasser',s:0};if(z.kat)return {k:z.kat,s:1};return null};
 function rzRefRows(sum){const d=RE.d;let h='',any=false;d.phasen.forEach((p,pi)=>{if(p.pool)return;p.z.forEach((z,zi)=>{any=true;const s=rzZState(z);
-h+=`<div class="rz-ref${z.imp?' imp':''}" onclick="rzZMenu(${pi},${zi})">${rzStDot(s)}<span class="nm">${esc(rzName(z)||'Zutat')}</span><span class="rgm">${z.g>0?rzG(z.g)+' g':''}</span><span class="rtag">${esc((p.name||'Phase').split(' · ')[0])}</span>${z.imp?`<button class="rz-ok" onclick="event.stopPropagation();rzConfirmZ('${z.id}')" aria-label="Zutat bestätigen">${ic('check','currentColor',22)}</button>`:''}</div>`})});
+h+=`<div class="rz-ref${z.imp?' imp':''}" onclick="rzZMenu(${pi},${zi})">${rzStDot(s)}<span class="nm">${esc(rzName(z)||'Zutat')}${(()=>{const k=rzKatOf(z);return k?`<small class="rkat">${esc(k.k)}${k.s?' · Vorschlag':''}</small>`:''})()}</span><span class="rgm">${z.g>0?rzG(z.g)+' g':''}</span><span class="rtag">${esc((p.name||'Phase').split(' · ')[0])}</span>${z.imp?`<button class="rz-ok" onclick="event.stopPropagation();rzConfirmZ('${z.id}')" aria-label="Zutat bestätigen">${ic('check','currentColor',22)}</button>`:''}</div>`})});
 return h+(any?`<div class="rz-leg"><span>${rzStDot('l')}im Lager</span><span>${rzStDot('k')}im Katalog</span><span>${rzStDot('t')}nur Text</span></div>`:'')}
 
 /* Menü einer Zutat (Phasenzeile und Kopfliste) */
@@ -77,5 +79,5 @@ return h.replace('<button class="ib" style="width:36px;height:36px" onclick="rzP
 
 /* Editor: Hinweisband, graue Module mit Bestätigen-Knopf */
 {const o=rzEd;rzEd=function(){o.apply(this,arguments);try{if(!RE)return;const m=$('#main');const n=rzImpCount(RE.d);
-if(n>0){const c=m.querySelector('.cap');if(c)c.insertAdjacentHTML('beforebegin',`<div class="rz-impb" id="rzimpb"><div><b>${n===1?'1 Eintrag noch grau':n+' Einträge noch grau'}</b><div class="s">Grau heißt: noch nicht von dir geprüft. Antippen zum Prüfen, Ersetzen oder Löschen, das Häkchen bestätigt.</div></div><button class="btn" style="width:auto;flex:none;padding:0 16px" onclick="rzConfirmAll()">Alle bestätigen</button></div>`)}
+if(n>0){const c=m.querySelector('.cap');if(c)c.insertAdjacentHTML('beforebegin',`<div class="rz-impb" id="rzimpb"><div><b>${n===1?'1 Eintrag noch nicht bestätigt':n+' Einträge noch nicht bestätigt'}</b><div class="s">Orange heißt: noch nicht von dir geprüft. Antippen zum Prüfen, Ersetzen oder Löschen, das Häkchen bestätigt.</div></div><button class="btn" style="width:auto;flex:none;padding:0 16px" onclick="rzConfirmAll()">Alle bestätigen</button></div>`)}
 RE.d.mod.forEach(x=>{if(!x.imp)return;const e=m.querySelector('.rz-dw[data-id="'+x.id+'"]');if(!e)return;e.classList.add('imp');const bar=e.querySelector('.rz-mt');if(bar)bar.insertAdjacentHTML('afterbegin',`<button type="button" class="rz-okb" onclick="rzConfirmMod('${x.id}')">Bestätigen</button>`)})}catch(e){}}}
