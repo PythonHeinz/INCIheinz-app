@@ -15,3 +15,6 @@ box.insertAdjacentHTML('beforeend',`<div id="altlnk" class="row" onclick="rzAltE
 /* Export der Bestandstabelle: Spalte „Alternativen“ (optional), Wiederherstellen „nur ergänzen“ übernimmt neue Alternativ-Einträge */
 function rzAltTxt(i){const l=[];rzAltEntries(i.name).forEach(e=>(e.zu||[]).forEach(n=>{const t=String(n).split('|')[0];if(!l.includes(t))l.push(t)}));return l.join('; ')}
 {const o=restoreMerge;restoreMerge=function(){const d=IMP&&IMP.json;o.apply(this,arguments);try{if(d&&d.alts){const db=rzAltDB();Object.keys(d.alts).forEach(k=>{if(!db[k])db[k]=d.alts[k]});save()}}catch(e){}}}
+
+/* Einmalig: ist schon ein Testbestand Sonja geladen, wird die Vorbefüllung nachgeholt */
+{const l=load;load=async function(){const r=await l.apply(this,arguments);try{if(S&&!S.altSeeded&&Array.isArray(S.items)&&S.items.some(i=>i.tb==='sonja')){rzAltSeedLoad()}if(S&&!S.altSeeded&&Array.isArray(S.items)){S.altSeeded=1;save()}}catch(e){}return r}}

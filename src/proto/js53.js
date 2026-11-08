@@ -11,9 +11,11 @@ const rzAltNames=sp=>String(sp).split('|').map(x=>FOLD(x.trim())).filter(Boolean
 const rzAltMatch=(nm,sp)=>{const f=FOLD(nm);return !!f&&rzAltNames(sp).some(n=>f===n||(n.length>=5&&f.includes(n))||(f.length>=5&&n.includes(f)))};
 function rzAltMissing(z){const i=rzItem(z);if(!i)return !/^(wasser|aqua|dest|h2o|h₂o)/i.test(z.name||'');const h=rzHave(z);return h.k==='ok'&&h.g<=0}
 /* Reihenfolge: eigene Alternativliste (S.alts, auch Sonjas vorbefüllte), feste Regeln, zuletzt nur gleiche Kategorie (schwach). Menge im Lager spielt keine Rolle. */
-function rzAltEntries(nm){return Object.keys(rzAltDB()).map(k=>S.alts[k]).filter(e=>e&&rzAltMatch(nm,e.von))}
+/* vorbefüllte Einträge (Sonjas Öl-Tabelle) gelten nur für ätherische Öle: Aromen, Duftöle, Mazerate, Hydrolate, Wildrose u. ä. ausschließen */
+const RZALT_NOT=/aroma|duft|mazerat|hydrolat|wasser|wildrose|hagebutt|rosenweihrauch|indicum|extrakt|butter/i;
+function rzAltEntries(nm){return Object.keys(rzAltDB()).map(k=>S.alts[k]).filter(e=>e&&rzAltMatch(nm,e.von)&&!(e.tb&&!e.ed&&RZALT_NOT.test(nm)))}
 function rzAlts(z){if(!z||!rzAltMissing(z))return [];const own=rzItem(z);const nm=rzName(z);const fn=FOLD(nm);const out=[];const add=(i,why)=>{if(!i||i===own||out.some(o=>o.i===i))return;out.push({i,why})};
-rzAltEntries(nm).forEach(e=>(e.zu||[]).forEach(sp=>S.items.forEach(i=>{if(rzAltMatch(i.name,sp))add(i,e.tb&&!e.ed?'Sonjas Liste':'Eigene Liste')})));
+rzAltEntries(nm).forEach(e=>(e.zu||[]).forEach(sp=>S.items.forEach(i=>{if(rzAltMatch(i.name,sp)&&!(e.tb&&!e.ed&&RZALT_NOT.test(i.name)))add(i,e.tb&&!e.ed?'Sonjas Liste':'Eigene Liste')})));
 RZALT_REGELN.forEach(g=>{if(g.some(k=>fn.includes(k)))S.items.forEach(i=>{const f=FOLD(i.name);if(g.some(k=>!fn.includes(k)&&f.includes(k)))add(i,'Regel')})});
 const k=rzKatOf(z);if(k&&!k.s){const n0=out.length;S.items.filter(i=>(i.kat||(i.cid&&CM[i.cid]&&CM[i.cid].k))===k.k).slice(0,40).forEach(i=>{if(out.length-n0<3)add(i,'Nur gleiche Kategorie')})}
 return out}

@@ -483,3 +483,8 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Export der Bestandstabelle (`js8.js`): neue Spalte „Alternativen“ (`XCOLS.alt`, standardmäßig aus, zuschaltbar), Inhalt aus `rzAltTxt(i)` (Namen aus der Alternativliste, mit „; “ getrennt).
 - Test t135 (Sicherung enthält 55 Einträge, Spalte, Ersetzen, Ergänzen, Speichern und Neuladen). Regression t100, t123, t126 bis t134 ohne Fehler.
 - Offen: Rezeptdaten-Export (.json) enthält die Alternativliste nicht, nur die Gesamtsicherung.
+
+## Alternativliste: falsche Treffer, Nachholen der Vorbefüllung (08.11.2026)
+- Vorbefüllte Einträge gelten nur für ätherische Öle: `RZALT_NOT` (Aroma, Duft, Mazerat, Hydrolat, Wasser, Wildrose, Hagebutte, Rosenweihrauch, indicum, Extrakt, Butter) schließt solche Artikel auf beiden Seiten aus (`rzAltEntries`, `rzAlts`). Eigene oder geänderte Einträge sind davon nicht betroffen.
+- Einmalig beim Laden (`load`-Wrapper in js54, Flag `S.altSeeded`): ist schon ein Testbestand Sonja geladen, wird die Vorbefüllung nachgeholt, ohne den Testbestand neu zu laden.
+- Im Testbestand Sonja (142 Rohstoffe) haben danach 34 Artikel Alternativen (u. a. Teebaumöl, Lavendel, Bergamotte, Atlaszeder, Geogard 221, BTMS Pellets).
