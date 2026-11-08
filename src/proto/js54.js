@@ -11,3 +11,7 @@ const snAltOk=a=>{a=String(a).trim();return a&&!/^[\d.,?\s]+$/.test(a)&&!/^(inci
 /* Artikelseite: Alternativen festlegen (Lager) */
 {const a0=artikel;artikel=function(i){a0.apply(this,arguments);try{if(R.edit||!i||!i.name)return;const box=document.getElementById('af2');if(!box||document.getElementById('altlnk'))return;const n=rzAltEntries(i.name).reduce((s,e)=>s+(e.zu||[]).length,0);
 box.insertAdjacentHTML('beforeend',`<div id="altlnk" class="row" onclick="rzAltEdit(rzAltQ(rzAltEnsure(${JSON.stringify(i.name).replace(/"/g,'&quot;')})),'closeSheet()')"><div class="t"><b>Alternativen</b><div class="s">${n?n+' eingetragen':'Tauschstoffe festlegen'}</div></div></div>`);if(LANG!=='de'&&typeof trWalk==='function')trWalk(document.getElementById('altlnk'))}catch(e){}}}
+
+/* Export der Bestandstabelle: Spalte „Alternativen“ (optional), Wiederherstellen „nur ergänzen“ übernimmt neue Alternativ-Einträge */
+function rzAltTxt(i){const l=[];rzAltEntries(i.name).forEach(e=>(e.zu||[]).forEach(n=>{const t=String(n).split('|')[0];if(!l.includes(t))l.push(t)}));return l.join('; ')}
+{const o=restoreMerge;restoreMerge=function(){const d=IMP&&IMP.json;o.apply(this,arguments);try{if(d&&d.alts){const db=rzAltDB();Object.keys(d.alts).forEach(k=>{if(!db[k])db[k]=d.alts[k]});save()}}catch(e){}}}

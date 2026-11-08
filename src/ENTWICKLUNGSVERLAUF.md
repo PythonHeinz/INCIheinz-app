@@ -477,3 +477,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Nicht übernommen (Synonyme oder Handelsnamen, keine Tauschstoffe): Sodium lactate, Cocamidopropyl Betaine, Coco Glucoside, Nicotinamid, Perlastan SC 25, Lamesoft PO 65, Dermosoft/Dermofeel-Varianten, Cetylalkohol green MB, Kollagentensid, Rewoderm, Haarquat. Zahlen und Beschreibungen ignoriert. Für Emulgatoren hat Sonja keine Alternativen hinterlegt.
 - Test t134; Regression t100, t123, t126 bis t133 ohne Fehler. EN/ES ergänzt.
 - Offen: Gesamtübersicht der Alternativliste (alle Einträge), Gegenrichtung automatisch, Export der Liste in Sicherung/Export prüfen.
+
+## Alternativliste in Sicherung und Export (08.11.2026)
+- Sicherung: `doBackup` schreibt das ganze `S`, damit steht `S.alts` in der Sicherungsdatei, „Alles ersetzen“ stellt sie wieder her. „Nur neue Rohstoffe ergänzen“ übernimmt jetzt auch fehlende Alternativ-Einträge (js54, bestehende bleiben unverändert).
+- Export der Bestandstabelle (`js8.js`): neue Spalte „Alternativen“ (`XCOLS.alt`, standardmäßig aus, zuschaltbar), Inhalt aus `rzAltTxt(i)` (Namen aus der Alternativliste, mit „; “ getrennt).
+- Test t135 (Sicherung enthält 55 Einträge, Spalte, Ersetzen, Ergänzen, Speichern und Neuladen). Regression t100, t123, t126 bis t134 ohne Fehler.
+- Offen: Rezeptdaten-Export (.json) enthält die Alternativliste nicht, nur die Gesamtsicherung.
