@@ -1332,3 +1332,7 @@ P7.extend([
 (r"^(.*) · im Lager, Menge unbekannt$",r"\1 · in stock, amount unknown",r"\1 · en el almacén, cantidad desconocida"),
 (r"^Im Lager sind nur (.*) g\.$",r"Only \1 g in stock.",r"Solo hay \1 g en el almacén."),
 ])
+N7.update({
+"Das Rezept öffnet sich dafür im Editor. Gespeichert wird erst, wenn du es als neue Version speicherst, bis dahin bleibt alles wie es ist.":("The recipe opens in the editor for this. It is only saved when you save it as a new version; until then nothing changes.","La receta se abre en el editor. Solo se guarda cuando la guardes como nueva versión; hasta entonces nada cambia."),
+"Rezept im Editor geöffnet. Prüfe den Tausch und speichere.":("Recipe opened in the editor. Check the swap and save.","Receta abierta en el editor. Revisa el cambio y guarda."),
+})

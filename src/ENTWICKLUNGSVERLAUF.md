@@ -465,3 +465,6 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Quellen (`rzAlts`): 1 Regeln `RZALT_REGELN` (Liste von Namensgruppen, bisher Xanthan/Guarkernmehl und Zitronensäure/Milchsäure, FOLD-Namen ohne Umlaut-Auflösung, ä wird a), 2 Sonjas Tauschstoffe (`i.alt` bzw. `TBS.sn[name].a`, nur Texte, die einen Lagerartikel treffen; die Daten sind größtenteils Dosierungen und Infotexte, daher wenig Treffer), 3 gleiche Kategorie (höchstens 6, nicht bei KI-Vorschlag-Kategorie). Warnung, wenn das Lager weniger hat als das Rezept braucht.
 - Offen: Regeltabelle fachlich ausbauen (durch Sonja prüfen lassen), Anzeige auch in der Rezeptansicht ohne Bearbeiten, Mengenanpassung beim Tausch, „alle fehlenden prüfen“ auf einmal.
 - Test t132; Regression t100, t123, t127 bis t131 ohne Fehler. EN/ES ergänzt.
+
+## Alternativen auch in der Rezeptansicht (08.11.2026)
+- js53: `rzCalcRow` zeigt bei fehlenden Zutaten orange „Alternativen im Lager: n“ (gespeicherte Rezepte, ohne Bearbeiten). Vorschlagsliste und Rückfrage wie im Editor (`RZAV` = Ansicht). „Ersetzen“ öffnet das Rezept im Editor (`rzEdit`, Zutat über `z.id` wiedergefunden), der Tausch steht dort als „ersetzt: … · Zurück“, gespeichert wird erst als neue Version. Das gespeicherte Rezept bleibt bis dahin unverändert. Test t133.
