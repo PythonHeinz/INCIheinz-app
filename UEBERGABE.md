@@ -19,6 +19,7 @@ Alles liegt im Repo unter `src/`. Neuer Chat:
 Pipeline: `tpl5_pre6.html` → `patch7.py` (R(alt,neu,anzahl) = exakter Ersatz mit Zählprüfung; hängt js7…js19 an und `css18.css` an das Stylesheet, führt `p7b.py` aus) → `patch6.py` (Symbole) → `patch4.py` (i18n über `i18n7.py`: N7-Wörterbuch, P7-Regex) → `build_netlify.py`. Prüfung `node --check chk.js`.
 
 ## Fallstricke
+- Nach dem Bauen `/mnt/user-data/outputs/netlify/index.html` (und bei Änderung `sw.js`) in die Repo-Wurzel kopieren, sonst liefert die App den alten Stand aus (08.11.2026 passiert). Die laufende App meldet eine neue Version per Banner „Neue Version verfügbar“ (js14, Meta `inci-build` wird bei jedem Build neu gesetzt); Schließen und zweimal Öffnen genügt ebenfalls (Service Worker lädt im Hintergrund nach).
 - Build aus sauberem Klon: `src/proto/es_vals.txt` (spanische Texte in Reihenfolge der EN-Schlüssel) ist Teil des Repos; `build.sh` legt die nötigen Ordner und Startdateien selbst an.
 - R()-Patches treffen auch Text in neuen js-Dateien: gepatchte Strings nicht in js16/js17 wiederholen; Zählfehler = AssertionError.
 - Strings mit `'` in p7b.py als `r'''…'''` schreiben (sonst verschwinden Anführungszeichen).
