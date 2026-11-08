@@ -162,7 +162,7 @@ Pfad: `Mehr › Einstellungen` (Liste; jeder Eintrag öffnet eine eigene Seite, 
 - **Mengeneinstellungen:** Anzeigegenauigkeit im Lager (ganze g/ml, 0,1 oder 0,01) und Rundung im Rezeptbuch/Werkbank (0,01 g, 0,1 g, 0,5 g, 1 g).
 - **Hilfe:** Anleitung und Info.
 - **Expertenmodus:** schaltet Spalten, Sortierungen, Lückenfinder-Werte und den Testbetrieb frei.
-- **Testbetrieb** (nur im Expertenmodus): **Testdaten laden/entfernen** (27 Beispielrezepte und passende Rohstoffe; nicht fachlich geprüft, nicht zum Nachmischen). Der Block heißt „Testbestand Heinz“. Daneben gibt es „Testbestand Sonja“: lädt rund 180 Rohstoffe aus Sonjas Lagerreport mit offener Menge (Mengen später per Regal-Check nachtragen); „Testbestand Sonja entfernen“ löscht nur Einträge ohne Menge und ohne Rezeptverwendung.
+- **Testbetrieb** (nur im Expertenmodus): **Testdaten laden/entfernen** (27 Beispielrezepte und passende Rohstoffe; nicht fachlich geprüft, nicht zum Nachmischen). Der Block heißt „Testbestand Heinz“. Daneben gibt es „Testbestand Sonja“: lädt 142 Rohstoffe aus Sonjas Lagerliste (Blatt „Lager Jakobswiese“, Wissenslisten ausgenommen) mit offener Menge (Mengen später per Regal-Check nachtragen) und ihre eigenen Texte: im Artikel erscheint der Block „Sonjas Notizen“ (eigene Texte und Alternativen/Tauschstoffe, ungeprüft, nur im Testbestand, nicht im Katalog; Tipp auf Beschreibung oder Verwendung öffnet ihn); „Testbestand Sonja entfernen“ löscht nur Einträge ohne Menge und ohne Rezeptverwendung.
 
 ---
 

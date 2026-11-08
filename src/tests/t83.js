@@ -15,7 +15,7 @@ chk('Altzustand 1019',r1.n===1019&&r1.newIds===34);
 await p.evaluate(NEW=>{window.fetch=async()=>({ok:true,json:async()=>NEW})},NEW);
 await p.evaluate(()=>sheetCatUpd());await p.waitForTimeout(800);
 const t=await p.evaluate(()=>document.getElementById('cu').innerText);console.log(t.replace(/\n/g,' | ').slice(0,200));
-chk('31 neue Einträge gemeldet",/34 neue Einträge/.test(t));
+chk('34 neue Einträge gemeldet',/34 neue Einträge/.test(t));
 chk('ergänzte Angaben gemeldet',/ergänzte Angaben/.test(t));
 await p.evaluate(()=>catApply());await W();
 const r2=await p.evaluate(()=>({n:CAT.length,filled:S.items.filter(i=>i.fc&&Object.keys(i.fc).length).length,own:getI(window.__own).beschr,form:S.items.filter(i=>i.form).length,fcOwn:getI(window.__own).fc&&getI(window.__own).fc.beschr}));
