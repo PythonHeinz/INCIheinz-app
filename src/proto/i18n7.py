@@ -1273,4 +1273,26 @@ P7.extend([
 (r"^(.*) · ohne Katalog$",r"\1 · no catalog",r"\1 · sin catálogo"),
 (r"^Zugeordnet: (.*)$",r"Assigned: \1",r"Asignado: \1"),
 ])
+N7.update({
+"Symbole erklärt":("Symbols explained","Símbolos explicados"),
+"Bestand":("Stock","Existencias"),
+"leer":("empty","vacío"),
+"Der Bestand ist 0. Der Rohstoff ist angelegt, aber aufgebraucht.":("Stock is 0. The raw material exists but is used up.","La existencia es 0. La materia prima está creada, pero agotada."),
+"knapp":("low","escaso"),
+"Der Bestand liegt unter der Mindestmenge.":("Stock is below the minimum quantity.","La existencia está por debajo de la cantidad mínima."),
+"auf der Einkaufsliste":("on the shopping list","en la lista de compras"),
+"Der Rohstoff steht auf deiner Einkaufsliste.":("The raw material is on your shopping list.","La materia prima está en tu lista de compras."),
+"läuft ab":("expiring","caduca"),
+"Das Ablaufdatum (MHD) ist bald erreicht.":("The expiry date is coming up.","La fecha de caducidad se acerca."),
+"Menge offen":("quantity open","cantidad abierta"),
+"Der Rohstoff ist im Lager, die Menge ist noch nicht eingetragen. Das geht mit „Bestand ändern“ oder im Regal-Check.":("The raw material is in stock, but the quantity is not entered yet. Use “Change stock” or the shelf check.","La materia prima está en el almacén, pero aún no se ha introducido la cantidad. Se hace con “Cambiar existencias” o en la revisión de estantes."),
+"ohne Katalog":("no catalog entry","sin catálogo"),
+"Der Rohstoff hat nur einen Namen und ist noch keinem Katalogeintrag zugeordnet. Ihn zuzuordnen geht im Regal-Check unter „Jetzt zuordnen“.":("The raw material has only a name and is not assigned to a catalog entry yet. You can assign it in the shelf check under “Assign now”.","La materia prima solo tiene un nombre y aún no está asignada a una entrada del catálogo. Se asigna en la revisión de estantes con “Asignar ahora”."),
+"eigen":("own","propio"),
+"Eigener Rohstoff, den es nicht im Katalog gibt, zum Beispiel eine Eigenkreation.":("Your own raw material that is not in the catalog, for example a creation of your own.","Materia prima propia que no está en el catálogo, por ejemplo una creación propia."),
+"kein Tag":("no tag","sin etiqueta"),
+"mit Katalog verknüpft":("linked to the catalog","vinculada al catálogo"),
+"Der Rohstoff ist ein angelegter Artikel mit Katalogdaten wie INCI und Kategorie.":("The raw material is a created item with catalog data such as INCI and category.","La materia prima es un artículo creado con datos del catálogo como INCI y categoría."),
+"Zutaten in einem Rezept, die nicht im Lager sind, stehen dort nur als Text und zeigen „fehlt“, bis du den Rohstoff anlegst.":("Ingredients in a recipe that are not in stock appear there as text only and show “missing” until you create the raw material.","Los ingredientes de una receta que no están en el almacén aparecen solo como texto y muestran “falta” hasta que crees la materia prima."),
+})
 

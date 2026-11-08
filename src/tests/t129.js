@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:412,height:860}});await ctx.addInitScript(()=>{localStorage.setItem('inciheinz-fresh','1')});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('file:///mnt/user-data/outputs/netlify/index.html');await p.waitForTimeout(1500);
+const r=await p.evaluate(async()=>{const W=()=>new Promise(x=>setTimeout(x,300));const o={};
+S.expert=true;save();tbsLoad();await W();
+const it=mk(null,{name:'Mein Spezialöl',kind:'v',total:0});it.unk=true;it.kat='Pflanzenöl';S.items.push(it);const em=S.items.find(i=>i.cid);em.total=0;em.unk=false;save();
+tab('lager');Q.view='liste';lager();await W();let t=document.body.innerText;
+o.tagOpen=document.querySelectorAll('.tr .badge.u').length;o.tagEigen=[...document.querySelectorAll('.tr .badge')].filter(e=>e.textContent==='eigen').length;
+o.link=!!document.getElementById('lgleg');
+lgLegend();await W();t=document.body.innerText;o.legend=['Symbole erklärt','leer','knapp','auf der Einkaufsliste','läuft ab','Menge offen','ohne Katalog','mit Katalog verknüpft'].every(x=>t.includes(x));closeSheet();
+return o});
+console.log(JSON.stringify(r));console.log('errors:',errs);
+await p.evaluate(()=>{tab('lager');Q.view='liste';lager()});await p.waitForTimeout(400);await p.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await p.screenshot({path:'/tmp/l1.png'});
+await p.evaluate(()=>{lgLegend()});await p.waitForTimeout(400);await p.screenshot({path:'/tmp/l2.png'});await b.close()})();
