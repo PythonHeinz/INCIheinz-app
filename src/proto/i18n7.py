@@ -1206,3 +1206,28 @@ N7.update({
 "Diesen Weg finde ich hier nicht. Bitte von Hand öffnen.":("I can't find this path here. Please open it manually.","No encuentro esta ruta aquí. Ábrela a mano."),
 "In diese Sprache übersetzt die KI fremdsprachige Rezepte beim Import und bei „Übersetzen“. Die Sprache der App stellst du unter „Sprache“ ein.":("The AI translates foreign-language recipes into this language on import and with “Translate”. You set the app language under “Language”.","La IA traduce a este idioma las recetas en otros idiomas al importar y con «Traducir». El idioma de la app se ajusta en «Idioma»."),
 })
+
+N7.update({
+"Testbestand Heinz":("Test stock Heinz","Existencias de prueba Heinz"),
+"Testbestand Sonja":("Test stock Sonja","Existencias de prueba Sonja"),
+"Testbestand Sonja laden":("Load test stock Sonja","Cargar existencias de prueba Sonja"),
+"Testbestand Sonja laden?":("Load test stock Sonja?","¿Cargar existencias de prueba Sonja?"),
+"Testbestand Sonja entfernen":("Remove test stock Sonja","Quitar existencias de prueba Sonja"),
+"Testbestand Sonja entfernen?":("Remove test stock Sonja?","¿Quitar existencias de prueba Sonja?"),
+"Testbestand Sonja geladen":("Test stock Sonja loaded","Existencias de prueba Sonja cargadas"),
+"Testbestand Sonja entfernt":("Test stock Sonja removed","Existencias de prueba Sonja quitadas"),
+})
+N7.update({
+"Deine eigenen Daten bleiben unberührt.":("Your own data stays untouched.","Tus propios datos no se tocan."),
+"Die Mengen bleiben offen und lassen sich mit dem Regal-Check nachtragen.":("Quantities stay open and can be added with the shelf check.","Las cantidades quedan abiertas y se completan con la revisión del estante."),
+"Du kannst alles wieder entfernen.":("You can remove everything again.","Puedes quitarlo todo de nuevo."),
+})
+P7.extend([
+(r"^(\d+) Rohstoffe aus dem Lagerreport von Sonja \(Stand ([\d.]+)\), Mengen offen\.$",r"\1 raw materials from Sonja's stock report (as of \2), quantities open.",r"\1 materias primas del informe de almacén de Sonja (a \2), cantidades abiertas."),
+(r"^Geladen: (\d+) Rohstoffe, davon (\d+) ohne Menge\.$",r"Loaded: \1 raw materials, \2 without quantity.",r"Cargadas: \1 materias primas, \2 sin cantidad."),
+(r"^Es werden (\d+) Rohstoffe aus dem Lagerreport als vorhanden eingetragen\.$",r"\1 raw materials from the stock report are entered as in stock.",r"Se registran \1 materias primas del informe como disponibles."),
+(r"^(\d+) sind schon im Lager und bleiben unberührt\.$",r"\1 are already in stock and stay untouched.",r"\1 ya están en el almacén y no se tocan."),
+(r"^Entfernt (\d+) Rohstoffe, bei denen noch keine Menge eingetragen ist und die in keinem Rezept vorkommen\.$",r"Removes \1 raw materials that have no quantity yet and are not used in any recipe.",r"Quita \1 materias primas sin cantidad que no aparecen en ninguna receta."),
+(r"^(\d+) Rohstoffe mit Menge oder in Rezepten bleiben als deine eigenen\.$",r"\1 raw materials with a quantity or used in recipes stay as your own.",r"\1 materias primas con cantidad o en recetas se quedan como tuyas."),
+(r"^(\d+) Rohstoffe geladen$",r"\1 raw materials loaded",r"\1 materias primas cargadas"),
+])

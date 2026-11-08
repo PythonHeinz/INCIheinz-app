@@ -5,7 +5,7 @@ let ok=0,bad=0;const chk=(n,c)=>{if(c)ok++;else{bad++;console.log('FEHLER:',n)}}
 const sh=()=>p.evaluate(()=>{const s=document.getElementById('sheet');return s?{h:(s.querySelector('h2')||{}).textContent,t:s.innerText.replace(/\n+/g,' | '),bk:!!s.querySelector('.bk'),rows:[...s.querySelectorAll('.row .t b')].map(x=>x.textContent)}:null});
 const clickRow=n=>p.evaluate(n=>{const r=[...document.querySelectorAll('#sheet .row')].find(x=>x.textContent.trim().startsWith(n));r.click()},n);
 await p.evaluate(()=>sheetAppSet());await W();let s=await sh();console.log(JSON.stringify(s.rows));
-chk('Liste ohne Experten',JSON.stringify(s.rows)===JSON.stringify(['Sprache','Sichern und zurücknehmen','Katalog','Mengeneinstellungen','Hilfe','KI-Funktionen','Expertenmodus']));
+chk('Liste ohne Experten',JSON.stringify(s.rows)===JSON.stringify(['Sprache','Meine Sprache (Zielsprache)','Sichern und zurücknehmen','Katalog','Mengeneinstellungen','Hilfe','KI-Funktionen','Expertenmodus']));
 chk('Seite kurz',s.t.length<500);
 await clickRow('Mengeneinstellungen');await W();s=await sh();chk('Mengen offen mit Zurück',s.h==='Mengeneinstellungen'&&s.bk&&/Lager \(Mengen anzeigen\)/i.test(s.t));
 await p.evaluate(()=>accSet('l',1));await W();s=await sh();chk('bleibt in Mengen',s.h==='Mengeneinstellungen'&&s.bk);
