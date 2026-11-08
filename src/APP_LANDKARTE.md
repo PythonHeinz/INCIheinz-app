@@ -285,3 +285,4 @@ Im Menü KI-Funktionen kannst du das Modell per Tipp wählen oder einen eigenen 
 
 ## Nachtrag: Fremdsprachige Rezepte (07.11.2026)
 - Rezept importieren › Mit KI genauer lesen / Fotos: Vorschau zeigt "x von y Zutaten wurden dem Katalog zugeordnet", Sprache des Originals, Hinweis auf KI-Übersetzung. S.tm neu (optional), d.lang und z.on an Rezept/Zutat optional.
+- **Regal-Check, Zuordnung:** Startseite zeigt, wie viele Rohstoffe noch keinem Katalogeintrag zugeordnet sind („Jetzt zuordnen“), Kategorien tragen „n offen“. In der Kategorie stehen offene Rohstoffe oben (Katalogtreffer wählen oder „Bleibt eigener Rohstoff“); jeder Lagerartikel hat „Öffnen“ zum direkten Bearbeiten, Haken bleiben an- und abwählbar.

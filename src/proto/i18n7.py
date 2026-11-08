@@ -1246,3 +1246,31 @@ P7.extend([
 (r"^(\d+) Rohstoffe mit Menge oder in Rezepten bleiben als deine eigenen\.$",r"\1 raw materials with a quantity or used in recipes stay as your own.",r"\1 materias primas con cantidad o en recetas se quedan como tuyas."),
 (r"^(\d+) Rohstoffe geladen$",r"\1 raw materials loaded",r"\1 materias primas cargadas"),
 ])
+N7.update({
+"Das sind Einträge nur mit Namen, ohne Katalogdaten wie INCI und Kategorie.":("These are entries with a name only, without catalog data such as INCI and category.","Son entradas solo con nombre, sin datos del catálogo como INCI y categoría."),
+"Jetzt zuordnen":("Assign now","Asignar ahora"),
+"Alles zugeordnet":("All assigned","Todo asignado"),
+"Alle Rohstoffe im Lager sind mit dem Katalog verknüpft oder von dir als eigene bestätigt.":("All raw materials in stock are linked to the catalog or confirmed by you as your own.","Todas las materias primas del almacén están vinculadas al catálogo o confirmadas por ti como propias."),
+"Noch zuzuordnen":("Still to assign","Pendientes de asignar"),
+"Tippe einen Rohstoff an und wähle den passenden Katalogeintrag.":("Tap a raw material and choose the matching catalog entry.","Toca una materia prima y elige la entrada del catálogo que corresponda."),
+"Welcher Katalogeintrag passt?":("Which catalog entry fits?","¿Qué entrada del catálogo corresponde?"),
+"Katalog-Treffer":("Catalog matches","Coincidencias del catálogo"),
+"Kein Treffer im Katalog.":("No match in the catalog.","Sin coincidencias en el catálogo."),
+"Bleibt eigener Rohstoff":("Stays my own raw material","Sigue siendo una materia prima propia"),
+"Rohstoff öffnen und bearbeiten":("Open and edit raw material","Abrir y editar la materia prima"),
+"Zurück":("Back","Atrás"),
+"Öffnen":("Open","Abrir"),
+"zuordnen":("assign","asignar"),
+"im Lager · noch ohne Katalogeintrag":("in stock · no catalog entry yet","en el almacén · aún sin entrada del catálogo"),
+"Dieser Katalogeintrag ist schon im Lager":("This catalog entry is already in stock","Esta entrada del catálogo ya está en el almacén"),
+"Bleibt eigener Rohstoff":("Stays my own raw material","Sigue siendo una materia prima propia"),
+})
+P7.extend([
+(r"^(\d+) Rohstoff ist noch nicht dem Katalog zugeordnet$",r"\1 raw material is not yet assigned to the catalog",r"\1 materia prima aún no está asignada al catálogo"),
+(r"^(\d+) Rohstoffe sind noch nicht dem Katalog zugeordnet$",r"\1 raw materials are not yet assigned to the catalog",r"\1 materias primas aún no están asignadas al catálogo"),
+(r"^(\d+) / (\d+) · (\d+) offen$",r"\1 / \2 · \3 open",r"\1 / \2 · \3 pendientes"),
+(r"^(\d+) / (\d+) im Lager · (\d+) ohne Katalog$",r"\1 / \2 in stock · \3 without catalog",r"\1 / \2 en el almacén · \3 sin catálogo"),
+(r"^(.*) · ohne Katalog$",r"\1 · no catalog",r"\1 · sin catálogo"),
+(r"^Zugeordnet: (.*)$",r"Assigned: \1",r"Asignado: \1"),
+])
+
