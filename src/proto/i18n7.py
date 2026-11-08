@@ -1336,3 +1336,24 @@ N7.update({
 "Das Rezept öffnet sich dafür im Editor. Gespeichert wird erst, wenn du es als neue Version speicherst, bis dahin bleibt alles wie es ist.":("The recipe opens in the editor for this. It is only saved when you save it as a new version; until then nothing changes.","La receta se abre en el editor. Solo se guarda cuando la guardes como nueva versión; hasta entonces nada cambia."),
 "Rezept im Editor geöffnet. Prüfe den Tausch und speichere.":("Recipe opened in the editor. Check the swap and save.","Receta abierta en el editor. Revisa el cambio y guarda."),
 })
+N7.update({
+"Deine Liste gilt für alle Rezepte. Es sind nur Vorschläge, der Tausch braucht immer deine Bestätigung.":("Your list applies to all recipes. These are only suggestions, every swap needs your confirmation.","Tu lista vale para todas las recetas. Son solo sugerencias, cada cambio necesita tu confirmación."),
+"Noch keine Alternativen eingetragen.":("No alternatives entered yet.","Aún no hay alternativas."),
+"+ Alternative hinzufügen":("+ Add alternative","+ Añadir alternativa"),
+"Alternative hinzufügen":("Add alternative","Añadir alternativa"),
+"Rohstoff suchen":("Search raw material","Buscar materia prima"),
+"Eigenen Namen verwenden":("Use own name","Usar nombre propio"),
+"Vorbefüllt aus Sonjas Notizen (Testbestand).":("Prefilled from Sonja's notes (test stock).","Rellenado desde las notas de Sonja (stock de prueba)."),
+"Liste für diese Zutat bearbeiten":("Edit list for this ingredient","Editar lista de este ingrediente"),
+"Alternativen festlegen":("Set alternatives","Definir alternativas"),
+"Eigene Liste für diese Zutat":("Own list for this ingredient","Lista propia para este ingrediente"),
+"Alternativen":("Alternatives","Alternativas"),
+"Tauschstoffe festlegen":("Set substitutes","Definir sustitutos"),
+"Eigene Liste":("Own list","Lista propia"),
+"Nur gleiche Kategorie":("Same category only","Solo la misma categoría"),
+"Weitere Namen (Sonja)":("Other names (Sonja)","Otros nombres (Sonja)"),
+})
+P7.extend([
+(r"^Alternativen für (.*)$",r"Alternatives for \1",r"Alternativas para \1"),
+(r"^(\d+) eingetragen$",r"\1 entered",r"\1 introducidas"),
+])

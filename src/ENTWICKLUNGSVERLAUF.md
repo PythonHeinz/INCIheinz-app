@@ -468,3 +468,12 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 
 ## Alternativen auch in der Rezeptansicht (08.11.2026)
 - js53: `rzCalcRow` zeigt bei fehlenden Zutaten orange „Alternativen im Lager: n“ (gespeicherte Rezepte, ohne Bearbeiten). Vorschlagsliste und Rückfrage wie im Editor (`RZAV` = Ansicht). „Ersetzen“ öffnet das Rezept im Editor (`rzEdit`, Zutat über `z.id` wiedergefunden), der Tausch steht dort als „ersetzt: … · Zurück“, gespeichert wird erst als neue Version. Das gespeicherte Rezept bleibt bis dahin unverändert. Test t133.
+
+## Eigene Alternativliste (08.11.2026)
+- Wunsch: Alternativen kommen aus einer eigenen Liste, die Sonja pflegt und die mit ihren eindeutigen Notizen vorbefüllt ist; Mengen im Lager spielen keine Rolle; Kategorie nur als schwacher Vorschlag; Produktbeschreibungen in ihrer Spalte „Alternativen“ zählen nicht.
+- Datenmodell: `S.alts = {schlüssel:{von:"Name|Alias", zu:["Name|Alias",…], tb:1 (Testbestand), ed:1 (vom Nutzer geändert)}}`. Namensvergleich über FOLD, Gleichheit oder Teiltreffer ab 5 Zeichen (`rzAltMatch`).
+- `js53.js`: `rzAlts` neu, Reihenfolge eigene Liste (Beschriftung „Sonjas Liste“ bzw. „Eigene Liste“), feste Regeln `RZALT_REGELN`, zuletzt „Nur gleiche Kategorie“ (höchstens 3). Keine Mengenprüfung mehr (Menge unbekannt oder 0 zählt). Pflege: `rzAltEdit` (Liste mit Löschen, + Alternative hinzufügen über Lager/Katalog/eigenen Namen), erreichbar aus der Vorschlagsliste („Liste für diese Zutat bearbeiten“), aus dem Zutatenmenü („Alternativen festlegen“) und aus dem Artikel (Zeile „Alternativen“).
+- `js54.js`: Seed `RZALT_SEED` (53 Öl-Einträge aus „Äth Tausch“ mit deutschen Namen/Aliasen, doTERRA-Mischungen ausgelassen, dazu Geogard 221→Cosgard, BTMS Pellets→BTMS 25), erzeugt mit `werkzeuge/gen_alts.py`. `tbsLoad` lädt ihn, `tbsRm` entfernt nicht geänderte Seed-Einträge. „Sonjas Notizen“ zeigt aus der Spalte „Alternativen“ nur noch kurze Namen als „Weitere Namen (Sonja)“.
+- Nicht übernommen (Synonyme oder Handelsnamen, keine Tauschstoffe): Sodium lactate, Cocamidopropyl Betaine, Coco Glucoside, Nicotinamid, Perlastan SC 25, Lamesoft PO 65, Dermosoft/Dermofeel-Varianten, Cetylalkohol green MB, Kollagentensid, Rewoderm, Haarquat. Zahlen und Beschreibungen ignoriert. Für Emulgatoren hat Sonja keine Alternativen hinterlegt.
+- Test t134; Regression t100, t123, t126 bis t133 ohne Fehler. EN/ES ergänzt.
+- Offen: Gesamtübersicht der Alternativliste (alle Einträge), Gegenrichtung automatisch, Export der Liste in Sicherung/Export prüfen.
