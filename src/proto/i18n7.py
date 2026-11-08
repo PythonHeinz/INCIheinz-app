@@ -1312,3 +1312,23 @@ P7.extend([
 (r"^(\d+) Schritte? aus den Phasen angelegt\. Ergänze, was du tust\.$",r"\1 step(s) created from the phases. Add what you do.",r"\1 paso(s) creado(s) desde las fases. Añade lo que haces."),
 (r"^Zutaten: (.*)$",r"Ingredients: \1",r"Ingredientes: \1"),
 ])
+N7.update({
+"Das sind nur Vorschläge. Im Rezept ändert sich erst etwas, wenn du eine Alternative bestätigst.":("These are only suggestions. Nothing in the recipe changes until you confirm an alternative.","Solo son sugerencias. La receta no cambia hasta que confirmes una alternativa."),
+"Ob ein Tausch fachlich passt, prüfst du selbst. Mengen und Eigenschaften können sich ändern.":("You decide whether a swap is suitable. Amounts and properties may change.","Tú decides si el cambio es adecuado. Las cantidades y propiedades pueden cambiar."),
+"Ersetzen?":("Replace?","¿Reemplazar?"),
+"Ersetzen":("Replace","Reemplazar"),
+"Vorschläge, du bestätigst":("Suggestions, you confirm","Sugerencias, tú confirmas"),
+"Regel":("Rule","Regla"),
+"Sonjas Liste":("Sonja's list","Lista de Sonja"),
+"Gleiche Kategorie":("Same category","Misma categoría"),
+})
+P7.extend([
+(r"^Alternativen im Lager: (\d+)$",r"Alternatives in stock: \1",r"Alternativas en el almacén: \1"),
+(r"^Alternativen im Lager \((\d+)\)$",r"Alternatives in stock (\1)",r"Alternativas en el almacén (\1)"),
+(r"^Alternativen für (.*)$",r"Alternatives for \1",r"Alternativas para \1"),
+(r"^ersetzt: (.*) · Zurück$",r"replaced: \1 · Undo",r"reemplazado: \1 · Deshacer"),
+(r"^Ersetzt durch (.*)$",r"Replaced by \1",r"Reemplazado por \1"),
+(r"^(.*) · im Lager (.*) g$",r"\1 · in stock \2 g",r"\1 · en el almacén \2 g"),
+(r"^(.*) · im Lager, Menge unbekannt$",r"\1 · in stock, amount unknown",r"\1 · en el almacén, cantidad desconocida"),
+(r"^Im Lager sind nur (.*) g\.$",r"Only \1 g in stock.",r"Solo hay \1 g en el almacén."),
+])
