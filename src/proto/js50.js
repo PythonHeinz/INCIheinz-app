@@ -1,7 +1,7 @@
 /* Regal-Check: Zuordnung zum Katalog sichtbar machen.
    "Offen" = Rohstoff ohne Katalogverknüpfung (kein i.cid), den der Nutzer nicht als eigenen bestätigt hat (i.eig).
    Start: Karte mit Zahl (oder Haken), Kategorien mit "n offen". Kategorie: offene Rohstoffe oben, "Öffnen" an jedem Lagerartikel. */
-const ckOpenL=()=>S.items.filter(i=>!i.cid&&!i.eig);
+const ckOpenL=()=>S.items.filter(i=>!i.cid&&!i.eig&&i.tb!=='sonja');
 function ckOpenCard(){const n=ckOpenL().length;
 return n?`<div class="card" style="padding:12px 14px;margin:0 0 12px;border-left:4px solid var(--pri)"><b>${n} ${n===1?'Rohstoff ist':'Rohstoffe sind'} noch nicht dem Katalog zugeordnet</b><div class="s" style="margin-top:2px">Das sind Einträge nur mit Namen, ohne Katalogdaten wie INCI und Kategorie.</div><div class="btns" style="margin-top:8px"><button class="btn" onclick="ckOpenSheet()">Jetzt zuordnen</button></div></div>`
 :`<div class="card" style="padding:12px 14px;margin:0 0 12px"><b>Alles zugeordnet</b><div class="s" style="margin-top:2px">Alle Rohstoffe im Lager sind mit dem Katalog verknüpft oder von dir als eigene bestätigt.</div></div>`}
