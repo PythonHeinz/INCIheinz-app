@@ -22,3 +22,11 @@ function snOpen(){const d=document.getElementById('snbox');if(d){d.open=true;d.s
 (function(){const a0=artikel;artikel=function(i){a0.apply(this,arguments);try{if(R.edit||!i||!((i.sn&&i.sn.length)||(i.alt&&i.alt.length)))return;const box=document.getElementById('af2');if(!box||document.getElementById('snbox'))return;
 [...box.querySelectorAll('.txt')].forEach(b=>{const h=b.querySelector('.s');const t=h?h.textContent:'';if(/^(Beschreibung|Verwendung)/.test(t.trim())){b.style.cursor='pointer';b.addEventListener('click',snOpen);h.insertAdjacentHTML('beforeend',' · <u>Sonjas Notizen</u>')}});
 box.insertAdjacentHTML('beforeend',snHtml(i))}catch(e){}}})();
+
+/* Regal-Check: Artikel aus dem Testbestand Sonja lassen sich wieder abwählen, solange nur Testdaten (Gebinde-Notiz aus dem Report, Katalogtexte, Sonjas Notizen) daran hängen.
+   Eigene Eingaben (Menge, Gebinde, Preise, eigene Texte) sperren das Abwählen weiter. */
+(function(){const t0=toggleCat;toggleCat=function(id){const own=S.items.find(i=>i.cid===id);
+if(own){const txt=x=>!!own[x]&&!fcSame(own,x);const row=own.tb==='sonja'&&TBS.rows.find(r=>r[0]===own.name);const tn=!own.notiz||(row&&own.notiz===row[8]);
+const bare=own.unk&&!own.vessels.length&&!own.bezug.length&&!txt('verw')&&!txt('beschr')&&tn&&!own.quelle;
+if(bare){S.items=S.items.filter(i=>i!==own);S.shop=S.shop.filter(s=>s.item!==own.id);save();ckList();return}}
+return t0.apply(this,arguments)}})();
