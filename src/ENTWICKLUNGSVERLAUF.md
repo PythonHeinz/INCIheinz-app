@@ -453,3 +453,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Test t124 (Löschen, Rückgängig, Einstellungseintrag, Guide-Pfad). Regression t83 bis t123 ohne Fehler.
 - Offen/Idee: Schritte einer Phase zuordnen wäre eine KI-Aufgabe im Importprompt (Feld je Schritt), mit Prüfregel dahinter; noch nicht gebaut.
 
+
+## Phasen als Schritte im Ablauf (08.11.2026)
+- Wunsch: Die von der KI erkannten Phasen (Dry/Wet phase) sollen auch in der Rezeptansicht und in Publikationen unter „Ablauf und Hinweise“ stehen. Ansicht, Rezeptkarte und Text-Export lesen `d.mod`, die Phasen lagen nur in `d.phasen`.
+- Neu `src/proto/js52.js`: `rzPhMods(d)` legt je Phase mit Zutaten einen Schritt (Titel = Phasenname, Text „Zutaten: Name Menge, …“, Feld `ph` = Phasen-Id) an, nur wenn es noch keinen Schritt mit dieser Phase gibt. Läuft beim Übernehmen des Import-Entwurfs (vor dem Orange-Marker, Schritte gelten als „noch nicht bestätigt“). Im Editor Knopf „Phasen in den Ablauf übernehmen“ für bestehende Rezepte (`rzPhModsDo`). Es wird kein Arbeitstext erfunden, nur die Zutatenliste der Phase.
+- i18n EN/ES ergänzt. Test t131 (Import, Knopf, Ansicht, Rezeptkarte). Regression t100, t127 bis t130 ohne Fehler.
+- Offen: Schritte nachträglich mit geänderten Phasen abgleichen (Titel/Text bleiben stehen, wenn man die Phase umbenennt); Arbeitsschritte je Phase per KI zuordnen.

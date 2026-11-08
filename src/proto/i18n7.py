@@ -1305,3 +1305,10 @@ P7.extend([
 (r"^(\d+) Einträge noch nicht bestätigt$",r"\1 entries not confirmed yet",r"\1 entradas aún sin confirmar"),
 (r"^(.*) · Vorschlag$",r"\1 · suggestion",r"\1 · sugerencia"),
 ])
+N7.update({
+"Phasen in den Ablauf übernehmen":("Add phases to the procedure","Añadir fases al procedimiento"),
+})
+P7.extend([
+(r"^(\d+) Schritte? aus den Phasen angelegt\. Ergänze, was du tust\.$",r"\1 step(s) created from the phases. Add what you do.",r"\1 paso(s) creado(s) desde las fases. Añade lo que haces."),
+(r"^Zutaten: (.*)$",r"Ingredients: \1",r"Ingredientes: \1"),
+])
