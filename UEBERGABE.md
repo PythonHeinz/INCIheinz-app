@@ -70,13 +70,22 @@ Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\T
 - Maßgebliche Version = GitHub-Repo (PythonHeinz/INCIheinz-app, main). `INCI-App-Projekt/repo/` ist die Offline-Kopie; vor der Arbeit `git pull`.
 - Ältere Ordner: `lager-app/` ist die erste Version (v0.1.0, abgelöst); `INCI-App-Projekt/netlify/` ist ein alter Build-Stand (nicht ausliefern).
 - **Abschlussregel:** Am Ende jedes Chats `INCI-App-Projekt/STAND.md` (fertig / offen / nächster Schritt, letzter Commit, Datum) und die Zeile in `INDEX.md` aktualisieren, `UEBERGABE.md` im Ordner mit der Repo-Fassung abgleichen.
-- Chatname = Projektname (z. B. „INCIheinz – Rezeptbuch“).
+- Chatname = Strangname (siehe Abschnitt „Stränge“). Chats werden vom Entwickler benannt; sie nennen in Einträgen den Strangnamen und benennen nichts um.
+
+## Stränge (Chats) – seit 10.11.2026
+Das Projekt wird in Strängen entwickelt, jeder Strang hat einen eigenen Chat. Chat-Namen: `INCIheinz` (Root: Grundgerüst, Datenmodell, Querprüfung), `INCIheinz-<Strang>` (zum Beispiel `INCIheinz-Rezeptbuch`, `INCIheinz-Katalog`), `INCIheinz-Fix-<Thema>` (Korrekturen).
+- **Register:** Die Tabelle „Stränge (Chats)“ in `INCI-App-Projekt/STAND.md` (nur im Ordner) listet jeden Strang mit Chat-Name, Inhalt, Stand. Daneben liegt je Strang eine Datei `INCI-App-Projekt/AUFTRAG_<STRANG>.md` (Rolle, Zuständigkeit, Dateien, nächste Aufgaben, was nicht anzufassen ist). Nennt der Entwickler im neuen Chat nur den Strangnamen, liest der Chat diese Zeile und den Auftrag und weiß damit seine Rolle.
+- Standard: nacheinander. Erst baut ein Chat, dokumentiert und pusht, dann der nächste. Gleichzeitig nur, wenn die berührten Dateien verschieden sind und jeder Chat seine Zeile unter „Aktive Arbeit“ hat.
+- Das Grundgerüst (Datenmodell `S`, `header()`, `draw()`, `back()`, Sicherung, Build, `i18n7.py`-Verfahren) ändert nur der Root-Chat oder ein Chat mit ausdrücklicher Freigabe des Entwicklers. Berührt ein Vorhaben das Grundgerüst oder einen fremden Strang, meldet der Chat das und fragt, bevor er baut.
+- Katalogdateien ändert nur der Strang `INCIheinz-Katalog` (oder ein Chat mit ausdrücklicher Freigabe, dann in STAND.md vermerken).
+- Korrektur-Chats (`INCIheinz-Fix-<Thema>`) beheben nur das gemeldete Problem, ergänzen einen Eintrag in `ENTWICKLUNGSVERLAUF.md` und ändern keine Struktur.
+- Entsteht ein neuer Strang, trägt der Chat ihn in die Tabelle ein und legt `AUFTRAG_<STRANG>.md` an.
 
 ## Arbeitsweise für Modul-Chats (verbindlich)
 **Start:**
-1. `INDEX.md` (Wurzelordner Toolsbyclaude) lesen, dann `INCI-App-Projekt/STAND.md`, dann `INCI-App-Projekt/ENTWICKLUNGSVERLAUF.md`.
-2. In `INCI-App-Projekt/repo/` zuerst `git pull`.
-3. Bauen mit `repo/src/build.sh`; testen (Playwright, Beispiele in `src/tests/`); am Ende selbst nach `main` pushen (Repo ggf. mit Schreibrecht per `add_repo` anhängen).
+1. `INDEX.md` (Wurzelordner Toolsbyclaude) lesen, dann `INCI-App-Projekt/STAND.md` (Aktive Arbeit, Stränge, Nächste Aufgaben), dann `INCI-App-Projekt/ENTWICKLUNGSVERLAUF.md` und, falls vorhanden, `AUFTRAG_<STRANG>.md`.
+2. Repo `PythonHeinz/INCIheinz-app` per `add_repo` mit Zugriff „push“ anhängen, klonen, `git pull` und `git log`. Die PC-Kopie `INCI-App-Projekt/repo/` wird nur gelesen und per `git pull` aktualisiert, nie von Hand geändert (sonst Konflikte); sie hat keinen Push-Zugang.
+3. Im angehängten Repo bauen mit `src/build.sh`; testen (Playwright, Beispiele in `src/tests/`); `index.html` in die Repo-Wurzel kopieren (siehe Fallstricke); am Ende selbst nach `main` pushen. Danach am PC in `INCI-App-Projekt/repo/` `git pull` (einmal `device_request_delete_permission` für den Ordner, sonst bleiben Sperrdateien in `.git`).
 
 **Während der Arbeit:**
 - Genau ein Chat baut zur selben Zeit (Absprache des Entwicklers).
@@ -89,7 +98,8 @@ Jeder neue Chat im Projekt bekommt die Desktop-Verbindung zu `C:\Users\Andreas\T
 1. `INCI-App-Projekt/STAND.md`: Modulstatus (fertig / offen / nächster Schritt), letzter Commit, Datum, Abschnitt „Berührt Grundgerüst“.
 2. Neue Entscheidungen in `ENTWICKLUNGSVERLAUF.md` (Ordner und Repo `src/`) ergänzen.
 3. Zeile in `INDEX.md` aktualisieren; `UEBERGABE.md` im Ordner und im Repo gleich halten.
-4. Der Entwickler meldet „Modul X fertig“ im Haupt-Chat „INCIheinz“ (Grundgerüst); dort erfolgt die Querprüfung (Navigation, i18n, Sicherung, Statistik).
+4. Stand des eigenen Strangs in der Tabelle „Stränge (Chats)“ in `STAND.md` aktualisieren. `STAND.md` und `AUFTRAG_*.md` liegen nur im Ordner (über die Desktop-Verbindung schreiben), `UEBERGABE.md` und `ENTWICKLUNGSVERLAUF.md` zuerst im Repo ändern und pushen, dann per `git pull` in die Kopie holen und mit `cmp` auf Gleichheit prüfen.
+5. Der Entwickler meldet „Strang X fertig“ im Root-Chat „INCIheinz“; dort erfolgt die Querprüfung (Navigation, i18n, Sicherung, Statistik).
 
 ## Testdaten (Rezeptbuch) und Katalog 1.1.0 – 2026-11-05
 - Katalog 1.1.0: +14 Rohstoffe (K1032–K1045; z. B. Joghurtpulver, Reismehl, Inulin, Maltodextrin, Calciumchlorid, Erythrit, Lactobionsäure, Magnesiumascorbylphosphat, Hydrolysiertes Erbsenprotein, Phytosphingosin, Wiesenschaumblumenöl, Crambeöl, Buritiöl, Kokoswasser), alle „ungeprüft“, INCI aus Fachwissen, nicht belegt. Quelle: Abgleich der Rohstoffe aus Buch (Käser) und humblebee-Enzyklopädie mit dem Katalog; er deckte fast alles schon ab. Aus den Quellen wurden nur Rohstoffnamen genutzt, keine Rezepte und Texte.
