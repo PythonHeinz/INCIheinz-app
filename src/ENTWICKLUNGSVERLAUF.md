@@ -453,6 +453,52 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Test t124 (Löschen, Rückgängig, Einstellungseintrag, Guide-Pfad). Regression t83 bis t123 ohne Fehler.
 - Offen/Idee: Schritte einer Phase zuordnen wäre eine KI-Aufgabe im Importprompt (Feld je Schritt), mit Prüfregel dahinter; noch nicht gebaut.
 
+## Bestand Sonja: Lagerreport bereinigt, Ölliste eingearbeitet, Importdatei (08.11.2026, Handy, nur Dateien)
+- Quelle: `Vorlagen Lager Sonja/Lagerreport Sonja 071126.xlsx` (225 Zeilen, aus drei Tabellen, mit Redundanzen und Mengen/Preisen im Namen). Mengen, Preise und Zusätze aus dem Namen abgetrennt, Namen gegen `katalog.json` (1.5.1) abgeglichen (exakt, Schreibweise, Alias `a`, dann manuell). Ergebnis 180 Artikel (178 Katalog, 2 eigen). Gebinde je Artikel gesammelt (z. B. Vitamin E 10 ml; 50 ml, 8,90 €).
+- Ölliste: zwei Fotos, Spalte 1 als Namen, durchgestrichene (14) ausgelassen, 53 Öle; alle Spalten in der Arbeitsdatei und als `oele_privat.json` (Schlüssel Katalog-ID). Wirkaussagen bleiben privat, nicht in Importdatei und nicht in die App.
+- Importdatei im Format der App (`csvPlan`, js7.js: Spalten Name, INCI, Kategorie, Menge, Einheit, Preis, Quelle, EAN, Notiz). Wichtig: `csvPlan` erkennt Katalogartikel nur über den exakten Katalognamen `n` (nicht über Alias `a`), und die Einheit bestimmt die Art (g/ml) auch bei offener Menge; deshalb Einheit immer aus dem Katalog gesetzt. Menge bewusst leer (Gebinde ist nicht der Restbestand), Gebinde in der Notiz.
+- Tests: `csvPlan(parseCSV(csv))` und `csvPlan(xlsxRows(xlsx))` gegen `repo/index.html` in Playwright: 180 neu, 0 schon vorhanden, 178 mit `cid`, 74 Volumen-/106 Gewichtsartikel, keine Seitenfehler. Kein App-Code, kein Katalog geändert.
+- Offen: Zuordnungen „bitte prüfen“ (siehe STAND.md), Katalog-Tippfehler (Ravintsana, Diftöl Mango), Entscheidung, ob ein fester „Testbestand laden“-Knopf in die App soll, spätere private Ecke für die Ölinfos.
+
+## Testbestand Sonja in der App (08.11.2026, Handy, Commit 867be6d)
+- Neu `src/proto/js49.js`, angehängt in `patch7.py` nach js48: `TBS` (180 Zeilen im Importformat, Stand 07.11.2026), `tbsPlan` (ruft `csvPlan` auf, also dieselbe Erkennung wie beim Import), `tbsAsk/tbsLoad` (Einträge bekommen `i.tb='sonja'`, `adoptLief()`, Undo über `undoOffer`), `tbsRmAsk/tbsRm` (löscht nur `tb==='sonja'` mit `unk` und ohne Rezeptverwendung, entfernt danach das Kennzeichen), Umhüllung von `demoBlockHtml` (Überschrift „Testbestand Heinz“ statt „Testdaten“, darunter Block „Testbestand Sonja“). Nur im Expertenmodus sichtbar, kein Datenmodell geändert (`tb` ist ein freies Feld wie `demo`).
+- EN/ES in `i18n7.py` (Überschriften, Sätze einzeln in eigenen Zeilen, damit die Regex-Übersetzung ohne optionale Teile auskommt).
+- Test t125: Block sichtbar, 180 geladen, 178 mit Katalogbezug, alle offen, Einheiten 74 ml/106 g, zweites Laden meldet „Nichts Neues“, Entfernen behält Artikel mit Menge und mit Rezeptverwendung, Heinz-Testdaten unberührt. t92 an die Zeile „Meine Sprache (Zielsprache)“ angepasst (war schon vor dieser Änderung rot). Regression t83 bis t125 ohne Fehler.
+- Ordner: `Vorlagen Lager Sonja/archive/` (für veraltete Reports) und `werkzeuge/` (build.py, files.py, gen_js49.py, oele.py mit privaten Ölinfos, README) angelegt. Offline-Repo `repo/` auf d118c0f; dafür wurden einmalig Löschrechte im Ordner erteilt (git pull, Lock-Datei eines abgebrochenen Pulls entfernt).
+- Offen: Zuordnungen „bitte prüfen“ (siehe STAND.md), Katalog-Tippfehler Ravintsana/Diftöl Mango, private Ecke für Ölinfos, Abgleich mit weiteren Excel-Tabellen und Zetteln von Sonja.
+
+## Katalog 1.5.2 und Testbestand Sonja nach Rückmeldung (08.11.2026, Handy, Commit 7511779)
+- Katalog (auf Wunsch des Nutzers, ausnahmsweise in diesem Chat): K0167 „Ravintsara ätherisches Öl“, K0011 „Duftöl Mango“ (Tippfehler); neu K1077 Mandarine rot ätherisches Öl, K1078 Lavendelöl Österreich BIO, K1079 Bergamotte bergaptenfrei. Version 1.5.2, Datum 2026-11-08, 1053 Einträge, beide Katalogdateien identisch.
+- `js49.js`: Datenteil neu aus `werkzeuge/gen_js49.py`, zehnte Spalte MHD (Tonka-Mazerat); `tbsPlan` mit Kopfzeile inkl. MHD. 180 Zeilen, 179 mit Katalogbezug, 1 eigene (Tonka Mazerat). Mandarine, Bergamotte und Lavendelöl Österreich sind jetzt Katalogartikel.
+- Tests: t83 (34 statt 31 neue Einträge, Gesamt 1053), t85 (20 statt 17, Gesamt 1053/1054), t125 prüft zusätzlich Zuordnungen, MHD, Notiz, entfallene Namen. Regression t83 bis t125 ohne Fehler. Landkarte um Testbestand Sonja und 1053 ergänzt (`wissen/app-landkarte.md` neu erzeugt).
+- Werkzeuge im Ordner angepasst (`build.py` Wörterbücher, `files.py`, `gen_js49.py`).
+
+## 08.11.2026 – Testbestand Sonja korrigiert, Sonjas Notizen (Chat „INCIheinz“)
+- Anlass: Sonja kannte Biokons Plus nicht. Ursache: Report enthielt Zeilen aus dem Blatt „olio natura“ (Wissensliste); Quelle `Rohstoffe Liste.xlsx` mit 8 Blättern.
+- Bestand jetzt nur aus „Lager Jakobswiese“ plus Preiszettel-Zeilen: 142 Artikel (vorher 180), 60 Zeilen als „Nur Wissen“ entfernt.
+- `src/proto/js49.js`: `TBS.sn` (Notizen/Alternativen je Artikelname), `tbsLoad` setzt `i.sn`/`i.alt`, neuer Block „Sonjas Notizen“ im Artikel (Wrapper um `artikel`), Tipp auf Beschreibung/Verwendung öffnet ihn. `i18n7.py`: EN/ES.
+- Tests: `t126.js` neu, `t83.js` (kaputte Zeile aus dem letzten Commit repariert), Regression t83–t126 grün.
+- Offen: 17 Report-Zeilen ohne Blatt prüfen lassen; Äth-Tausch-Tabelle (doTERRA) nur privat abgelegt; Mengen via Regal-Check.
+
+
+## 08.11.2026 – Regal-Check abwählbar (Chat „INCIheinz“)
+- Ursache: `toggleCat` sperrte das Abwählen, sobald Notiz oder Katalogtexte am Artikel standen; Artikel aus dem Testbestand Sonja tragen immer eine Gebinde-Notiz.
+- Fix in `js49.js` (Wrapper): Abwählen erlaubt, solange nur Testdaten (Report-Notiz, Katalogtexte) dran hängen; Menge, Gebinde, Preise, eigene Texte sperren weiter. Test `t127.js`, Regression t83–t127 grün.
+- Hinweis: Ravensara (K0384) und Ravintsara (K0167) sind zwei verschiedene Katalogeinträge, keine Dublette.
+
+## 08.11.2026 – Regal-Check: Zuordnung sichtbar (Chat „INCIheinz“)
+- Neu `src/proto/js50.js` (in patch7.py eingehängt): Karte „n Rohstoffe noch nicht dem Katalog zugeordnet“ bzw. „Alles zugeordnet“ auf der Regal-Check-Startseite, „n offen“ je Kategorie, offene Rohstoffe oben in der Kategorie, Zuordnen-Sheet (Katalogtreffer, „Bleibt eigener Rohstoff“ = `i.eig`, Rohstoff öffnen), „Öffnen“ an jedem Lagerartikel. EN/ES in `i18n7.py`. Test `t128.js`, Regression t83–t128 grün.
+- Offen: Rückmeldung von Sonja, ob die Karte ausreicht; Rohstoffe aus „Neu › Als eigenen Rohstoff anlegen“ gelten zunächst als offen, bis bestätigt.
+- Nachtrag: Testbestand-Einträge ohne Katalogtreffer (Tonka-Mazerat, Eigenkreation) werden beim Laden sofort als „eigener Rohstoff“ (`i.eig`) gesetzt und zählen im Regal-Check nicht als offen.
+
+## 08.11.2026 – Lagerliste: Tags und Legende (Chat „INCIheinz“)
+- Neu `src/proto/js51.js` (in patch7.py): Tag „ohne Katalog“/„eigen“ an Rohstoffen ohne Katalogverknüpfung (nur Listenansicht), Link „Symbole erklärt“ mit Legende. EN/ES in `i18n7.py`, Test `t129.js`, Regression t83–t129 grün.
+- Klarstellung: Das gestrichelte Kreissymbol in der Liste heißt „leer“ (Bestand 0). Reine Text-Zutaten gibt es nur im Rezept („fehlt“), nicht im Lager.
+
+## 08.11.2026 – Import-Entwurf orange, Kategorie im Zutatenkopf (Chat „INCIheinz“)
+- `js47.js`: unbestätigte Einträge orange (#C2570C) statt grau, Banner „n Einträge noch nicht bestätigt“, `rzKatOf` zeigt die Kategorie im Zutatenkopf. `js42.js`: KI liefert bei Zutaten ohne Katalogtreffer optional `kat` (nur aus der Katalogliste, Anzeige „· Vorschlag“); nicht gegen die echte KI getestet. h2o in den Wassernamen-Regexen (js18/23/27/36/47). EN/ES, Test `t130.js`, Regression t83–t130 grün.
+- Offen, nicht gebaut: „Alternativ ersetzen“ mit Vorschlags- und Freigabe-Ablauf, Schalter „Immer vorhanden“ (Wasser/Kochsalz), Kreuz in der Zutatenzeile, Alias Wasser/H2O für K0059 (Katalog-Chat).
+
 
 ## Phasen als Schritte im Ablauf (08.11.2026)
 - Wunsch: Die von der KI erkannten Phasen (Dry/Wet phase) sollen auch in der Rezeptansicht und in Publikationen unter „Ablauf und Hinweise“ stehen. Ansicht, Rezeptkarte und Text-Export lesen `d.mod`, die Phasen lagen nur in `d.phasen`.
@@ -488,3 +534,9 @@ Verworfen: „In aktueller Version überschreiben“ (widerspricht der Versionie
 - Vorbefüllte Einträge gelten nur für ätherische Öle: `RZALT_NOT` (Aroma, Duft, Mazerat, Hydrolat, Wasser, Wildrose, Hagebutte, Rosenweihrauch, indicum, Extrakt, Butter) schließt solche Artikel auf beiden Seiten aus (`rzAltEntries`, `rzAlts`). Eigene oder geänderte Einträge sind davon nicht betroffen.
 - Einmalig beim Laden (`load`-Wrapper in js54, Flag `S.altSeeded`): ist schon ein Testbestand Sonja geladen, wird die Vorbefüllung nachgeholt, ohne den Testbestand neu zu laden.
 - Im Testbestand Sonja (142 Rohstoffe) haben danach 34 Artikel Alternativen (u. a. Teebaumöl, Lavendel, Bergamotte, Atlaszeder, Geogard 221, BTMS Pellets).
+
+## Stränge (Chats) eingeführt (10.11.2026, Chat „INCIheinz“, nur Dokumente, kein App-Code)
+- Vorbild ist AIUIheinz: Jeder Strang hat einen eigenen Chat, Chat-Name = Strangname. Register: Tabelle „Stränge (Chats)“ in `STAND.md`; je Strang `AUFTRAG_<STRANG>.md` im Ordner (Lager, Rezeptbuch, Katalog, KI, Bestand, Druck, Design, Idee). Neuer Startprompt `NAECHSTER_CHAT.md` (zugleich Projektanweisung): Wer nur den Strangnamen nennt, bekommt Rolle und Aufgaben aus Tabelle und Auftrag. Regeln: `UEBERGABE.md`, Abschnitt „Stränge“ (Grundgerüst nur Root, Katalogdateien nur Strang Katalog, Korrektur-Chats ohne Strukturänderung).
+- Arbeitsorte klargestellt: Gearbeitet und gepusht wird im angehängten Repo, die PC-Kopie `repo/` ist nur lesbar und wird per `git pull` aktualisiert.
+- Zuordnung der bisherigen Chat-Titel zu Strängen: Projektdokument `claude/chat-namen.md`.
+- Dokumente zusammengeführt: Die Ordnerfassung dieser Datei enthielt die Abschnitte Bestand/Testbestand Sonja bis Import-Entwurf, das Repo die ausführlichen Alternativen-Abschnitte; beide sind jetzt in einer Fassung vereint (Sicherung der alten Ordnerfassung in `archiv/`).
